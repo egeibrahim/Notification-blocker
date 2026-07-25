@@ -280,11 +280,14 @@ class NotifilterListenerService : NotificationListenerService() {
         val notification = sbn.notification
         val extras = notification.extras ?: return ""
 
-        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString() ?: ""
+        val title = extras.getCharSequence(Notification.EXTRA_TITLE)?.toString()
+            ?: extras.getCharSequence(Notification.EXTRA_TITLE_BIG)?.toString()
+            ?: ""
         val text = extras.getCharSequence(Notification.EXTRA_TEXT)?.toString()
             ?: extras.getCharSequence(Notification.EXTRA_BIG_TEXT)?.toString()
             ?: extras.getCharSequence(Notification.EXTRA_SUB_TEXT)?.toString()
             ?: extras.getCharSequence(Notification.EXTRA_INFO_TEXT)?.toString()
+            ?: extras.getCharSequence(Notification.EXTRA_SUMMARY_TEXT)?.toString()
             ?: ""
 
         // MessagingStyle: bazı uygulamalar (Instagram DM vb.) mesaj metnini EXTRA_MESSAGES içine koyar.

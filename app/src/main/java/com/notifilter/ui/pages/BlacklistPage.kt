@@ -97,27 +97,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
             )
         }
 
-        AppCard(
-            modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                val gamesEnabled = remember(refreshTrigger) { filterPrefs.isGlobalGamesBlockEnabled }
-                FilterChip(
-                    selected = gamesEnabled,
-                    onClick = {
-                        filterPrefs.isGlobalGamesBlockEnabled = !gamesEnabled
-                        refreshTrigger++
-                    },
-                    label = { Text(stringResource(R.string.global_games_toggle)) }
-                )
-            }
-        }
-
         key(refreshTrigger) {
             val categories = filterPrefs.getMergedBlockCategories()
 

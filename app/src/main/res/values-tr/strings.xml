@@ -65,6 +65,8 @@
     <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilir. Gizle kaydet ile o uygulamanın bildirimleri filtreden muaf tutulur.</string>
 
     <string name="archive_last_7_days_title">Son 7 Gün - Tüm Bildirimler</string>
+    <string name="archive_empty_title">Henüz bildirim yok</string>
+    <string name="archive_empty_desc">Son 7 gün içinde kaydedilmiş bir bildirim bulunmuyor.</string>
 
     <string name="detail_exempt_app_title">Bildirimlere izin ver</string>
     <string name="detail_exempt_app_desc">Açık olduğunda bu uygulamanın hiçbir bildirimi filtrelenmez.</string>
@@ -103,4 +105,91 @@
     <string name="subscription_required_body">Uygulamayı kullanmaya devam etmek için ücretsiz denemeyi başlat.</string>
     <string name="start_free_trial">7 gün ücretsiz denemeyi başlat</string>
     <string name="manage_subscription">Aboneliği yönet</string>
+
+    <string name="cancel_subscription">Aboneliği iptal et</string>
+    <string name="subscription_info_title">Abonelik</string>
+    <string name="subscription_status_active">Aktif abonelik</string>
+    <string name="subscription_status_inactive">Aktif abonelik yok</string>
+    <string name="subscription_status_unknown">Abonelik kontrol ediliyor…</string>
+    <string name="subscription_trial_desc">%1$s ücretsiz, ardından %2$s</string>
+    <string name="subscription_price_desc">%1$s / %2$s</string>
+    <string name="subscription_cancel_desc">Aboneliğini istediğin zaman Google Play üzerinden iptal edebilirsin.</string>
+    <string name="subscription_not_configured">Abonelik ürünü yapılandırılmamış.</string>
+
+    <!-- E-posta ile Giriş ve Kayıt -->
+    <string name="auth_email">E-posta</string>
+    <string name="auth_password">Şifre</string>
+    <string name="auth_login">Giriş Yap</string>
+    <string name="auth_register">Kayıt Ol</string>
+    <string name="auth_forgot_password">Şifremi Unuttum?</string>
+    <string name="auth_send_recovery">Kurtarma E-postası Gönder</string>
+    <string name="auth_back_to_login">Girişe Dön</string>
+    <string name="auth_no_account">Hesabın yok mu? Kayıt ol</string>
+    <string name="auth_have_account">Zaten hesabın var mı? Giriş yap</string>
+    <string name="auth_invalid_email">Lütfen geçerli bir e-posta adresi gir</string>
+    <string name="auth_invalid_password">Şifre en az 6 karakter olmalı</string>
+    <string name="auth_success_signup">Kayıt başarılı! Doğrulama etkinse gelen kutunu kontrol et.</string>
+    <string name="auth_success_recovery">Kurtarma e-postası gönderildi.</string>
+    <string name="auth_or_divider">VEYA</string>
+    <string name="auth_password_hide">Gizle</string>
+    <string name="auth_password_show">Göster</string>
+
+    <string name="backup_now">Şimdi yedekle</string>
+    <string name="restore_now">Şimdi geri yükle</string>
+
+    <string name="block_category_word_count">%1$d kelime</string>
+    <string name="emoji_block_toggle">Emoji engelle</string>
+    <string name="global_games_toggle">Tüm oyunları engelle</string>
+
+    <!-- Kurulum Sihirbazı -->
+    <string name="notification_access_dialog_title">Bildirim erişimi gerekli</string>
+    <string name="notification_access_dialog_message">Bildirimleri engellemek ve filtrelemek için lütfen sistem ayarlarından bu uygulamaya bildirim erişimi ver.</string>
+    <string name="notification_access_dialog_positive">Ayarları Aç</string>
+    <string name="notification_access_dialog_dismiss">Kapat</string>
+    <string name="setup_guide_title">Kurulumu tamamla</string>
+    <string name="setup_guide_message">Uygulamanın çalışması için lütfen aşağıdaki izinleri ver:</string>
+    <string name="setup_guide_notifications">1. Bildirim erişimine izin ver</string>
+    <string name="setup_guide_battery">2. Arka planda kullanıma izin ver</string>
+    <string name="setup_guide_open">Aç</string>
+    <string name="setup_guide_done">Kurulumu tamamladım</string>
+
+    <!-- Uygulamayı Değerlendir ve Geri Bildirim -->
+    <string name="rate_app_title">Uygulamayı Değerlendir</string>
+    <string name="rate_app_desc">Google Play Store\'da 5 yıldız vererek bize destek ol!</string>
+    <string name="feedback_title">Geri Bildirim Gönder</string>
+    <string name="feedback_desc">Bir sorunla mı karşılaştın veya önerin mi var? Bize doğrudan ulaş!</string>
+    <string name="feedback_dialog_title">Geri Bildirim ve Öneriler</string>
+    <string name="feedback_dialog_hint">Yorumunu buraya yaz...</string>
+    <string name="feedback_dialog_send">Gönder</string>
+    <string name="feedback_dialog_cancel">Vazgeç</string>
+    <string name="feedback_success">Geri bildirimin için teşekkürler!</string>
+    <string name="feedback_empty_error">Göndermeden önce lütfen geri bildirimini yaz.</string>
+
+    <!-- Yardım Bölümü -->
+    <string name="help_section_title">Yardım ve SSS</string>
+    <string name="help_faq_1_q">Bildirimlerim neden engellenmiyor?</string>
+    <string name="help_faq_1_a">Ayarlardan bu uygulamaya \"Bildirim Erişimi\" izni verdiğinden ve uygulamanın arka planda çalışma izinlerinin olduğundan emin ol.</string>
+    <string name="help_faq_2_q">Odak Modu nedir?</string>
+    <string name="help_faq_2_a">Odak Modu, gelen tüm bildirimleri geçici olarak susturur ve daha sonra kesintiye uğramadan görebilmen için uygulama içine arşivler.</string>
+
+    <!-- Karşılama Turu (Walkthrough) -->
+    <string name="wt_welcome_title">NO\'ya Hoş Geldin</string>
+    <string name="wt_welcome_desc">İstenmeyen bildirimleri filtrelemek ve engellemek için nihai uygulama. Bildirim çekmeceni temiz ve düzenli tut!</string>
+    <string name="wt_filter_title">Akıllı Filtreleme</string>
+    <string name="wt_filter_desc">Artık spam yok! Hazır kategorilerimizle pazarlama, kredi ve haber spamlerini otomatik engelle, ya da kendi kurallarını tanımla.</string>
+    <string name="wt_focus_title">Odak Modu</string>
+    <string name="wt_focus_desc">Sessiz bir ana mı ihtiyacın var? Odak Modu\'nu açarak tüm bildirimleri sustur, istediğin zaman güvenli uygulama çekmecemizden kontrol et.</string>
+    <string name="wt_next">İleri</string>
+    <string name="wt_skip">Geç</string>
+    <string name="wt_finish">Başla</string>
+    <string name="wt_tooltip_dashboard">Aktif ve engellenen bildirimlerin dökümünü gör.</string>
+    <string name="wt_tooltip_rules">Buraya özel engelle/izin ver kelimeleri ve kanalları ekle.</string>
+
+    <!-- BlacklistPage.kt / ProfilePage.kt güncellemesiyle eklenen hata mesajları -->
+    <string name="error_billing_requires_activity">Satın alma işlemi başlatılamadı, lütfen tekrar deneyin</string>
+    <string name="error_billing_not_configured">Abonelik şu anda yapılandırılmamış</string>
+    <string name="error_action_requires_activity">Bu işlem gerçekleştirilemedi, lütfen tekrar deneyin</string>
+    <string name="error_generic">Hata: %1$s</string>
+    <string name="error_auth_not_configured">Giriş servisi şu anda kullanılamıyor</string>
+    <string name="error_no_email_app">Cihazında e-posta uygulaması bulunamadı</string>
 </resources>

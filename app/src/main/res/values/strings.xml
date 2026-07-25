@@ -79,6 +79,8 @@
     <string name="applications_installed_desc">Tap an app to view notification history. When muted, notifications from that app are excluded from filtering.</string>
 
     <string name="archive_last_7_days_title">Last 7 days - all notifications</string>
+    <string name="archive_empty_title">No notifications yet</string>
+    <string name="archive_empty_desc">Nothing has been recorded in the last 7 days.</string>
 
     <string name="detail_exempt_app_title">Exclude this app from filtering</string>
     <string name="detail_exempt_app_desc">When enabled, none of this app’s notifications will be filtered.</string>
@@ -173,19 +175,17 @@
     <!-- Help Section -->
     <string name="help_section_title">Help &amp; FAQs</string>
     <string name="help_faq_1_q">Why are my notifications not being blocked?</string>
-    <string name="help_faq_1_a">Make sure you have granted \"Notification Access\" to this app under settings, and that the app has background execution permissions.</string>
+    <string name="help_faq_1_a">Make sure you have granted \"Notification Access\" to this app under settings, and that it has background execution permissions.</string>
     <string name="help_faq_2_q">What is Focus Mode?</string>
     <string name="help_faq_2_a">Focus Mode temporarily silences all incoming notifications and archives them inside the app so you can view them later without being interrupted.</string>
 
-    <!-- Errors -->
-    <string name="error_billing_requires_activity">An activity is required to start billing.</string>
-    <string name="error_billing_not_configured">Billing product ID is not configured.</string>
-    <string name="error_action_requires_activity">An activity is required for this action.</string>
-    <string name="error_generic">Error: %1$s</string>
-    <string name="error_auth_not_configured">Authentication is not configured.</string>
-    <string name="error_no_email_app">No email app found.</string>
-
-    <!-- Auth -->
+    <!-- Added with the BlacklistPage.kt / ProfilePage.kt update -->
     <string name="auth_password_hide">Hide</string>
     <string name="auth_password_show">Show</string>
+    <string name="error_billing_requires_activity">Couldn\'t start checkout. Try again</string>
+    <string name="error_billing_not_configured">Subscription isn\'t configured yet</string>
+    <string name="error_action_requires_activity">Couldn\'t complete this action. Try again</string>
+    <string name="error_generic">Error: %1$s</string>
+    <string name="error_auth_not_configured">Sign-in isn\'t available right now</string>
+    <string name="error_no_email_app">No email app found on this device</string>
 </resources>

@@ -103,16 +103,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-enum class NavPage(
-    @StringRes val titleRes: Int,
-    val icon: ImageVector,
-    val selectedColor: Color,
-    val indicatorColor: Color
-) {
-    Dashboard(R.string.nav_dashboard, Icons.Default.Dashboard, Color(0xFFFF6B6B), Color(0xFFFFE6E6)),
-    Archive(R.string.nav_archive, Icons.Default.Archive, Color(0xFFFFA726), Color(0xFFFFF4E6)),
-    Blacklist(R.string.nav_block_management, Icons.Default.Block, Color(0xFF4A90FF), Color(0xFFE6F0FF)),
-    Profile(R.string.nav_profile, Icons.Default.Person, Color(0xFF50C878), Color(0xFFE6FAF0))
+enum class NavPage(@StringRes val titleRes: Int, val icon: ImageVector) {
+    Dashboard(R.string.nav_dashboard, Icons.Default.Dashboard),
+    Archive(R.string.nav_archive, Icons.Default.Archive),
+    Blacklist(R.string.nav_block_management, Icons.Default.Block),
+    Profile(R.string.nav_profile, Icons.Default.Person)
 }
 
 enum class ProfileSubPage {
@@ -181,9 +176,9 @@ fun MainScreen() {
                         icon = { Icon(page.icon, contentDescription = title) },
                         label = { Text(title) },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = page.selectedColor,
-                            selectedTextColor = page.selectedColor,
-                            indicatorColor = page.indicatorColor,
+                            selectedIconColor = Color(0xFFFF6B6B),
+                            selectedTextColor = Color(0xFFFF6B6B),
+                            indicatorColor = Color(0xFFFFE6E6),
                             unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                         )

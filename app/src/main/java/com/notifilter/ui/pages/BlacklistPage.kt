@@ -346,117 +346,125 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
             }
         }
 
-        Text(
-            text = stringResource(R.string.block_section_allow_words_title),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(top = 20.dp, bottom = 4.dp)
-        )
-        Text(
-            text = stringResource(R.string.block_section_allow_words_desc),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
+        AppCard(modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+                Text(
+                    text = stringResource(R.string.block_section_allow_words_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
+                )
+                Text(
+                    text = stringResource(R.string.block_section_allow_words_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = allowWord,
-            onValueChange = { allowWord = it },
-            label = { Text(stringResource(R.string.add_word)) },
-            singleLine = true,
-            trailingIcon = {
-                IconButton(
-                    onClick = {
-                        filterPrefs.addUserContentAllowWord(allowWord)
-                        allowWord = ""
-                        refreshTrigger++
-                    }
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
-                }
-            }
-        )
-
-        key(refreshTrigger) {
-            FlowRow(
-                modifier = Modifier.padding(top = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                filterPrefs.userContentAllowWords
-                    .sorted()
-                    .forEach { word ->
-                        AssistChip(
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = allowWord,
+                    onValueChange = { allowWord = it },
+                    label = { Text(stringResource(R.string.add_word)) },
+                    singleLine = true,
+                    trailingIcon = {
+                        IconButton(
                             onClick = {
-                                filterPrefs.removeUserContentAllowWord(word)
+                                filterPrefs.addUserContentAllowWord(allowWord)
+                                allowWord = ""
                                 refreshTrigger++
-                            },
-                            label = { Text(word) },
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.delete)
+                            }
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
+                        }
+                    }
+                )
+
+                key(refreshTrigger) {
+                    FlowRow(
+                        modifier = Modifier.padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        filterPrefs.userContentAllowWords
+                            .sorted()
+                            .forEach { word ->
+                                AssistChip(
+                                    onClick = {
+                                        filterPrefs.removeUserContentAllowWord(word)
+                                        refreshTrigger++
+                                    },
+                                    label = { Text(word) },
+                                    trailingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = stringResource(R.string.delete)
+                                        )
+                                    }
                                 )
                             }
-                        )
                     }
+                }
             }
         }
 
-        Text(
-            text = stringResource(R.string.block_section_block_words_title),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(top = 20.dp, bottom = 4.dp)
-        )
-        Text(
-            text = stringResource(R.string.block_section_block_words_desc),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
+        AppCard(modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)) {
+            Column(modifier = Modifier.fillMaxWidth().padding(12.dp)) {
+                Text(
+                    text = stringResource(R.string.block_section_block_words_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
+                )
+                Text(
+                    text = stringResource(R.string.block_section_block_words_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
 
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = customWord,
-            onValueChange = { customWord = it },
-            label = { Text(stringResource(R.string.add_word)) },
-            singleLine = true,
-            trailingIcon = {
-                IconButton(
-                    onClick = {
-                        filterPrefs.addUserContentBlockWord(customWord)
-                        customWord = ""
-                        refreshTrigger++
-                    }
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
-                }
-            }
-        )
-
-        key(refreshTrigger) {
-            FlowRow(
-                modifier = Modifier.padding(top = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                filterPrefs.userContentBlockWords
-                    .sorted()
-                    .forEach { word ->
-                        AssistChip(
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = customWord,
+                    onValueChange = { customWord = it },
+                    label = { Text(stringResource(R.string.add_word)) },
+                    singleLine = true,
+                    trailingIcon = {
+                        IconButton(
                             onClick = {
-                                filterPrefs.removeUserContentBlockWord(word)
+                                filterPrefs.addUserContentBlockWord(customWord)
+                                customWord = ""
                                 refreshTrigger++
-                            },
-                            label = { Text(word) },
-                            trailingIcon = {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.delete)
+                            }
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
+                        }
+                    }
+                )
+
+                key(refreshTrigger) {
+                    FlowRow(
+                        modifier = Modifier.padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        filterPrefs.userContentBlockWords
+                            .sorted()
+                            .forEach { word ->
+                                AssistChip(
+                                    onClick = {
+                                        filterPrefs.removeUserContentBlockWord(word)
+                                        refreshTrigger++
+                                    },
+                                    label = { Text(word) },
+                                    trailingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = stringResource(R.string.delete)
+                                        )
+                                    }
                                 )
                             }
-                        )
                     }
+                }
             }
         }
     }

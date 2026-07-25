@@ -10,6 +10,16 @@
     <string name="title_settings">Ayarlar</string>
     <string name="title_block_management">Blok</string>
 
+    <string name="settings_setup_header">NO uygulamasının düzgün çalışabilmesi için aşağıdaki ayarları açın</string>
+    <string name="settings_setup_body">Bildirim erişimi, otomatik başlatma ve pil optimizasyonu izinleri engelleme ve arşivleme için gereklidir.</string>
+    <string name="settings_info_title">Yardım ve Bilgi</string>
+    <string name="settings_help">Yardım</string>
+    <string name="settings_how_it_works">NO Nasıl Çalışır?</string>
+    <string name="settings_faq">SSS</string>
+    <string name="title_help">Yardım</string>
+    <string name="title_how_it_works">NO Nasıl Çalışır?</string>
+    <string name="title_faq">SSS</string>
+
     <string name="section_quick_access">Hızlı erişim</string>
     <string name="quick_access_app_info">Uygulama bilgisi (izinler, kısıtlı ayarlar)</string>
     <string name="quick_access_battery_settings">Pil ayarları</string>

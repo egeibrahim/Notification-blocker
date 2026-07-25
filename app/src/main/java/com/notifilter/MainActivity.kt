@@ -61,6 +61,9 @@ import com.notifilter.preferences.ImportantChannelsPreferences
 import com.notifilter.ui.pages.ArchivePage
 import com.notifilter.ui.pages.BlacklistPage
 import com.notifilter.ui.pages.DashboardPage
+import com.notifilter.ui.pages.FaqPage
+import com.notifilter.ui.pages.HelpPage
+import com.notifilter.ui.pages.HowItWorksPage
 import com.notifilter.ui.pages.ProfilePage
 import com.notifilter.ui.theme.NotifilterTheme
 
@@ -105,6 +108,12 @@ enum class NavPage(@StringRes val titleRes: Int, val icon: ImageVector) {
     Profile(R.string.nav_profile, Icons.Default.Person)
 }
 
+enum class ProfileSubPage {
+    Help,
+    HowItWorks,
+    Faq
+}
+
 @Composable
 fun MainScreen() {
     val context = LocalContext.current
@@ -112,6 +121,7 @@ fun MainScreen() {
     val focusPrefs = remember { FocusModePreferences(context) }
     val importantPrefs = remember { ImportantChannelsPreferences(context) }
     var currentPage by remember { mutableIntStateOf(0) }
+    var currentSubPage by remember { mutableStateOf<ProfileSubPage?>(null) }
     var showPermissionDialog by remember { mutableStateOf(false) }
 
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
@@ -140,6 +150,16 @@ fun MainScreen() {
     }
     val entitlement by billingManager.entitlement.collectAsState(initial = BillingManager.EntitlementState.Unknown)
     val isEntitled = (entitlement is BillingManager.EntitlementState.Active) || EntitlementStore.isEntitled(context)
+
+    if (currentSubPage != null) {
+        when (currentSubPage) {
+            ProfileSubPage.Help -> HelpPage(onBackClick = { currentSubPage = null })
+            ProfileSubPage.HowItWorks -> HowItWorksPage(onBackClick = { currentSubPage = null })
+            ProfileSubPage.Faq -> FaqPage(onBackClick = { currentSubPage = null })
+            else -> Unit
+        }
+        return
+    }
 
     Scaffold(
         bottomBar = {
@@ -174,7 +194,10 @@ fun MainScreen() {
                     modifier = Modifier.fillMaxSize()
                 )
                 3 -> ProfilePage(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    onHelpClick = { currentSubPage = ProfileSubPage.Help },
+                    onHowItWorksClick = { currentSubPage = ProfileSubPage.HowItWorks },
+                    onFaqClick = { currentSubPage = ProfileSubPage.Faq }
                 )
             }
 

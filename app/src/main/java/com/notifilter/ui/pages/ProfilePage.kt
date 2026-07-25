@@ -19,8 +19,6 @@ import androidx.compose.material.icons.filled.BatteryFull
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Info
@@ -75,7 +73,12 @@ import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfilePage(modifier: Modifier = Modifier) {
+fun ProfilePage(
+    modifier: Modifier = Modifier,
+    onHelpClick: () -> Unit = {},
+    onHowItWorksClick: () -> Unit = {},
+    onFaqClick: () -> Unit = {}
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val billingManager = remember { BillingManager(context.applicationContext) }
@@ -163,73 +166,34 @@ fun ProfilePage(modifier: Modifier = Modifier) {
 
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    val helpExpanded = remember { mutableStateOf(false) }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { helpExpanded.value = !helpExpanded.value },
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(R.string.how_to_use_title),
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Icon(
-                            imageVector = if (helpExpanded.value) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                            contentDescription = null
-                        )
-                    }
-                    if (helpExpanded.value) {
-                        Column(modifier = Modifier.padding(top = 12.dp)) {
-                            Text(
-                                text = stringResource(R.string.how_to_use_q1),
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.Medium
-                            )
-                            Text(
-                                text = stringResource(R.string.how_to_use_a1),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        item {
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    val noExpanded = remember { mutableStateOf(false) }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { noExpanded.value = !noExpanded.value },
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(R.string.no_how_it_works_title),
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Icon(
-                            imageVector = if (noExpanded.value) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                            contentDescription = null
-                        )
-                    }
-                    if (noExpanded.value) {
-                        Text(
-                            text = stringResource(R.string.no_how_it_works_body),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 12.dp)
-                        )
-                    }
+                Column(
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    verticalArrangement = Arrangement.spacedBy(0.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_info_title),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_help)) },
+                        leadingContent = { Icon(Icons.Default.Help, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { onHelpClick() }
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_how_it_works)) },
+                        leadingContent = { Icon(Icons.Default.Info, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { onHowItWorksClick() }
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_faq)) },
+                        leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { onFaqClick() }
+                    )
                 }
             }
         }
@@ -521,65 +485,6 @@ fun ProfilePage(modifier: Modifier = Modifier) {
             }
         }
 
-        item {
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                val helpExpanded = remember { mutableStateOf(false) }
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { helpExpanded.value = !helpExpanded.value },
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(R.string.help_section_title),
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Icon(
-                            imageVector = if (helpExpanded.value) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                            contentDescription = null
-                        )
-                    }
-                    if (helpExpanded.value) {
-                        Column(
-                            modifier = Modifier.padding(top = 12.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ) {
-                            Column {
-                                Text(
-                                    text = stringResource(R.string.help_faq_1_q),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Medium,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Text(
-                                    text = stringResource(R.string.help_faq_1_a),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                            Column {
-                                Text(
-                                    text = stringResource(R.string.help_faq_2_q),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Medium,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Text(
-                                    text = stringResource(R.string.help_faq_2_a),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 4.dp)
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
@@ -612,6 +517,15 @@ fun ProfilePage(modifier: Modifier = Modifier) {
                     )
                 }
             }
+        }
+
+        item {
+            Text(
+                text = stringResource(R.string.settings_setup_header),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
         }
 
         item {

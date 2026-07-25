@@ -10,6 +10,16 @@
     <string name="title_settings">Settings</string>
     <string name="title_block_management">Block</string>
 
+    <string name="settings_setup_header">For NO to work properly, enable the settings below</string>
+    <string name="settings_setup_body">Notification access, autostart and battery optimization permissions are required for blocking and archiving.</string>
+    <string name="settings_info_title">Help &amp; Information</string>
+    <string name="settings_help">Help</string>
+    <string name="settings_how_it_works">How NO works</string>
+    <string name="settings_faq">FAQ</string>
+    <string name="title_help">Help</string>
+    <string name="title_how_it_works">How NO works</string>
+    <string name="title_faq">FAQ</string>
+
     <string name="section_quick_access">Quick access</string>
     <string name="quick_access_app_info">App info (permissions, restricted settings)</string>
     <string name="quick_access_battery_settings">Battery settings</string>

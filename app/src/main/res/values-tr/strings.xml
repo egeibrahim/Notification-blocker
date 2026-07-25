@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NO:Akıllı Bildirim Engelleyici</string>
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_archive">Arşiv</string>
+    <string name="nav_block_management">Blok</string>
+    <string name="nav_profile">Ayarlar</string>
+
+    <string name="title_settings">Ayarlar</string>
+    <string name="title_block_management">Blok</string>
+
+    <string name="section_quick_access">Hızlı erişim</string>
+    <string name="quick_access_app_info">Uygulama bilgisi (izinler, kısıtlı ayarlar)</string>
+    <string name="quick_access_battery_settings">Pil ayarları</string>
+    <string name="quick_access_autostart">Otomatik başlat</string>
+    <string name="quick_access_disable_battery_optimization">Arka planda kullanıma izin ver</string>
+
+    <string name="notification_access">Bildirim erişimi</string>
+    <string name="notification_access_on">Açık</string>
+    <string name="notification_access_off">Kapalı</string>
+    <string name="notification_access_action">Bu ayarları yapın</string>
+    <string name="notification_access_manage">Bildirim Erişimini Yönet</string>
+
+    <string name="how_to_use_title">Gerekli ayarları yapın</string>
+    <string name="how_to_use_q1">Kurulum adımları</string>
+    <string name="how_to_use_a1">1) Google ile giriş yap\n2) Bildirimlere erişime izin ver\n3) Kısıtlı ayarlara izin ver\n4) Otomatik başlatmaya izin ver\n5) Arka planda kullanıma izin ver</string>
+    <string name="how_to_use_q2"></string>
+    <string name="how_to_use_a2"></string>
+    <string name="how_to_use_q3"></string>
+    <string name="how_to_use_a3"></string>
+
+    <string name="no_how_it_works_title">"NO" Nasıl Çalışır?</string>
+    <string name="no_how_it_works_body">1) Blok: Sizin için standart bloklanması gereken kelimeler aktif halde. Dilediğiniz kelimeleri pasif hale getirebilir veya kendi engellemek istediğiniz kelimeleri ekleyebilirsiniz.\n2) Odak Modu: Toplantı gibi özel anlarınızda, izin verdiğiniz bildirimleri de dahil olmak üzere tüm bildirimleri engeller ve uygulama içerisine kaydeder.\n3) Gizle Kaydet: Bildirimlerine izin verdiğiniz uygulamaların bildirimlerini, istediğiniz zaman geçici olarak kapatmanızı ve arşivlemenizi sağlar.\n4) Bu Uygulamayı Filtreden Muaf Tut: Seçtiğiniz uygulamaya ait hiçbir bildirim engellenmez.\n5) Emoji Blok: Emoji içeren tüm bildirimleri engeller. Emoji bildirimlerinin engellenmesini istemediğiniz uygulamalarda "Bu uygulamada emojiye izin ver" seçeneği ile engeli kaldırabilirsiniz.\n6) Arşiv: Son 7 günlük bildirim geçmişinizi kayıt altında tutar.\n7) Özel İzin Kelimeleri: Buraya eklediğiniz kelimeleri içeren bildirimler asla engellenmez.\n8) Google ile Giriş: Telefonunuzdaki çerezleri silseniz veya uygulamayı yeniden yükleseniz bile bildirim geçmişinizi korumak için kullanılır. Google ile giriş yapmak zorunda değilsiniz.</string>
+
+    <string name="language_pack">Dil paketi</string>
+
+    <string name="emoji_block_title">Emoji içeren bildirimleri engelle</string>
+    <string name="emoji_block_description">Açıkken, uygulama detayından izin verdiğin uygulamalarda emoji bloklanmaz.</string>
+
+    <string name="category_marketing">Pazarlama</string>
+    <string name="category_credit">Kredi ve Finans</string>
+    <string name="category_recommendations">Öneriler</string>
+    <string name="category_games">Oyunlar</string>
+    <string name="category_news">Haberler</string>
+    <string name="category_general">Genel</string>
+
+    <string name="block_group_marketing">Pazarlama ve Teklifler</string>
+    <string name="block_group_other">Diğer</string>
+    <string name="block_category_words">Kelimeler</string>
+    <string name="block_section_allow_words_title">Özel İzin Kelimeleri</string>
+    <string name="block_section_allow_words_desc">Bu kelimeler önceliklidir. Bildirim içeriğinde geçerse engellenmez.</string>
+    <string name="block_section_block_words_title">Özel Blok Kelimeleri</string>
+    <string name="block_section_block_words_desc">Kendi istediğin kelimeleri ekle. Bildirim içeriğinde geçerse engellenir.</string>
+
+    <string name="dashboard_notification_access_off_title">Bildirim erişimi kapalı</string>
+    <string name="dashboard_notification_access_off_desc">Engelleme ve kayıt çalışmıyor. Ayarlardan erişimi açın.</string>
+    <string name="dashboard_last_24h_sorted">Son 24 Saat - Bildirim yoğunluğuna göre sıralı</string>
+
+    <string name="dashboard_total_fmt">Toplam: %1$d</string>
+    <string name="dashboard_blocked_fmt">Blok: %1$d</string>
+    <string name="dashboard_mute_save_label">Gizle kaydet</string>
+
+    <string name="applications_installed_title">Yüklü Uygulamalar</string>
+    <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilir. Gizle kaydet ile o uygulamanın bildirimleri filtreden muaf tutulur.</string>
+
+    <string name="archive_last_7_days_title">Son 7 Gün - Tüm Bildirimler</string>
+
+    <string name="detail_exempt_app_title">Bildirimlere izin ver</string>
+    <string name="detail_exempt_app_desc">Açık olduğunda bu uygulamanın hiçbir bildirimi filtrelenmez.</string>
+    <string name="detail_notification_history">Bildirim geçmişi</string>
+    <string name="detail_allow_words_for_app">İzin kelimeleri</string>
+    <string name="detail_block_words_for_app">Engel kelimeleri</string>
+
+    <string name="search">Ara</string>
+    <string name="global_focus_mode">Odak Modu</string>
+
+    <string name="archive_source_blocked">Kaynak: %1$s</string>
+    <string name="archive_source_notification">Kaynak: Bildirim</string>
+    <string name="generic_notification">Bildirim</string>
+
+    <string name="reason_contains_emoji">Emoji içeriyor</string>
+    <string name="reason_focus_mode_active">Odak Modu açık</string>
+    <string name="reason_games_pack_active">Oyun paketi aktif</string>
+    <string name="reason_mute_and_save">Gizle kaydet</string>
+    <string name="reason_manual_blocked_channel">Manuel engellenen kanal: %1$s</string>
+    <string name="reason_channel_id">Kanal ID: %1$s</string>
+    <string name="reason_content">İçerik: %1$s</string>
+
+    <string name="detail_allow_emoji_in_app">Emojiye izin ver</string>
+
+    <string name="word">Kelime</string>
+    <string name="add_word">Kelime ekle</string>
+    <string name="add">Ekle</string>
+    <string name="delete">Sil</string>
+
+    <string name="account">Hesap</string>
+    <string name="sign_in_with_google">Google ile devam et</string>
+    <string name="signed_in_as">Giriş yapıldı</string>
+    <string name="logout">Çıkış yap</string>
+
+    <string name="subscription_required_title">Abonelik gerekli</string>
+    <string name="subscription_required_body">Uygulamayı kullanmaya devam etmek için ücretsiz denemeyi başlat.</string>
+    <string name="start_free_trial">7 gün ücretsiz denemeyi başlat</string>
+    <string name="manage_subscription">Aboneliği yönet</string>
+</resources>

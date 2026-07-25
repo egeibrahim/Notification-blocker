@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NO:Notification Spam Blocker</string>
+
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_archive">Archive</string>
+    <string name="nav_block_management">Block</string>
+    <string name="nav_profile">Settings</string>
+
+    <string name="title_settings">Settings</string>
+    <string name="title_block_management">Block</string>
+
+    <string name="section_quick_access">Quick access</string>
+    <string name="quick_access_app_info">App info (permissions, restricted settings)</string>
+    <string name="quick_access_battery_settings">Battery settings</string>
+    <string name="quick_access_autostart">Autostart</string>
+    <string name="quick_access_disable_battery_optimization">Allow background usage</string>
+
+    <string name="notification_access">Notification access</string>
+    <string name="notification_access_on">On</string>
+    <string name="notification_access_off">Off</string>
+    <string name="notification_access_action">Complete these settings</string>
+    <string name="notification_access_manage">Manage notification access</string>
+    <string name="notification_access_dialog_title">Notification access required</string>
+    <string name="notification_access_dialog_message">To block and filter notifications, please enable notification access for this app in system settings.</string>
+    <string name="notification_access_dialog_positive">Open Settings</string>
+    <string name="notification_access_dialog_dismiss">Close</string>
+
+    <string name="how_to_use_title">Set up required settings</string>
+    <string name="how_to_use_q1">Setup steps</string>
+    <string name="how_to_use_a1">1) Allow notification access\n2) Allow background usage</string>
+
+    <string name="setup_guide_title">Complete setup</string>
+    <string name="setup_guide_message">For the app to work, please grant the following permissions:</string>
+    <string name="setup_guide_notifications">1. Allow notification access</string>
+    <string name="setup_guide_battery">2. Allow background usage</string>
+    <string name="setup_guide_open">Open</string>
+    <string name="setup_guide_done">I completed setup</string>
+    <string name="how_to_use_q2"></string>
+    <string name="how_to_use_a2"></string>
+    <string name="how_to_use_q3"></string>
+    <string name="how_to_use_a3"></string>
+
+    <string name="no_how_it_works_title">How does \"NO\" work?</string>
+    <string name="no_how_it_works_body">1) Block: Standard words that should be blocked are active by default. You can disable any word or add your own words to block.\n2) Focus Mode: For special moments like meetings, it blocks all notifications &#8212; including those you usually allow — and saves them inside the app.\n3) Hide &amp; Save: Lets you temporarily turn off notifications for apps you allow, and archive them for later.\n4) Exempt this app from filtering: No notification from the selected app will ever be blocked.\n5) Emoji Block: Blocks all notifications that contain emojis. For apps where you don\'t want emoji notifications blocked, you can allow them using \"Allow emojis in this app\".\n6) Archive: Keeps your notification history for the last 7 days.\n7) Allow Words: Notifications containing the words you add here will never be blocked.\n8) Sign in with Google: Used to protect your notification history even if you clear cookies or reinstall the app. Signing in with Google is optional.</string>
+
+    <string name="language_pack">Language pack</string>
+
+    <string name="emoji_block_title">Block notifications containing emojis</string>
+    <string name="emoji_block_description">When enabled, emojis will not be blocked for apps you allow from the app detail sheet.</string>
+
+    <string name="category_marketing">Marketing</string>
+    <string name="category_credit">Credit &amp; Finance</string>
+    <string name="category_recommendations">Recommendations</string>
+    <string name="category_games">Games</string>
+    <string name="category_news">News</string>
+    <string name="category_general">General</string>
+
+    <string name="block_group_marketing">Marketing &amp; Offers</string>
+    <string name="block_group_other">Other</string>
+    <string name="block_category_words">Words</string>
+    <string name="block_section_allow_words_title">Allow words</string>
+    <string name="block_section_allow_words_desc">These words have priority. If they appear in notification content, it will not be blocked.</string>
+    <string name="block_section_block_words_title">Block words</string>
+    <string name="block_section_block_words_desc">Add your own words. If they appear in notification content, it will be blocked.</string>
+
+    <string name="dashboard_notification_access_off_title">Notification access is off</string>
+    <string name="dashboard_notification_access_off_desc">Blocking and archiving are not working. Enable access from settings.</string>
+    <string name="dashboard_last_24h_sorted">Last 24 hours - sorted by notification volume</string>
+
+    <string name="dashboard_total_fmt">Total: %1$d</string>
+    <string name="dashboard_blocked_fmt">Blocked: %1$d</string>
+    <string name="dashboard_mute_save_label">Mute &amp; save</string>
+
+    <string name="applications_installed_title">Installed Apps</string>
+    <string name="applications_installed_desc">Tap an app to view notification history. When muted, notifications from that app are excluded from filtering.</string>
+
+    <string name="archive_last_7_days_title">Last 7 days - all notifications</string>
+
+    <string name="detail_exempt_app_title">Exclude this app from filtering</string>
+    <string name="detail_exempt_app_desc">When enabled, none of this app’s notifications will be filtered.</string>
+    <string name="detail_notification_history">Notification history</string>
+    <string name="detail_allow_words_for_app">Allow Words</string>
+    <string name="detail_block_words_for_app">Block Words</string>
+
+    <string name="search">Search</string>
+    <string name="global_focus_mode">Focus Mode</string>
+
+    <string name="archive_source_blocked">Source: %1$s</string>
+    <string name="archive_source_notification">Source: Notification</string>
+    <string name="generic_notification">Notification</string>
+
+    <string name="reason_contains_emoji">Contains emoji</string>
+    <string name="reason_focus_mode_active">Focus Mode is active</string>
+    <string name="reason_games_pack_active">Games pack is active</string>
+    <string name="reason_mute_and_save">Mute &amp; save</string>
+    <string name="reason_manual_blocked_channel">Manually blocked channel: %1$s</string>
+    <string name="reason_channel_id">Channel ID: %1$s</string>
+    <string name="reason_content">Content: %1$s</string>
+
+    <string name="detail_allow_emoji_in_app">Allow emojis</string>
+
+    <string name="word">Word</string>
+    <string name="add_word">Add word</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+
+    <string name="account">Account</string>
+    <string name="sign_in_with_google">Continue with Google</string>
+    <string name="signed_in_as">Signed in as</string>
+    <string name="logout">Logout</string>
+    <string name="backup_now">Backup now</string>
+    <string name="restore_now">Restore now</string>
+
+    <string name="subscription_required_title">Subscription required</string>
+    <string name="subscription_required_body">Start your free trial to continue using the app.</string>
+    <string name="start_free_trial">Start 7-day free trial</string>
+    <string name="manage_subscription">Manage subscription</string>
+    <string name="cancel_subscription">Cancel subscription</string>
+    <string name="subscription_info_title">Subscription</string>
+    <string name="subscription_status_active">Active subscription</string>
+    <string name="subscription_status_inactive">No active subscription</string>
+    <string name="subscription_status_unknown">Checking subscription…</string>
+    <string name="subscription_trial_desc">%1$s free, then %2$s</string>
+    <string name="subscription_price_desc">%1$s / %2$s</string>
+    <string name="subscription_cancel_desc">You can cancel your subscription anytime through Google Play.</string>
+    <string name="subscription_not_configured">Subscription product not configured.</string>
+
+    <!-- Email Sign-In and Registration -->
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_login">Sign In</string>
+    <string name="auth_register">Sign Up</string>
+    <string name="auth_forgot_password">Forgot Password?</string>
+    <string name="auth_send_recovery">Send Recovery Email</string>
+    <string name="auth_back_to_login">Back to Sign In</string>
+    <string name="auth_no_account">Don\'t have an account? Sign Up</string>
+    <string name="auth_have_account">Already have an account? Sign In</string>
+    <string name="auth_invalid_email">Please enter a valid email address</string>
+    <string name="auth_invalid_password">Password must be at least 6 characters</string>
+    <string name="auth_success_signup">Registration successful! If verification is enabled, check your inbox.</string>
+    <string name="auth_success_recovery">Recovery email sent successfully.</string>
+    <string name="auth_or_divider">OR</string>
+
+    <!-- Walkthrough -->
+    <string name="wt_welcome_title">Welcome to NO</string>
+    <string name="wt_welcome_desc">The ultimate app to filter and block unwanted notifications. Keep your notification tray clean and organized!</string>
+    <string name="wt_filter_title">Smart Filtering</string>
+    <string name="wt_filter_desc">No more spam! Automatically block promotional, credit, and news spam with our built-in categories, or define your own custom rules.</string>
+    <string name="wt_focus_title">Focus Mode</string>
+    <string name="wt_focus_desc">Need quiet time? Activate Focus Mode to silence all notifications and check them inside our secure app drawer whenever you want.</string>
+    <string name="wt_next">Next</string>
+    <string name="wt_skip">Skip</string>
+    <string name="wt_finish">Get Started</string>
+    <string name="wt_tooltip_dashboard">See the breakdown of active and blocked notifications.</string>
+    <string name="wt_tooltip_rules">Add custom block/allow words and channels here.</string>
+
+    <!-- Rate App & Feedback -->
+    <string name="rate_app_title">Rate App</string>
+    <string name="rate_app_desc">Support us by leaving a 5-star rating on Google Play Store!</string>
+    <string name="feedback_title">Send Feedback</string>
+    <string name="feedback_desc">Encountered an issue or have a suggestion? Reach out to us directly!</string>
+    <string name="feedback_dialog_title">Feedback &amp; Suggestions</string>
+    <string name="feedback_dialog_hint">Write your comments here...</string>
+    <string name="feedback_dialog_send">Send</string>
+    <string name="feedback_dialog_cancel">Cancel</string>
+    <string name="feedback_success">Thank you for your feedback!</string>
+    <string name="feedback_empty_error">Please enter your feedback before sending.</string>
+
+    <!-- Help Section -->
+    <string name="help_section_title">Help &amp; FAQs</string>
+    <string name="help_faq_1_q">Why are my notifications not being blocked?</string>
+    <string name="help_faq_1_a">Make sure you have granted \"Notification Access\" to this app under settings, and that the app has background execution permissions.</string>
+    <string name="help_faq_2_q">What is Focus Mode?</string>
+    <string name="help_faq_2_a">Focus Mode temporarily silences all incoming notifications and archives them inside the app so you can view them later without being interrupted.</string>
+</resources>

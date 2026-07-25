@@ -35,12 +35,15 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -81,6 +84,7 @@ fun ProfilePage(
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var feedbackText by remember { mutableStateOf("") }
+    var selectedTab by remember { mutableIntStateOf(0) }
 
     val hasNotificationAccess = NotificationAccessHelper.isNotificationAccessEnabled(context)
 
@@ -117,14 +121,18 @@ fun ProfilePage(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Text(
-                text = stringResource(R.string.title_settings),
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
+            ScrollableTabRow(
+                selectedTabIndex = selectedTab,
+                edgePadding = 0.dp
+            ) {
+                Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }, text = { Text(stringResource(R.string.account), maxLines = 1) })
+                Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }, text = { Text(stringResource(R.string.subscription_info_title), maxLines = 1) })
+                Tab(selected = selectedTab == 2, onClick = { selectedTab = 2 }, text = { Text(stringResource(R.string.section_quick_access), maxLines = 1) })
+                Tab(selected = selectedTab == 3, onClick = { selectedTab = 3 }, text = { Text(stringResource(R.string.settings_info_title), maxLines = 1) })
+            }
         }
 
-        item {
+        if (selectedTab == 3) item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier.padding(vertical = 4.dp),
@@ -146,7 +154,7 @@ fun ProfilePage(
             }
         }
 
-        item {
+        if (selectedTab == 1) item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(vertical = 4.dp)) {
                     Text(
@@ -238,7 +246,7 @@ fun ProfilePage(
             }
         }
 
-        item {
+        if (selectedTab == 0) item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(vertical = 4.dp)) {
                     Text(
@@ -314,7 +322,7 @@ fun ProfilePage(
         }
 
 
-        item {
+        if (selectedTab == 3) item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(vertical = 4.dp)) {
                     ListItem(
@@ -349,7 +357,7 @@ fun ProfilePage(
 
         // setup header moved inside the card below
 
-        item {
+        if (selectedTab == 2) item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(vertical = 4.dp)) {
                     Text(

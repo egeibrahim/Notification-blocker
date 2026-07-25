@@ -64,12 +64,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showRulesTooltip by remember { mutableStateOf(sharedPrefs.getBoolean("show_tooltip_rules", true)) }
 
-    var languagePacks by remember { mutableStateOf(filterPrefs.enabledLanguagePacks) }
-    LaunchedEffect(languagePacks) {
-        filterPrefs.enabledLanguagePacks = languagePacks
-        refreshTrigger++
-    }
-
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -112,41 +106,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                     .padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.language_pack),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val trSelected = FilterRulesPreferences.PACK_TR in languagePacks
-                    val enSelected = FilterRulesPreferences.PACK_EN in languagePacks
-
-                    FilterChip(
-                        selected = trSelected,
-                        onClick = {
-                            val next = if (trSelected) {
-                                languagePacks - FilterRulesPreferences.PACK_TR
-                            } else {
-                                languagePacks + FilterRulesPreferences.PACK_TR
-                            }
-                            if (next.isNotEmpty()) languagePacks = next
-                        },
-                        label = { Text("TR") },
-                    )
-                    FilterChip(
-                        selected = enSelected,
-                        onClick = {
-                            val next = if (enSelected) {
-                                languagePacks - FilterRulesPreferences.PACK_EN
-                            } else {
-                                languagePacks + FilterRulesPreferences.PACK_EN
-                            }
-                            if (next.isNotEmpty()) languagePacks = next
-                        },
-                        label = { Text("EN") },
-                    )
-                }
-
                 val gamesEnabled = remember(refreshTrigger) { filterPrefs.isGlobalGamesBlockEnabled }
                 FilterChip(
                     selected = gamesEnabled,

@@ -492,17 +492,7 @@ class FilterRulesPreferences(private val context: Context) {
         "$packageName|${channelId ?: ""}"
 
     private fun getActiveBlockCategories(): List<BlockCategory> {
-        val selectedPacks = enabledLanguagePacks
-        val selected = buildList {
-            if (selectedPacks.isEmpty()) {
-                addAll(TR_BLOCK_CATEGORIES)
-                addAll(EN_BLOCK_CATEGORIES)
-            } else {
-                if (PACK_TR in selectedPacks) addAll(TR_BLOCK_CATEGORIES)
-                if (PACK_EN in selectedPacks) addAll(EN_BLOCK_CATEGORIES)
-            }
-        }
-
+        val selected = TR_BLOCK_CATEGORIES + EN_BLOCK_CATEGORIES
         val merged = LinkedHashMap<String, BlockCategory>()
         selected.forEach { cat ->
             val existing = merged[cat.id]

@@ -52,7 +52,13 @@
     <string name="how_to_use_a3"></string>
 
     <string name="no_how_it_works_title">How does \"NO\" work?</string>
-    <string name="no_how_it_works_body">1) Block: Standard words that should be blocked are active by default. You can disable any word or add your own words to block.\n2) Focus Mode: For special moments like meetings, it blocks all notifications &#8212; including those you usually allow — and saves them inside the app.\n3) Hide &amp; Save: Lets you temporarily turn off notifications for apps you allow, and archive them for later.\n4) Exempt this app from filtering: No notification from the selected app will ever be blocked.\n5) Emoji Block: Blocks all notifications that contain emojis. For apps where you don\'t want emoji notifications blocked, you can allow them using \"Allow emojis in this app\".\n6) Archive: Keeps your notification history for the last 7 days.\n7) Allow Words: Notifications containing the words you add here will never be blocked.\n8) Sign in with Google: Used to protect your notification history even if you clear cookies or reinstall the app. Signing in with Google is optional.</string>
+    <string name="no_how_it_works_body">1) Block: Standard blocking words are active by default. You can disable any word or add your own.
+2) Focus Mode: For special moments like meetings, it blocks all notifications — including those you usually allow — and saves them inside the app.
+3) App Exemption: No notification from the selected app is ever blocked; it appears normally.
+4) Emoji Block: Blocks all notifications that contain emojis. For apps where you do not want emoji notifications blocked, use the Allow emojis option in the app detail.
+5) Archive: Keeps your notification history for the last 7 days.
+6) Allow Words: Notifications containing the words you add here will never be blocked.
+7) Sign in with Google: Used to protect your notification history even if you clear cookies or reinstall the app. Signing in with Google is optional.</string>
 
     <string name="language_pack">Language pack</string>
 
@@ -83,16 +89,16 @@
 
     <string name="dashboard_total_fmt">Total: %1$d</string>
     <string name="dashboard_blocked_fmt">Blocked: %1$d</string>
-    <string name="dashboard_mute_save_label">Mute &amp; save</string>
+    <string name="dashboard_mute_save_label">Exempt</string>
 
     <string name="applications_installed_title">Installed Apps</string>
-    <string name="applications_installed_desc">Tap an app to view notification history. When muted, notifications from that app are excluded from filtering.</string>
+    <string name="applications_installed_desc">Tap an app to view its notification history. Toggle the switch to exempt an app from filtering so its notifications are not blocked.</string>
 
     <string name="archive_last_7_days_title">Last 7 days - all notifications</string>
     <string name="archive_empty_title">No notifications yet</string>
     <string name="archive_empty_desc">Nothing has been recorded in the last 7 days.</string>
 
-    <string name="detail_exempt_app_title">Exclude this app from filtering</string>
+    <string name="detail_exempt_app_title">Exempt</string>
     <string name="detail_exempt_app_desc">When enabled, none of this app’s notifications will be filtered.</string>
     <string name="detail_notification_history">Notification history</string>
     <string name="detail_allow_words_for_app">Allow Words</string>
@@ -108,7 +114,7 @@
     <string name="reason_contains_emoji">Contains emoji</string>
     <string name="reason_focus_mode_active">Focus Mode is active</string>
     <string name="reason_games_pack_active">Games pack is active</string>
-    <string name="reason_mute_and_save">Mute &amp; save</string>
+    <string name="reason_mute_and_save">Exempt</string>
     <string name="reason_manual_blocked_channel">Manually blocked channel: %1$s</string>
     <string name="reason_channel_id">Channel ID: %1$s</string>
     <string name="reason_content">Content: %1$s</string>
@@ -150,7 +156,7 @@
     <string name="auth_forgot_password">Forgot Password?</string>
     <string name="auth_send_recovery">Send Recovery Email</string>
     <string name="auth_back_to_login">Back to Sign In</string>
-    <string name="auth_no_account">Don\'t have an account? Sign Up</string>
+    <string name="auth_no_account">Don&quot;t have an account? Sign Up</string>
     <string name="auth_have_account">Already have an account? Sign In</string>
     <string name="auth_invalid_email">Please enter a valid email address</string>
     <string name="auth_invalid_password">Password must be at least 6 characters</string>
@@ -193,7 +199,7 @@
     <!-- Added with the BlacklistPage.kt / ProfilePage.kt update -->
     <string name="auth_password_hide">Hide</string>
     <string name="auth_password_show">Show</string>
-    <string name="error_billing_requires_activity">Couldn\'t start checkout. Try again</string>
+    <string name="error_billing_requires_activity">Couldn&quot;t start checkout. Try again</string>
     <string name="error_billing_not_configured">Subscription isn\'t configured yet</string>
     <string name="error_action_requires_activity">Couldn\'t complete this action. Try again</string>
     <string name="error_generic">Error: %1$s</string>

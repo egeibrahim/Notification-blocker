@@ -62,7 +62,34 @@ fun FaqPage(onBackClick: () -> Unit) {
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item { FaqItem(question = stringResource(R.string.no_how_it_works_title), answer = stringResource(R.string.no_how_it_works_body)) }
+            item {
+                val steps = stringResource(R.string.no_how_it_works_body).lines().filter { it.isNotBlank() }
+                AppCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.no_how_it_works_title),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        steps.forEach { step ->
+                            Text(
+                                text = step,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
+            item {
+                Text(
+                    text = stringResource(R.string.help_section_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
+            }
             item { FaqItem(question = stringResource(R.string.help_faq_1_q), answer = stringResource(R.string.help_faq_1_a)) }
             item { FaqItem(question = stringResource(R.string.help_faq_2_q), answer = stringResource(R.string.help_faq_2_a)) }
         }

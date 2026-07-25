@@ -41,7 +41,7 @@
     <string name="how_to_use_a3"></string>
 
     <string name="no_how_it_works_title">"NO" Nasıl Çalışır?</string>
-    <string name="no_how_it_works_body">1) Blok: Sizin için standart bloklanması gereken kelimeler aktif halde. Dilediğiniz kelimeleri pasif hale getirebilir veya kendi engellemek istediğiniz kelimeleri ekleyebilirsiniz.\n2) Odak Modu: Toplantı gibi özel anlarınızda, izin verdiğiniz bildirimleri de dahil olmak üzere tüm bildirimleri engeller ve uygulama içerisine kaydeder.\n3) Gizle Kaydet: Bildirimlerine izin verdiğiniz uygulamaların bildirimlerini, istediğiniz zaman geçici olarak kapatmanızı ve arşivlemenizi sağlar.\n4) Bu Uygulamayı Filtreden Muaf Tut: Seçtiğiniz uygulamaya ait hiçbir bildirim engellenmez.\n5) Emoji Blok: Emoji içeren tüm bildirimleri engeller. Emoji bildirimlerinin engellenmesini istemediğiniz uygulamalarda "Bu uygulamada emojiye izin ver" seçeneği ile engeli kaldırabilirsiniz.\n6) Arşiv: Son 7 günlük bildirim geçmişinizi kayıt altında tutar.\n7) Özel İzin Kelimeleri: Buraya eklediğiniz kelimeleri içeren bildirimler asla engellenmez.\n8) Google ile Giriş: Telefonunuzdaki çerezleri silseniz veya uygulamayı yeniden yükleseniz bile bildirim geçmişinizi korumak için kullanılır. Google ile giriş yapmak zorunda değilsiniz.</string>
+    <string name="no_how_it_works_body">1) Blok: Standart engelleme kelimeleri aktiftir. İstediğiniz kelimeleri pasif hale getirebilir veya kendi engellemek istediğiniz kelimeleri ekleyebilirsiniz.\n2) Odak Modu: Toplantı gibi özel anlarınızda, izin verdiğiniz bildirimleri de dahil olmak üzere tüm bildirimleri engeller ve uygulama içerisine kaydeder.\n3) Uygulama Muafiyeti: Seçtiğiniz uygulamaya ait hiçbir bildirim engellenmez; normal bildirim çubuğunda görünür.\n4) Emoji Blok: Emoji içeren tüm bildirimleri engeller. Emoji bildirimlerinin engellenmesini istemediğiniz uygulamalar için uygulama detayındaki Emojiye izin ver ayarını kullanarak engeli kaldırabilirsiniz.\n5) Arşiv: Son 7 günlük bildirim geçmişinizi kayıt altında tutar.\n6) Özel İzin Kelimeleri: Buraya eklediğiniz kelimeleri içeren bildirimler asla engellenmez.\n7) Google ile Giriş: Telefonunuzdaki çerezleri silseniz veya uygulamayı yeniden yükleseniz bile bildirim geçmişinizi korumak için kullanılır. Google ile giriş yapmak zorunda değilsiniz.</string>
 
     <string name="language_pack">Dil paketi</string>
 
@@ -69,16 +69,16 @@
 
     <string name="dashboard_total_fmt">Toplam: %1$d</string>
     <string name="dashboard_blocked_fmt">Blok: %1$d</string>
-    <string name="dashboard_mute_save_label">Gizle kaydet</string>
+    <string name="dashboard_mute_save_label">Muaf tut</string>
 
     <string name="applications_installed_title">Yüklü Uygulamalar</string>
-    <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilir. Gizle kaydet ile o uygulamanın bildirimleri filtreden muaf tutulur.</string>
+    <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilirsin. Anahtarı açarak o uygulamayı filtreden muaf tut; bildirimleri engellenmeden normal şekilde görünür.</string>
 
     <string name="archive_last_7_days_title">Son 7 Gün - Tüm Bildirimler</string>
     <string name="archive_empty_title">Henüz bildirim yok</string>
     <string name="archive_empty_desc">Son 7 gün içinde kaydedilmiş bir bildirim bulunmuyor.</string>
 
-    <string name="detail_exempt_app_title">Bildirimlere izin ver</string>
+    <string name="detail_exempt_app_title">Muaf tut</string>
     <string name="detail_exempt_app_desc">Açık olduğunda bu uygulamanın hiçbir bildirimi filtrelenmez.</string>
     <string name="detail_notification_history">Bildirim geçmişi</string>
     <string name="detail_allow_words_for_app">İzin kelimeleri</string>
@@ -94,7 +94,7 @@
     <string name="reason_contains_emoji">Emoji içeriyor</string>
     <string name="reason_focus_mode_active">Odak Modu açık</string>
     <string name="reason_games_pack_active">Oyun paketi aktif</string>
-    <string name="reason_mute_and_save">Gizle kaydet</string>
+    <string name="reason_mute_and_save">Muaf tutuldu</string>
     <string name="reason_manual_blocked_channel">Manuel engellenen kanal: %1$s</string>
     <string name="reason_channel_id">Kanal ID: %1$s</string>
     <string name="reason_content">İçerik: %1$s</string>
@@ -166,7 +166,7 @@
 
     <!-- Uygulamayı Değerlendir ve Geri Bildirim -->
     <string name="rate_app_title">Uygulamayı Değerlendir</string>
-    <string name="rate_app_desc">Google Play Store\'da 5 yıldız vererek bize destek ol!</string>
+    <string name="rate_app_desc">Google Play Store&quot;da 5 yıldız vererek bize destek ol!</string>
     <string name="feedback_title">Geri Bildirim Gönder</string>
     <string name="feedback_desc">Bir sorunla mı karşılaştın veya önerin mi var? Bize doğrudan ulaş!</string>
     <string name="feedback_dialog_title">Geri Bildirim ve Öneriler</string>
@@ -184,7 +184,7 @@
     <string name="help_faq_2_a">Odak Modu, gelen tüm bildirimleri geçici olarak susturur ve daha sonra kesintiye uğramadan görebilmen için uygulama içine arşivler.</string>
 
     <!-- Karşılama Turu (Walkthrough) -->
-    <string name="wt_welcome_title">NO\'ya Hoş Geldin</string>
+    <string name="wt_welcome_title">NO&quot;ya Hoş Geldin</string>
     <string name="wt_welcome_desc">İstenmeyen bildirimleri filtrelemek ve engellemek için nihai uygulama. Bildirim çekmeceni temiz ve düzenli tut!</string>
     <string name="wt_filter_title">Akıllı Filtreleme</string>
     <string name="wt_filter_desc">Artık spam yok! Hazır kategorilerimizle pazarlama, kredi ve haber spamlerini otomatik engelle, ya da kendi kurallarını tanımla.</string>

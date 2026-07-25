@@ -48,6 +48,9 @@
 
     <string name="emoji_block_title">Block notifications containing emojis</string>
     <string name="emoji_block_description">When enabled, emojis will not be blocked for apps you allow from the app detail sheet.</string>
+    <string name="emoji_block_toggle">Block emojis</string>
+    <string name="global_games_toggle">Block all games</string>
+    <string name="block_category_word_count">%1$d words</string>
 
     <string name="category_marketing">Marketing</string>
     <string name="category_credit">Credit &amp; Finance</string>
@@ -173,4 +176,16 @@
     <string name="help_faq_1_a">Make sure you have granted \"Notification Access\" to this app under settings, and that the app has background execution permissions.</string>
     <string name="help_faq_2_q">What is Focus Mode?</string>
     <string name="help_faq_2_a">Focus Mode temporarily silences all incoming notifications and archives them inside the app so you can view them later without being interrupted.</string>
+
+    <!-- Errors -->
+    <string name="error_billing_requires_activity">An activity is required to start billing.</string>
+    <string name="error_billing_not_configured">Billing product ID is not configured.</string>
+    <string name="error_action_requires_activity">An activity is required for this action.</string>
+    <string name="error_generic">Error: %1$s</string>
+    <string name="error_auth_not_configured">Authentication is not configured.</string>
+    <string name="error_no_email_app">No email app found.</string>
+
+    <!-- Auth -->
+    <string name="auth_password_hide">Hide</string>
+    <string name="auth_password_show">Show</string>
 </resources>

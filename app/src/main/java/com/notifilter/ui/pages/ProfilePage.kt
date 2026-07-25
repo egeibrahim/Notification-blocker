@@ -18,11 +18,13 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Feedback
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.BatteryFull
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.TextButton
@@ -30,6 +32,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ListItem
+import com.notifilter.ui.components.AppCard
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.runtime.LaunchedEffect
@@ -153,11 +157,8 @@ fun ProfilePage(
             style = MaterialTheme.typography.titleMedium
         )
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            )
+        AppCard(
+            modifier = Modifier.fillMaxWidth()
         ) {
             var howToUseExpanded by remember { mutableStateOf(false) }
 
@@ -193,11 +194,8 @@ fun ProfilePage(
             }
         }
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            )
+        AppCard(
+            modifier = Modifier.fillMaxWidth()
         ) {
             var noHowItWorksExpanded by remember { mutableStateOf(false) }
 
@@ -233,11 +231,8 @@ fun ProfilePage(
             }
         }
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            )
+        AppCard(
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
@@ -300,11 +295,11 @@ fun ProfilePage(
                         onClick = {
                             val activity = context as? android.app.Activity
                             if (activity == null) {
-                                Toast.makeText(context, "Billing requires an Activity context", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.error_billing_requires_activity), Toast.LENGTH_SHORT).show()
                                 return@Button
                             }
                             if (BuildConfig.BILLING_PRODUCT_ID.isBlank()) {
-                                Toast.makeText(context, "Missing BILLING_PRODUCT_ID in local.properties", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, context.getString(R.string.error_billing_not_configured), Toast.LENGTH_LONG).show()
                                 return@Button
                             }
                             billingManager.launchPurchaseFlow(activity)
@@ -319,7 +314,7 @@ fun ProfilePage(
                     onClick = {
                         val activity = context as? android.app.Activity
                         if (activity == null) {
-                            Toast.makeText(context, "This action requires an Activity context", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.error_action_requires_activity), Toast.LENGTH_SHORT).show()
                             return@Button
                         }
                         billingManager.openManageSubscription(activity)
@@ -334,7 +329,7 @@ fun ProfilePage(
                         onClick = {
                             val activity = context as? android.app.Activity
                             if (activity == null) {
-                                Toast.makeText(context, "This action requires an Activity context", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, context.getString(R.string.error_action_requires_activity), Toast.LENGTH_SHORT).show()
                                 return@Button
                             }
                             billingManager.openManageSubscription(activity)
@@ -385,7 +380,7 @@ fun ProfilePage(
                                 visualTransformation = if (authPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                                 trailingIcon = {
                                     Text(
-                                        text = if (authPasswordVisible) "Hide" else "Show",
+                                        text = if (authPasswordVisible) stringResource(R.string.auth_password_hide) else stringResource(R.string.auth_password_show),
                                         modifier = Modifier
                                             .clickable { authPasswordVisible = !authPasswordVisible }
                                             .padding(8.dp),
@@ -433,7 +428,7 @@ fun ProfilePage(
                                             // E-postayı güncelle
                                             userEmail = SupabaseAuthManager.getUserEmail(context)
                                         } else {
-                                            Toast.makeText(context, "Hata: ${res.errorMessage}", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(context, context.getString(R.string.error_generic, res.errorMessage), Toast.LENGTH_LONG).show()
                                         }
                                     }
                                 },
@@ -506,7 +501,7 @@ fun ProfilePage(
                         Button(
                             onClick = {
                                 if (BuildConfig.SUPABASE_URL.isBlank() || BuildConfig.SUPABASE_ANON_KEY.isBlank()) {
-                                    Toast.makeText(context, "Missing Supabase keys in local.properties", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(context, context.getString(R.string.error_auth_not_configured), Toast.LENGTH_LONG).show()
                                     return@Button
                                 }
                                 SupabaseAuthManager.signInWithGoogle(context)
@@ -606,11 +601,8 @@ fun ProfilePage(
             }
         }
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            )
+        AppCard(
+            modifier = Modifier.fillMaxWidth()
         ) {
             var helpExpanded by remember { mutableStateOf(false) }
 
@@ -671,40 +663,20 @@ fun ProfilePage(
             }
         }
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            )
+        AppCard(
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
-                Row(
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = stringResource(R.string.rate_app_title),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Text(
-                    text = stringResource(R.string.rate_app_desc),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Button(
-                    onClick = {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.rate_app_title)) },
+                    supportingContent = { Text(stringResource(R.string.rate_app_desc)) },
+                    leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
+                    modifier = Modifier.clickable {
                         val pkg = context.packageName
                         val marketIntent = Intent(
                             Intent.ACTION_VIEW,
@@ -719,101 +691,65 @@ fun ProfilePage(
                             ).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
                             runCatching { context.startActivity(webIntent) }
                         }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.rate_app_title))
-                }
+                    }
+                )
 
                 Divider()
 
-                Row(
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Feedback,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Text(
-                        text = stringResource(R.string.feedback_title),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Text(
-                    text = stringResource(R.string.feedback_desc),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.feedback_title)) },
+                    supportingContent = { Text(stringResource(R.string.feedback_desc)) },
+                    leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
+                    modifier = Modifier.clickable { showFeedbackDialog = true }
                 )
-                Button(
-                    onClick = { showFeedbackDialog = true },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.feedback_title))
-                }
             }
         }
 
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            )
+        AppCard(
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+                verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "${stringResource(R.string.notification_access)}: ${
-                            if (hasNotificationAccess) {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.notification_access_manage)) },
+                    supportingContent = {
+                        Text(
+                            text = if (hasNotificationAccess) {
                                 stringResource(R.string.notification_access_action)
                             } else {
                                 stringResource(R.string.notification_access_off)
+                            },
+                            color = if (hasNotificationAccess) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.error
                             }
-                        }",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = if (hasNotificationAccess) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.error
-                        },
-                        modifier = Modifier.weight(1f)
-                    )
-                    Icon(
-                        imageVector = if (hasNotificationAccess) Icons.Default.CheckCircle else Icons.Default.Error,
-                        contentDescription = null,
-                        tint = if (hasNotificationAccess) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                    )
-                }
-
-                Button(
-                    onClick = {
-                        startActivityOrAppDetails(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                        )
                     },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.notification_access_manage))
-                }
+                    leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
+                    modifier = Modifier.clickable {
+                        startActivityOrAppDetails(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                    }
+                )
 
-                Button(
-                    onClick = { openAppDetails() },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.quick_access_app_info))
-                }
+                Divider()
 
-                Button(
-                    onClick = {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.quick_access_app_info)) },
+                    leadingContent = { Icon(Icons.Default.Info, contentDescription = null) },
+                    modifier = Modifier.clickable { openAppDetails() }
+                )
+
+                Divider()
+
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.quick_access_autostart)) },
+                    leadingContent = { Icon(Icons.Default.PhoneAndroid, contentDescription = null) },
+                    modifier = Modifier.clickable {
                         val autostartIntent = Intent().apply {
                             setClassName(
                                 "com.miui.securitycenter",
@@ -821,21 +757,19 @@ fun ProfilePage(
                             )
                         }
                         startActivityOrAppDetails(autostartIntent)
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(stringResource(R.string.quick_access_autostart))
-                }
+                    }
+                )
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    Button(
-                        onClick = {
+                    Divider()
+
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.quick_access_disable_battery_optimization)) },
+                        leadingContent = { Icon(Icons.Default.BatteryFull, contentDescription = null) },
+                        modifier = Modifier.clickable {
                             startActivityOrAppDetails(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(stringResource(R.string.quick_access_disable_battery_optimization))
-                    }
+                        }
+                    )
                 }
             }
         }
@@ -871,7 +805,7 @@ fun ProfilePage(
                         context.startActivity(emailIntent)
                         Toast.makeText(context, context.getString(R.string.feedback_success), Toast.LENGTH_LONG).show()
                     }.getOrElse {
-                        Toast.makeText(context, "No email app found", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, context.getString(R.string.error_no_email_app), Toast.LENGTH_LONG).show()
                     }
                     feedbackText = ""
                     showFeedbackDialog = false

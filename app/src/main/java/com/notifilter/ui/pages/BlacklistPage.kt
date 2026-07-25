@@ -16,18 +16,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import com.notifilter.ui.components.AppCard
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -58,6 +59,7 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
     var customWord by remember { mutableStateOf("") }
     var allowWord by remember { mutableStateOf("") }
     var categoryWordDrafts by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
+    var expandedCategoryId by remember { mutableStateOf<String?>(null) }
 
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showRulesTooltip by remember { mutableStateOf(sharedPrefs.getBoolean("show_tooltip_rules", true)) }
@@ -101,13 +103,8 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
             )
         }
 
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp, bottom = 12.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            )
+        AppCard(
+            modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -135,10 +132,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                             if (next.isNotEmpty()) languagePacks = next
                         },
                         label = { Text("TR") },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
                     )
                     FilterChip(
                         selected = enSelected,
@@ -151,10 +144,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                             if (next.isNotEmpty()) languagePacks = next
                         },
                         label = { Text("EN") },
-                        colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
                     )
                 }
 
@@ -165,11 +154,7 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                         filterPrefs.isGlobalGamesBlockEnabled = !gamesEnabled
                         refreshTrigger++
                     },
-                    label = { Text("Games") },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                        selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                    label = { Text(stringResource(R.string.global_games_toggle)) }
                 )
             }
         }
@@ -241,195 +226,158 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                 }
 
                 groupCategories.forEach { category ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 12.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                        )
+                    val isExpanded = expandedCategoryId == category.id
+                    val wordCount = uniqueWordsByCategoryId[category.id].orEmpty().size
+
+                    AppCard(
+                        modifier = Modifier.padding(bottom = 12.dp)
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             val active = filterPrefs.isBlockCategoryActive(category.id)
-                            Row(modifier = Modifier.fillMaxWidth()) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        expandedCategoryId = if (isExpanded) null else category.id
+                                    },
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Row(
-                                    modifier = Modifier
-                                        .padding(end = 8.dp)
-                                        .clickable {
-                                            filterPrefs.toggleBlockCategory(category.id)
-                                            refreshTrigger++
-                                        }
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
-                                    FilterChip(
-                                        selected = active,
-                                        onClick = {
-                                            filterPrefs.toggleBlockCategory(category.id)
-                                            refreshTrigger++
-                                        },
-                                        label = { Text(shortLabel(category)) },
-                                        colors = FilterChipDefaults.filterChipColors(
-                                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                            labelColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                                        )
-                                    )
-
                                     Icon(
-                                        imageVector = if (active) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                        imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                                         contentDescription = null,
-                                        tint = if (active) {
-                                            MaterialTheme.colorScheme.primary
-                                        } else {
-                                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                                        },
-                                        modifier = Modifier.padding(start = 8.dp, top = 10.dp)
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
+                                    Column {
+                                        Text(
+                                            text = shortLabel(category),
+                                            style = MaterialTheme.typography.titleMedium
+                                        )
+                                        Text(
+                                            text = stringResource(R.string.block_category_word_count, wordCount),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                 }
+                                Switch(
+                                    checked = active,
+                                    onCheckedChange = {
+                                        filterPrefs.toggleBlockCategory(category.id)
+                                        refreshTrigger++
+                                    }
+                                )
+                            }
 
+                            if (isExpanded) {
                                 val draft = categoryWordDrafts[category.id].orEmpty()
                                 OutlinedTextField(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(46.dp),
-                                    value = categoryWordDrafts[category.id] ?: "",
+                                    modifier = Modifier.fillMaxWidth(),
+                                    value = draft,
                                     onValueChange = { v ->
                                         categoryWordDrafts = categoryWordDrafts + (category.id to v)
                                     },
                                     label = { Text(stringResource(R.string.word)) },
                                     singleLine = true,
-                                    textStyle = MaterialTheme.typography.bodySmall,
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = MaterialTheme.colorScheme.primary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-                                        focusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                                        cursorColor = MaterialTheme.colorScheme.primary
-                                    )
-                                )
-                                IconButton(
-                                    modifier = Modifier.size(44.dp),
-                                    onClick = {
-                                        filterPrefs.addUserCategoryWord(category.id, draft)
-                                        categoryWordDrafts = categoryWordDrafts + (category.id to "")
-                                        refreshTrigger++
-                                    },
-                                    enabled = draft.trim().isNotBlank()
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Add,
-                                        contentDescription = stringResource(R.string.add),
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                }
-                            }
-
-                            val userWords = filterPrefs.getUserCategoryWords(category.id)
-                            if (userWords.isNotEmpty()) {
-                                FlowRow(
-                                    modifier = Modifier.padding(top = 10.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    userWords.sorted().forEach { word ->
-                                        AssistChip(
+                                    trailingIcon = {
+                                        IconButton(
                                             onClick = {
-                                                filterPrefs.removeUserCategoryWord(category.id, word)
+                                                filterPrefs.addUserCategoryWord(category.id, draft)
+                                                categoryWordDrafts = categoryWordDrafts + (category.id to "")
                                                 refreshTrigger++
                                             },
-                                            label = { Text(word) },
-                                            trailingIcon = {
-                                                Icon(
-                                                    imageVector = Icons.Default.Close,
-                                                    contentDescription = stringResource(R.string.delete)
-                                                )
-                                            }
-                                        )
+                                            enabled = draft.trim().isNotBlank()
+                                        ) {
+                                            Icon(
+                                                imageVector = Icons.Default.Add,
+                                                contentDescription = stringResource(R.string.add)
+                                            )
+                                        }
+                                    }
+                                )
+
+                                val userWords = filterPrefs.getUserCategoryWords(category.id)
+                                if (userWords.isNotEmpty()) {
+                                    FlowRow(
+                                        modifier = Modifier.padding(top = 10.dp),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        userWords.sorted().forEach { word ->
+                                            AssistChip(
+                                                onClick = {
+                                                    filterPrefs.removeUserCategoryWord(category.id, word)
+                                                    refreshTrigger++
+                                                },
+                                                label = { Text(word) },
+                                                trailingIcon = {
+                                                    Icon(
+                                                        imageVector = Icons.Default.Close,
+                                                        contentDescription = stringResource(R.string.delete)
+                                                    )
+                                                }
+                                            )
+                                        }
                                     }
                                 }
-                            }
 
-                            val allWords = uniqueWordsByCategoryId[category.id].orEmpty()
+                                val allWords = uniqueWordsByCategoryId[category.id].orEmpty()
 
-                            if (allWords.isNotEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.block_category_words),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.padding(top = 10.dp, bottom = 6.dp)
-                                )
-
-                                if (category.id == "pazarlama") {
-                                    FilterChip(
-                                        selected = globalEmojiBlock,
-                                        onClick = {
-                                            globalEmojiBlock = !globalEmojiBlock
-                                            filterPrefs.isGlobalEmojiBlockEnabled = globalEmojiBlock
-                                            refreshTrigger++
-                                        },
-                                        label = { Text("😀 Emoji Block") },
-                                        colors = FilterChipDefaults.filterChipColors(
-                                            selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                            selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-                                            labelColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                                        ),
-                                        modifier = Modifier.padding(bottom = 8.dp)
+                                if (allWords.isNotEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.block_category_words),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.padding(top = 10.dp, bottom = 6.dp)
                                     )
-                                }
-                                FlowRow(
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                                ) {
-                                    allWords.forEach { word ->
-                                        val isInContent = wordInAnyContent.contains(word)
-                                        val isInChannel = wordInAnyChannel.contains(word)
 
-                                        val wordEnabled = (
-                                            (!isInContent || filterPrefs.isRecommendedContentWordEnabled(word)) &&
-                                                (!isInChannel || filterPrefs.isRecommendedChannelWordEnabled(word))
-                                            )
-
-                                        val selectedContainerColor = if (active) {
-                                            MaterialTheme.colorScheme.primaryContainer
-                                        } else {
-                                            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.45f)
-                                        }
-                                        val selectedLabelColor = if (active) {
-                                            MaterialTheme.colorScheme.onPrimaryContainer
-                                        } else {
-                                            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-                                        }
-                                        val containerColor = if (active) {
-                                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
-                                        } else {
-                                            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f)
-                                        }
-                                        val labelColor = if (active) {
-                                            MaterialTheme.colorScheme.onSurfaceVariant
-                                        } else {
-                                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-                                        }
-
+                                    if (category.id == "pazarlama") {
                                         FilterChip(
-                                            selected = wordEnabled,
+                                            selected = globalEmojiBlock,
                                             onClick = {
-                                                if (isInContent) filterPrefs.toggleRecommendedContentWord(word)
-                                                if (isInChannel) filterPrefs.toggleRecommendedChannelWord(word)
+                                                globalEmojiBlock = !globalEmojiBlock
+                                                filterPrefs.isGlobalEmojiBlockEnabled = globalEmojiBlock
                                                 refreshTrigger++
                                             },
-                                            label = {
-                                                Row {
-                                                    Text(word)
-                                                }
-                                            },
-                                            colors = FilterChipDefaults.filterChipColors(
-                                                selectedContainerColor = selectedContainerColor,
-                                                selectedLabelColor = selectedLabelColor,
-                                                containerColor = containerColor,
-                                                labelColor = labelColor
-                                            )
+                                            label = { Text(stringResource(R.string.emoji_block_toggle)) },
+                                            modifier = Modifier.padding(bottom = 8.dp)
                                         )
+                                    }
+                                    FlowRow(
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        allWords.forEach { word ->
+                                            val isInContent = wordInAnyContent.contains(word)
+                                            val isInChannel = wordInAnyChannel.contains(word)
+
+                                            val wordEnabled = (
+                                                (!isInContent || filterPrefs.isRecommendedContentWordEnabled(word)) &&
+                                                    (!isInChannel || filterPrefs.isRecommendedChannelWordEnabled(word))
+                                                )
+
+                                            FilterChip(
+                                                selected = wordEnabled,
+                                                onClick = {
+                                                    if (isInContent) filterPrefs.toggleRecommendedContentWord(word)
+                                                    if (isInChannel) filterPrefs.toggleRecommendedChannelWord(word)
+                                                    refreshTrigger++
+                                                },
+                                                label = { Text(word) },
+                                                leadingIcon = {
+                                                    // Sabit ikon: bu bir "öneri" chip'i, kullanıcı
+                                                    // kelimelerinden (AssistChip + X) görsel olarak ayrışır
+                                                    Icon(
+                                                        imageVector = Icons.Default.Tune,
+                                                        contentDescription = null
+                                                    )
+                                                }
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -451,26 +399,24 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-                value = allowWord,
-                onValueChange = { allowWord = it },
-                label = { Text(stringResource(R.string.add_word)) },
-                singleLine = true
-            )
-            IconButton(
-                onClick = {
-                    filterPrefs.addUserContentAllowWord(allowWord)
-                    allowWord = ""
-                    refreshTrigger++
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = allowWord,
+            onValueChange = { allowWord = it },
+            label = { Text(stringResource(R.string.add_word)) },
+            singleLine = true,
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        filterPrefs.addUserContentAllowWord(allowWord)
+                        allowWord = ""
+                        refreshTrigger++
+                    }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
                 }
-            ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
             }
-        }
+        )
 
         key(refreshTrigger) {
             FlowRow(
@@ -510,26 +456,24 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        Row(modifier = Modifier.fillMaxWidth()) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-                value = customWord,
-                onValueChange = { customWord = it },
-                label = { Text(stringResource(R.string.add_word)) },
-                singleLine = true
-            )
-            IconButton(
-                onClick = {
-                    filterPrefs.addUserContentBlockWord(customWord)
-                    customWord = ""
-                    refreshTrigger++
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = customWord,
+            onValueChange = { customWord = it },
+            label = { Text(stringResource(R.string.add_word)) },
+            singleLine = true,
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        filterPrefs.addUserContentBlockWord(customWord)
+                        customWord = ""
+                        refreshTrigger++
+                    }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
                 }
-            ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add))
             }
-        }
+        )
 
         key(refreshTrigger) {
             FlowRow(

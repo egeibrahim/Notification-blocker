@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Feedback
-import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PhoneAndroid
@@ -40,7 +39,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,12 +48,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.notifilter.BuildConfig
 import com.notifilter.R
 import com.notifilter.auth.SupabaseAuthManager
@@ -63,16 +58,12 @@ import com.notifilter.billing.BillingManager
 import com.notifilter.sync.CloudSyncManager
 import com.notifilter.ui.components.AppCard
 import com.notifilter.util.NotificationAccessHelper
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilePage(
     modifier: Modifier = Modifier,
-    onHelpClick: () -> Unit = {},
-    onHowItWorksClick: () -> Unit = {},
     onFaqClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -86,32 +77,10 @@ fun ProfilePage(
     val isEntitled = entitlement is BillingManager.EntitlementState.Active
     val subscriptionInfo by billingManager.subscriptionInfo.collectAsState(initial = null)
 
-    var userEmail by remember { mutableStateOf(SupabaseAuthManager.getUserEmail(context)) }
+    val userEmail by SupabaseAuthManager.userEmailFlow.collectAsState(initial = SupabaseAuthManager.getUserEmail(context))
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var feedbackText by remember { mutableStateOf("") }
-
-    LaunchedEffect(Unit) {
-        userEmail = withContext(Dispatchers.IO) {
-            SupabaseAuthManager.refreshUserEmailIfNeeded(context)
-        }
-    }
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                scope.launch {
-                    val email = withContext(Dispatchers.IO) {
-                        SupabaseAuthManager.refreshUserEmailIfNeeded(context)
-                    }
-                    userEmail = email
-                }
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
 
     val hasNotificationAccess = NotificationAccessHelper.isNotificationAccessEnabled(context)
 
@@ -167,20 +136,6 @@ fun ProfilePage(
                         fontWeight = FontWeight.Medium,
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_help)) },
-                        leadingContent = { Icon(Icons.Default.Help, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { onHelpClick() }
-                    )
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_how_it_works)) },
-                        leadingContent = { Icon(Icons.Default.Info, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { onHowItWorksClick() }
-                    )
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.settings_faq)) },
                         leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
@@ -351,7 +306,6 @@ fun ProfilePage(
                             trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
                             modifier = Modifier.clickable {
                                 SupabaseAuthManager.signOut(context)
-                                userEmail = null
                             }
                         )
                     }

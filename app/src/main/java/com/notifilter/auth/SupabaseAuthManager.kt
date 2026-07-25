@@ -17,6 +17,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,6 +31,9 @@ object SupabaseAuthManager {
     private const val KEY_USER_EMAIL = "user_email"
     private const val KEY_USER_ID = "user_id"
     private const val KEY_CODE_VERIFIER = "code_verifier"
+
+    private val _userEmailFlow = MutableStateFlow<String?>(null)
+    val userEmailFlow: StateFlow<String?> = _userEmailFlow
 
     private data class CodeExchangeResult(
         val ok: Boolean,
@@ -90,6 +95,7 @@ object SupabaseAuthManager {
                         .putString(KEY_USER_EMAIL, userEmail)
                         .apply()
 
+                    _userEmailFlow.value = userEmail
                     runCatching {
                         CloudSyncManager.restoreNow(context)
                     }
@@ -153,6 +159,7 @@ object SupabaseAuthManager {
                         .putString(KEY_USER_EMAIL, userEmail ?: email)
                         .apply()
 
+                    _userEmailFlow.value = userEmail ?: email
                     runCatching {
                         CloudSyncManager.restoreNow(context)
                     }
@@ -330,6 +337,7 @@ object SupabaseAuthManager {
             .remove(KEY_USER_EMAIL)
             .remove(KEY_USER_ID)
             .apply()
+        _userEmailFlow.value = null
     }
 
     fun refreshUserIdIfNeeded(context: Context): String? {
@@ -383,6 +391,7 @@ object SupabaseAuthManager {
             if (!email.isNullOrBlank()) {
                 prefs(context).edit().putString(KEY_USER_EMAIL, email).apply()
             }
+            _userEmailFlow.value = email
             email
         }.getOrNull()
     }

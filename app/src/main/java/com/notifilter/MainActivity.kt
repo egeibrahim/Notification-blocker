@@ -62,8 +62,6 @@ import com.notifilter.ui.pages.ArchivePage
 import com.notifilter.ui.pages.BlacklistPage
 import com.notifilter.ui.pages.DashboardPage
 import com.notifilter.ui.pages.FaqPage
-import com.notifilter.ui.pages.HelpPage
-import com.notifilter.ui.pages.HowItWorksPage
 import com.notifilter.ui.pages.ProfilePage
 import com.notifilter.ui.theme.NotifilterTheme
 
@@ -109,8 +107,6 @@ enum class NavPage(@StringRes val titleRes: Int, val icon: ImageVector) {
 }
 
 enum class ProfileSubPage {
-    Help,
-    HowItWorks,
     Faq
 }
 
@@ -153,8 +149,6 @@ fun MainScreen() {
 
     if (currentSubPage != null) {
         when (currentSubPage) {
-            ProfileSubPage.Help -> HelpPage(onBackClick = { currentSubPage = null })
-            ProfileSubPage.HowItWorks -> HowItWorksPage(onBackClick = { currentSubPage = null })
             ProfileSubPage.Faq -> FaqPage(onBackClick = { currentSubPage = null })
             else -> Unit
         }
@@ -195,8 +189,6 @@ fun MainScreen() {
                 )
                 3 -> ProfilePage(
                     modifier = Modifier.fillMaxSize(),
-                    onHelpClick = { currentSubPage = ProfileSubPage.Help },
-                    onHowItWorksClick = { currentSubPage = ProfileSubPage.HowItWorks },
                     onFaqClick = { currentSubPage = ProfileSubPage.Faq }
                 )
             }

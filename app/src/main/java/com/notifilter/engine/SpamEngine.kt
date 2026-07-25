@@ -57,7 +57,7 @@ class SpamEngine {
             // Bildirme eki
             "dir", "dır", "dur", "dür",
             "tir", "tır", "tur", "tür"
-        )
+        ).sortedBy { it.length }
 
         for (suf in suffixes) {
             if (word.endsWith(suf) && word.length - suf.length >= 4) {
@@ -95,7 +95,12 @@ class SpamEngine {
         return out
     }
 
-    private fun contentMatchesKeyword(lowerContent: String, tokenVariants: Set<String>, keyword: String): Boolean {
+    private fun contentMatchesKeyword(
+        lowerContent: String,
+        lowerContentDefault: String,
+        tokenVariants: Set<String>,
+        keyword: String
+    ): Boolean {
         val k = keyword.trim()
         if (k.isBlank()) return false
 
@@ -107,7 +112,6 @@ class SpamEngine {
 
         // İngilizce/Varsayılan klavye girdilerini (ör. büyük I harfi) desteklemek için varsayılan küçük harf kontrolü
         val kkDefault = k.lowercase()
-        val lowerContentDefault = lowerContent.lowercase()
         if (lowerContentDefault.contains(kkDefault)) {
             return true
         }
@@ -145,13 +149,15 @@ class SpamEngine {
         val channelId = notification.channelId?.let { normalizeText(it) } ?: ""
         val channelIdDefault = notification.channelId?.lowercase() ?: ""
         val lowerContent = normalizeText(notification.content)
-        val tokenVariants = generateTokenVariants(tokenize(lowerContent))
+        val lowerContentDefault = notification.content.lowercase()
+        val tokenVariants = generateTokenVariants(tokenize(lowerContent)) +
+            generateTokenVariants(tokenize(lowerContentDefault))
         val channelKey = "${notification.packageName}|${notification.channelId ?: ""}"
 
         if (notification.packageName in whitelistedPackages) return SpamResult.Allow
 
         config.contentAllow.find { keyword ->
-            contentMatchesKeyword(lowerContent, tokenVariants, keyword)
+            contentMatchesKeyword(lowerContent, lowerContentDefault, tokenVariants, keyword)
         }?.let {
             return SpamResult.Allow
         }
@@ -171,7 +177,7 @@ class SpamEngine {
         }
 
         config.contentBlock.find { keyword ->
-            contentMatchesKeyword(lowerContent, tokenVariants, keyword)
+            contentMatchesKeyword(lowerContent, lowerContentDefault, tokenVariants, keyword)
         }?.let { keyword ->
             return SpamResult.Block("İçerik: '$keyword'")
         }

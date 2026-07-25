@@ -122,6 +122,7 @@
 
     <string name="account">Account</string>
     <string name="sign_in_with_google">Continue with Google</string>
+    <string name="auth_google_explanation">Sign in with Google to back up your notifications and settings.</string>
     <string name="signed_in_as">Signed in as</string>
     <string name="logout">Logout</string>
     <string name="backup_now">Backup now</string>

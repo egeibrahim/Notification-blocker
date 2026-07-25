@@ -108,6 +108,7 @@
 
     <string name="account">Hesap</string>
     <string name="sign_in_with_google">Google ile devam et</string>
+    <string name="auth_google_explanation">Bildirim geçmişinizi ve ayarlarınızı yedeklemek için Google ile giriş yapın.</string>
     <string name="signed_in_as">Giriş yapıldı</string>
     <string name="logout">Çıkış yap</string>
 

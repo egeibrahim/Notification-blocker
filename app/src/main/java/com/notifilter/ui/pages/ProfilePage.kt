@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BatteryFull
 import androidx.compose.material.icons.filled.ChevronRight
@@ -28,7 +27,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -53,10 +51,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -91,11 +85,6 @@ fun ProfilePage(
     val subscriptionInfo by billingManager.subscriptionInfo.collectAsState(initial = null)
 
     var userEmail by remember { mutableStateOf(SupabaseAuthManager.getUserEmail(context)) }
-    var authEmailInput by remember { mutableStateOf("") }
-    var authPasswordInput by remember { mutableStateOf("") }
-    var authPasswordVisible by remember { mutableStateOf(false) }
-    var authLoading by remember { mutableStateOf(false) }
-    var currentAuthTab by remember { mutableStateOf(0) }
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var feedbackText by remember { mutableStateOf("") }
@@ -315,122 +304,10 @@ fun ProfilePage(
                     }
                     if (userEmail.isNullOrBlank()) {
                         Text(
-                            text = when (currentAuthTab) {
-                                0 -> stringResource(R.string.auth_login)
-                                1 -> stringResource(R.string.auth_register)
-                                else -> stringResource(R.string.auth_forgot_password)
-                            },
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            text = stringResource(R.string.auth_google_explanation),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        OutlinedTextField(
-                            value = authEmailInput,
-                            onValueChange = { authEmailInput = it },
-                            label = { Text(stringResource(R.string.auth_email)) },
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                        if (currentAuthTab != 2) {
-                            OutlinedTextField(
-                                value = authPasswordInput,
-                                onValueChange = { authPasswordInput = it },
-                                label = { Text(stringResource(R.string.auth_password)) },
-                                singleLine = true,
-                                visualTransformation = if (authPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                                trailingIcon = {
-                                    Text(
-                                        text = if (authPasswordVisible) stringResource(R.string.auth_password_hide) else stringResource(R.string.auth_password_show),
-                                        modifier = Modifier
-                                            .clickable { authPasswordVisible = !authPasswordVisible }
-                                            .padding(8.dp),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            )
-                        }
-                        if (authLoading) {
-                            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp))
-                        } else {
-                            Button(
-                                onClick = {
-                                    val email = authEmailInput.trim()
-                                    if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                                        Toast.makeText(context, context.getString(R.string.auth_invalid_email), Toast.LENGTH_SHORT).show()
-                                        return@Button
-                                    }
-                                    if (currentAuthTab != 2 && authPasswordInput.length < 6) {
-                                        Toast.makeText(context, context.getString(R.string.auth_invalid_password), Toast.LENGTH_SHORT).show()
-                                        return@Button
-                                    }
-                                    scope.launch {
-                                        authLoading = true
-                                        val res = when (currentAuthTab) {
-                                            0 -> SupabaseAuthManager.signInWithEmail(context, email, authPasswordInput)
-                                            1 -> SupabaseAuthManager.signUpWithEmail(context, email, authPasswordInput)
-                                            else -> SupabaseAuthManager.resetPassword(context, email)
-                                        }
-                                        authLoading = false
-                                        if (res.success) {
-                                            val successMsg = when (currentAuthTab) {
-                                                0 -> "Giriş başarılı!"
-                                                1 -> res.errorMessage ?: context.getString(R.string.auth_success_signup)
-                                                else -> context.getString(R.string.auth_success_recovery)
-                                            }
-                                            Toast.makeText(context, successMsg, Toast.LENGTH_LONG).show()
-                                            userEmail = SupabaseAuthManager.getUserEmail(context)
-                                        } else {
-                                            Toast.makeText(context, context.getString(R.string.error_generic, res.errorMessage), Toast.LENGTH_LONG).show()
-                                        }
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = when (currentAuthTab) {
-                                        0 -> stringResource(R.string.auth_login)
-                                        1 -> stringResource(R.string.auth_register)
-                                        else -> stringResource(R.string.auth_send_recovery)
-                                    }
-                                )
-                            }
-                        }
-                        when (currentAuthTab) {
-                            0 -> {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    TextButton(onClick = { currentAuthTab = 2 }) {
-                                        Text(stringResource(R.string.auth_forgot_password))
-                                    }
-                                    TextButton(onClick = { currentAuthTab = 1 }) {
-                                        Text(stringResource(R.string.auth_no_account))
-                                    }
-                                }
-                            }
-                            1 -> TextButton(onClick = { currentAuthTab = 0 }) {
-                                Text(stringResource(R.string.auth_have_account))
-                            }
-                            else -> TextButton(onClick = { currentAuthTab = 0 }) {
-                                Text(stringResource(R.string.auth_back_to_login))
-                            }
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Divider(modifier = Modifier.weight(1f))
-                            Text(
-                                text = "  ${stringResource(R.string.auth_or_divider)}  ",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Divider(modifier = Modifier.weight(1f))
-                        }
                         OutlinedButton(
                             onClick = {
                                 if (BuildConfig.SUPABASE_URL.isBlank() || BuildConfig.SUPABASE_ANON_KEY.isBlank()) {

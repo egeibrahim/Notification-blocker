@@ -5,29 +5,33 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BatteryFull
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Feedback
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.PhoneAndroid
-import androidx.compose.material.icons.filled.Restore
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -35,15 +39,12 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -84,7 +85,6 @@ fun ProfilePage(
 
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var feedbackText by remember { mutableStateOf("") }
-    var selectedTab by remember { mutableIntStateOf(0) }
 
     val hasNotificationAccess = NotificationAccessHelper.isNotificationAccessEnabled(context)
 
@@ -121,216 +121,70 @@ fun ProfilePage(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            ScrollableTabRow(
-                selectedTabIndex = selectedTab,
-                edgePadding = 0.dp
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Tab(selected = selectedTab == 0, onClick = { selectedTab = 0 }, text = { Text(stringResource(R.string.account), maxLines = 1) })
-                Tab(selected = selectedTab == 1, onClick = { selectedTab = 1 }, text = { Text(stringResource(R.string.subscription_info_title), maxLines = 1) })
-                Tab(selected = selectedTab == 2, onClick = { selectedTab = 2 }, text = { Text(stringResource(R.string.section_quick_access), maxLines = 1) })
-                Tab(selected = selectedTab == 3, onClick = { selectedTab = 3 }, text = { Text(stringResource(R.string.settings_info_title), maxLines = 1) })
-            }
-        }
-
-        if (selectedTab == 3) item {
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    verticalArrangement = Arrangement.spacedBy(0.dp)
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = stringResource(R.string.settings_info_title),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null,
+                        modifier = Modifier.size(40.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_faq)) },
-                        leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { onFaqClick() }
-                    )
+                }
+                val displayName = userEmail?.substringBefore("@")?.replaceFirstChar { it.uppercase() } ?: stringResource(R.string.account)
+                Text(
+                    text = displayName,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 12.dp)
+                )
+                Text(
+                    text = userEmail ?: stringResource(R.string.auth_google_explanation),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (userEmail.isNullOrBlank()) {
+                    Button(
+                        onClick = {
+                            if (BuildConfig.SUPABASE_URL.isBlank() || BuildConfig.SUPABASE_ANON_KEY.isBlank()) {
+                                Toast.makeText(context, context.getString(R.string.error_auth_not_configured), Toast.LENGTH_LONG).show()
+                            } else {
+                                SupabaseAuthManager.signInWithGoogle(context)
+                            }
+                        },
+                        modifier = Modifier.padding(top = 12.dp)
+                    ) {
+                        Text(stringResource(R.string.sign_in_with_google))
+                    }
                 }
             }
         }
 
-        if (selectedTab == 1) item {
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text(
-                        text = stringResource(R.string.subscription_info_title),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
-                    )
-                    val statusText = when (entitlement) {
-                        is BillingManager.EntitlementState.Active -> stringResource(R.string.subscription_status_active)
-                        is BillingManager.EntitlementState.Inactive -> stringResource(R.string.subscription_status_inactive)
-                        is BillingManager.EntitlementState.Error -> (entitlement as BillingManager.EntitlementState.Error).message
-                        else -> stringResource(R.string.subscription_status_unknown)
-                    }
-                    val supportingText = if (BuildConfig.BILLING_PRODUCT_ID.isBlank()) {
-                        stringResource(R.string.subscription_not_configured)
-                    } else if (subscriptionInfo != null) {
-                        val period = formatIsoPeriod(subscriptionInfo?.billingPeriod).orEmpty()
-                        val trial = formatIsoPeriod(subscriptionInfo?.trialPeriod)
-                        if (trial != null) {
-                            stringResource(
-                                R.string.subscription_trial_desc,
-                                trial,
-                                stringResource(R.string.subscription_price_desc, subscriptionInfo?.formattedPrice ?: "", period)
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.Transparent),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(88.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(
+                            brush = Brush.horizontalGradient(
+                                listOf(Color(0xFF7B61FF), Color(0xFFC7B9FF))
                             )
-                        } else {
-                            stringResource(R.string.subscription_price_desc, subscriptionInfo?.formattedPrice ?: "", period)
-                        }
-                    } else {
-                        ""
-                    }
-                    ListItem(
-                        headlineContent = { Text(statusText) },
-                        supportingContent = { if (supportingText.isNotBlank()) Text(supportingText) },
-                        leadingContent = { Icon(Icons.Default.Star, contentDescription = null) }
-                    )
-                    if (!isEntitled && BuildConfig.BILLING_PRODUCT_ID.isNotBlank()) {
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.start_free_trial)) },
-                            leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
-                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                val activity = context as? android.app.Activity
-                                if (activity == null) {
-                                    Toast.makeText(context, context.getString(R.string.error_billing_requires_activity), Toast.LENGTH_SHORT).show()
-                                    return@clickable
-                                }
-                                if (BuildConfig.BILLING_PRODUCT_ID.isBlank()) {
-                                    Toast.makeText(context, context.getString(R.string.error_billing_not_configured), Toast.LENGTH_LONG).show()
-                                    return@clickable
-                                }
-                                billingManager.launchPurchaseFlow(activity)
-                            }
                         )
-                    }
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.manage_subscription)) },
-                        leadingContent = { Icon(Icons.Default.Settings, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable {
-                            val activity = context as? android.app.Activity
-                            if (activity == null) {
-                                Toast.makeText(context, context.getString(R.string.error_action_requires_activity), Toast.LENGTH_SHORT).show()
-                                return@clickable
-                            }
-                            billingManager.openManageSubscription(activity)
-                        }
-                    )
-                    if (isEntitled) {
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.cancel_subscription)) },
-                            supportingContent = { Text(stringResource(R.string.subscription_cancel_desc)) },
-                            leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
-                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                val activity = context as? android.app.Activity
-                                if (activity == null) {
-                                    Toast.makeText(context, context.getString(R.string.error_action_requires_activity), Toast.LENGTH_SHORT).show()
-                                    return@clickable
-                                }
-                                billingManager.openManageSubscription(activity)
-                            }
-                        )
-                    }
-                }
-            }
-        }
-
-        if (selectedTab == 0) item {
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text(
-                        text = stringResource(R.string.account),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
-                    )
-                    if (userEmail.isNullOrBlank()) {
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.sign_in_with_google)) },
-                            supportingContent = { Text(stringResource(R.string.auth_google_explanation)) },
-                            leadingContent = { Icon(Icons.Default.Email, contentDescription = null) },
-                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                if (BuildConfig.SUPABASE_URL.isBlank() || BuildConfig.SUPABASE_ANON_KEY.isBlank()) {
-                                    Toast.makeText(context, context.getString(R.string.error_auth_not_configured), Toast.LENGTH_LONG).show()
-                                } else {
-                                    SupabaseAuthManager.signInWithGoogle(context)
-                                }
-                            }
-                        )
-                    } else {
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.signed_in_as)) },
-                            supportingContent = { Text(userEmail.orEmpty()) },
-                            leadingContent = { Icon(Icons.Default.Email, contentDescription = null) }
-                        )
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.backup_now)) },
-                            leadingContent = { Icon(Icons.Default.Save, contentDescription = null) },
-                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                scope.launch {
-                                    val res = runCatching { CloudSyncManager.backupNow(context) }
-                                    Toast.makeText(
-                                        context,
-                                        if (res.isSuccess) "Backup completed" else "Backup failed: ${res.exceptionOrNull()?.message}",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        )
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.restore_now)) },
-                            leadingContent = { Icon(Icons.Default.Restore, contentDescription = null) },
-                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                scope.launch {
-                                    val res = runCatching { CloudSyncManager.restoreNow(context) }
-                                    Toast.makeText(
-                                        context,
-                                        if (res.isSuccess) "Restore completed" else "Restore failed: ${res.exceptionOrNull()?.message}",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        )
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.logout)) },
-                            leadingContent = { Icon(Icons.Default.ExitToApp, contentDescription = null) },
-                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                SupabaseAuthManager.signOut(context)
-                            }
-                        )
-                    }
-                }
-            }
-        }
-
-
-        if (selectedTab == 3) item {
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.rate_app_title)) },
-                        supportingContent = { Text(stringResource(R.string.rate_app_desc)) },
-                        leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable {
+                        .clickable {
                             val pkg = context.packageName
                             val marketIntent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$pkg")).apply {
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -342,30 +196,64 @@ fun ProfilePage(
                                 runCatching { context.startActivity(webIntent) }
                             }
                         }
-                    )
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.feedback_title)) },
-                        supportingContent = { Text(stringResource(R.string.feedback_desc)) },
-                        leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { showFeedbackDialog = true }
-                    )
+                        .padding(horizontal = 20.dp, vertical = 16.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.rate_app_title),
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                            Text(
+                                text = stringResource(R.string.rate_app_desc),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.White
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            tint = Color.White,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
                 }
             }
         }
 
-        // setup header moved inside the card below
-
-        if (selectedTab == 2) item {
+        item {
+            val statusText = when (entitlement) {
+                is BillingManager.EntitlementState.Active -> stringResource(R.string.subscription_status_active)
+                is BillingManager.EntitlementState.Inactive -> stringResource(R.string.subscription_status_inactive)
+                is BillingManager.EntitlementState.Error -> (entitlement as BillingManager.EntitlementState.Error).message
+                else -> stringResource(R.string.subscription_status_unknown)
+            }
             AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text(
-                        text = stringResource(R.string.settings_setup_header),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
+                Column {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.account)) },
+                        leadingContent = { Icon(Icons.Default.Person, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable {
+                            if (userEmail.isNullOrBlank()) {
+                                if (BuildConfig.SUPABASE_URL.isBlank() || BuildConfig.SUPABASE_ANON_KEY.isBlank()) {
+                                    Toast.makeText(context, context.getString(R.string.error_auth_not_configured), Toast.LENGTH_LONG).show()
+                                } else {
+                                    SupabaseAuthManager.signInWithGoogle(context)
+                                }
+                            } else {
+                                SupabaseAuthManager.signOut(context)
+                            }
+                        }
                     )
+                    Divider()
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.notification_access_manage)) },
                         supportingContent = {
@@ -380,40 +268,40 @@ fun ProfilePage(
                             startActivityOrAppDetails(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
                         }
                     )
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                    Divider()
                     ListItem(
-                        headlineContent = { Text(stringResource(R.string.quick_access_app_info)) },
-                        leadingContent = { Icon(Icons.Default.Info, contentDescription = null) },
+                        headlineContent = { Text(stringResource(R.string.settings_faq)) },
+                        leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { openAppDetails() }
+                        modifier = Modifier.clickable { onFaqClick() }
                     )
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                    Divider()
                     ListItem(
-                        headlineContent = { Text(stringResource(R.string.quick_access_autostart)) },
-                        leadingContent = { Icon(Icons.Default.PhoneAndroid, contentDescription = null) },
+                        headlineContent = { Text(stringResource(R.string.manage_subscription)) },
+                        supportingContent = { Text(statusText) },
+                        leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
                         modifier = Modifier.clickable {
-                            val autostartIntent = Intent().apply {
-                                setClassName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
+                            val activity = context as? android.app.Activity
+                            if (activity == null) {
+                                Toast.makeText(context, context.getString(R.string.error_action_requires_activity), Toast.LENGTH_SHORT).show()
+                                return@clickable
                             }
-                            startActivityOrAppDetails(autostartIntent)
+                            billingManager.openManageSubscription(activity)
                         }
                     )
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.quick_access_disable_battery_optimization)) },
-                            leadingContent = { Icon(Icons.Default.BatteryFull, contentDescription = null) },
-                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                            modifier = Modifier.clickable {
-                                startActivityOrAppDetails(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
-                            }
-                        )
-                    }
+                    Divider()
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.feedback_title)) },
+                        leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { showFeedbackDialog = true }
+                    )
                 }
             }
         }
     }
+
 
     if (showFeedbackDialog) {
         AlertDialog(

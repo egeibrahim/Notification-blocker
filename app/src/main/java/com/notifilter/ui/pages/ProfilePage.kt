@@ -23,6 +23,8 @@ import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PhoneAndroid
+import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
@@ -171,12 +173,14 @@ fun ProfilePage(
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
                         modifier = Modifier.clickable { onHelpClick() }
                     )
+                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.settings_how_it_works)) },
                         leadingContent = { Icon(Icons.Default.Info, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
                         modifier = Modifier.clickable { onHowItWorksClick() }
                     )
+                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.settings_faq)) },
                         leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
@@ -189,14 +193,12 @@ fun ProfilePage(
 
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
+                Column(modifier = Modifier.padding(vertical = 4.dp)) {
                     Text(
                         text = stringResource(R.string.subscription_info_title),
                         style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
                     )
                     val statusText = when (entitlement) {
                         is BillingManager.EntitlementState.Active -> stringResource(R.string.subscription_status_active)
@@ -204,25 +206,12 @@ fun ProfilePage(
                         is BillingManager.EntitlementState.Error -> (entitlement as BillingManager.EntitlementState.Error).message
                         else -> stringResource(R.string.subscription_status_unknown)
                     }
-                    Text(
-                        text = statusText,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = when (entitlement) {
-                            is BillingManager.EntitlementState.Active -> MaterialTheme.colorScheme.primary
-                            is BillingManager.EntitlementState.Error -> MaterialTheme.colorScheme.error
-                            else -> MaterialTheme.colorScheme.onSurfaceVariant
-                        }
-                    )
-                    if (BuildConfig.BILLING_PRODUCT_ID.isBlank()) {
-                        Text(
-                            text = stringResource(R.string.subscription_not_configured),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                    val supportingText = if (BuildConfig.BILLING_PRODUCT_ID.isBlank()) {
+                        stringResource(R.string.subscription_not_configured)
                     } else if (subscriptionInfo != null) {
                         val period = formatIsoPeriod(subscriptionInfo?.billingPeriod).orEmpty()
                         val trial = formatIsoPeriod(subscriptionInfo?.trialPeriod)
-                        val infoText = if (trial != null) {
+                        if (trial != null) {
                             stringResource(
                                 R.string.subscription_trial_desc,
                                 trial,
@@ -231,56 +220,63 @@ fun ProfilePage(
                         } else {
                             stringResource(R.string.subscription_price_desc, subscriptionInfo?.formattedPrice ?: "", period)
                         }
-                        Text(
-                            text = infoText,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                    } else {
+                        ""
                     }
-                    if (!isEntitled) {
-                        Button(
-                            onClick = {
+                    ListItem(
+                        headlineContent = { Text(statusText) },
+                        supportingContent = { if (supportingText.isNotBlank()) Text(supportingText) },
+                        leadingContent = { Icon(Icons.Default.Star, contentDescription = null) }
+                    )
+                    if (!isEntitled && BuildConfig.BILLING_PRODUCT_ID.isNotBlank()) {
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.start_free_trial)) },
+                            leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
+                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                            modifier = Modifier.clickable {
                                 val activity = context as? android.app.Activity
                                 if (activity == null) {
                                     Toast.makeText(context, context.getString(R.string.error_billing_requires_activity), Toast.LENGTH_SHORT).show()
-                                    return@Button
+                                    return@clickable
                                 }
                                 if (BuildConfig.BILLING_PRODUCT_ID.isBlank()) {
                                     Toast.makeText(context, context.getString(R.string.error_billing_not_configured), Toast.LENGTH_LONG).show()
-                                    return@Button
+                                    return@clickable
                                 }
                                 billingManager.launchPurchaseFlow(activity)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(stringResource(R.string.start_free_trial)) }
+                            }
+                        )
                     }
-                    OutlinedButton(
-                        onClick = {
+                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.manage_subscription)) },
+                        leadingContent = { Icon(Icons.Default.Settings, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable {
                             val activity = context as? android.app.Activity
                             if (activity == null) {
                                 Toast.makeText(context, context.getString(R.string.error_action_requires_activity), Toast.LENGTH_SHORT).show()
-                                return@OutlinedButton
+                                return@clickable
                             }
                             billingManager.openManageSubscription(activity)
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) { Text(stringResource(R.string.manage_subscription)) }
+                        }
+                    )
                     if (isEntitled) {
-                        OutlinedButton(
-                            onClick = {
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.cancel_subscription)) },
+                            supportingContent = { Text(stringResource(R.string.subscription_cancel_desc)) },
+                            leadingContent = { Icon(Icons.Default.Star, contentDescription = null) },
+                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                            modifier = Modifier.clickable {
                                 val activity = context as? android.app.Activity
                                 if (activity == null) {
                                     Toast.makeText(context, context.getString(R.string.error_action_requires_activity), Toast.LENGTH_SHORT).show()
-                                    return@OutlinedButton
+                                    return@clickable
                                 }
                                 billingManager.openManageSubscription(activity)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(stringResource(R.string.cancel_subscription)) }
-                        Text(
-                            text = stringResource(R.string.subscription_cancel_desc),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            }
                         )
                     }
                 }
@@ -289,43 +285,39 @@ fun ProfilePage(
 
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Email, contentDescription = null)
-                        Text(
-                            text = stringResource(R.string.account),
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Medium,
-                            modifier = Modifier.padding(start = 8.dp)
-                        )
-                    }
+                Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                    Text(
+                        text = stringResource(R.string.account),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
+                    )
                     if (userEmail.isNullOrBlank()) {
-                        Text(
-                            text = stringResource(R.string.auth_google_explanation),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        OutlinedButton(
-                            onClick = {
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.sign_in_with_google)) },
+                            supportingContent = { Text(stringResource(R.string.auth_google_explanation)) },
+                            leadingContent = { Icon(Icons.Default.Email, contentDescription = null) },
+                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                            modifier = Modifier.clickable {
                                 if (BuildConfig.SUPABASE_URL.isBlank() || BuildConfig.SUPABASE_ANON_KEY.isBlank()) {
                                     Toast.makeText(context, context.getString(R.string.error_auth_not_configured), Toast.LENGTH_LONG).show()
-                                    return@OutlinedButton
+                                } else {
+                                    SupabaseAuthManager.signInWithGoogle(context)
                                 }
-                                SupabaseAuthManager.signInWithGoogle(context)
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(stringResource(R.string.sign_in_with_google)) }
-                    } else {
-                        Text(
-                            text = "${stringResource(R.string.signed_in_as)}: ${userEmail}",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            }
                         )
-                        Button(
-                            onClick = {
+                    } else {
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.signed_in_as)) },
+                            supportingContent = { Text(userEmail.orEmpty()) },
+                            leadingContent = { Icon(Icons.Default.Email, contentDescription = null) }
+                        )
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.backup_now)) },
+                            leadingContent = { Icon(Icons.Default.Save, contentDescription = null) },
+                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                            modifier = Modifier.clickable {
                                 scope.launch {
                                     val res = runCatching { CloudSyncManager.backupNow(context) }
                                     Toast.makeText(
@@ -334,11 +326,14 @@ fun ProfilePage(
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(stringResource(R.string.backup_now)) }
-                        OutlinedButton(
-                            onClick = {
+                            }
+                        )
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.restore_now)) },
+                            leadingContent = { Icon(Icons.Default.Restore, contentDescription = null) },
+                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                            modifier = Modifier.clickable {
                                 scope.launch {
                                     val res = runCatching { CloudSyncManager.restoreNow(context) }
                                     Toast.makeText(
@@ -347,16 +342,18 @@ fun ProfilePage(
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(stringResource(R.string.restore_now)) }
-                        OutlinedButton(
-                            onClick = {
+                            }
+                        )
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        ListItem(
+                            headlineContent = { Text(stringResource(R.string.logout)) },
+                            leadingContent = { Icon(Icons.Default.ExitToApp, contentDescription = null) },
+                            trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                            modifier = Modifier.clickable {
                                 SupabaseAuthManager.signOut(context)
                                 userEmail = null
-                            },
-                            modifier = Modifier.fillMaxWidth()
-                        ) { Text(stringResource(R.string.logout)) }
+                            }
+                        )
                     }
                 }
             }
@@ -396,18 +393,17 @@ fun ProfilePage(
             }
         }
 
-        item {
-            Text(
-                text = stringResource(R.string.settings_setup_header),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
-        }
+        // setup header moved inside the card below
 
         item {
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(vertical = 4.dp)) {
+                    Text(
+                        text = stringResource(R.string.settings_setup_header),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 4.dp)
+                    )
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.notification_access_manage)) },
                         supportingContent = {

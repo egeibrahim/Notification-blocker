@@ -52,14 +52,7 @@
     <string name="how_to_use_a3"></string>
 
     <string name="no_how_it_works_title">How does \"NO\" work?</string>
-    <string name="no_how_it_works_body">1) Block: Standard blocking words are active by default. You can disable any word or add your own.
-2) Focus Mode: For special moments like meetings, it blocks all notifications — including those you usually allow — and saves them inside the app.
-3) App Exemption: No notification from the selected app is ever blocked; it appears normally.
-4) Emoji Block: Blocks all notifications that contain emojis. For apps where you do not want emoji notifications blocked, use the Allow emojis option in the app detail.
-5) Archive: Keeps your notification history for the last 7 days.
-6) Allow Words: Notifications containing the words you add here will never be blocked.
-7) Sign in with Google: Used to protect your notification history even if you clear cookies or reinstall the app. Signing in with Google is optional.</string>
-
+    <string name="no_how_it_works_body">1) Block: Standard blocking words are active by default. You can disable any word or add your own.\n2) Focus Mode: When Focus Mode is on, all notifications are silenced and archived. Exempt apps are not affected by Focus Mode and appear normally.\n3) Exempt: Notifications from the selected app are never blocked, not by filters or by Focus Mode.\n4) Emoji Block: Blocks all notifications that contain emojis. For apps where you do not want emoji notifications blocked, use the Allow emojis option in the app detail.\n5) Archive: Keeps your notification history for the last 7 days.\n6) Allow Words: Notifications containing the words you add here will never be blocked.\n7) Sign in with Google: Used to protect your notification history even if you clear cookies or reinstall the app. Signing in with Google is optional.</string>
     <string name="language_pack">Language pack</string>
 
     <string name="emoji_block_title">Block notifications containing emojis</string>
@@ -92,14 +85,14 @@
     <string name="dashboard_mute_save_label">Exempt</string>
 
     <string name="applications_installed_title">Installed Apps</string>
-    <string name="applications_installed_desc">Tap an app to view its notification history. Toggle the switch to exempt an app from filtering so its notifications are not blocked.</string>
+    <string name="applications_installed_desc">Tap an app to view its notification history. Toggle the switch to exempt an app from filters and Focus Mode so its notifications are not blocked.</string>
 
     <string name="archive_last_7_days_title">Last 7 days - all notifications</string>
     <string name="archive_empty_title">No notifications yet</string>
     <string name="archive_empty_desc">Nothing has been recorded in the last 7 days.</string>
 
     <string name="detail_exempt_app_title">Exempt</string>
-    <string name="detail_exempt_app_desc">When enabled, none of this app’s notifications will be filtered.</string>
+    <string name="detail_exempt_app_desc">When enabled, this app is exempt from normal filters and Focus Mode; its notifications arrive normally.</string>
     <string name="detail_notification_history">Notification history</string>
     <string name="detail_allow_words_for_app">Allow Words</string>
     <string name="detail_block_words_for_app">Block Words</string>
@@ -194,7 +187,9 @@
     <string name="help_faq_1_q">Why are my notifications not being blocked?</string>
     <string name="help_faq_1_a">Make sure you have granted \"Notification Access\" to this app under settings, and that it has background execution permissions.</string>
     <string name="help_faq_2_q">What is Focus Mode?</string>
-    <string name="help_faq_2_a">Focus Mode temporarily silences all incoming notifications and archives them inside the app so you can view them later without being interrupted.</string>
+    <string name="help_faq_2_a">When Focus Mode is on, all incoming notifications are silenced and archived inside the app. Exempt apps are the exception; their notifications continue to arrive normally.</string>
+    <string name="help_faq_3_q">What does Exempt do?</string>
+    <string name="help_faq_3_a">It lets notifications from selected apps keep arriving even when Focus Mode or other filters are active. Toggle it from the app detail sheet or the Dashboard list.</string>
 
     <!-- Added with the BlacklistPage.kt / ProfilePage.kt update -->
     <string name="auth_password_hide">Hide</string>

@@ -92,6 +92,7 @@ fun FaqPage(onBackClick: () -> Unit) {
             }
             item { FaqItem(question = stringResource(R.string.help_faq_1_q), answer = stringResource(R.string.help_faq_1_a)) }
             item { FaqItem(question = stringResource(R.string.help_faq_2_q), answer = stringResource(R.string.help_faq_2_a)) }
+            item { FaqItem(question = stringResource(R.string.help_faq_3_q), answer = stringResource(R.string.help_faq_3_a)) }
         }
     }
 }

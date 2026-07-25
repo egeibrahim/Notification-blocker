@@ -41,8 +41,7 @@
     <string name="how_to_use_a3"></string>
 
     <string name="no_how_it_works_title">"NO" Nasıl Çalışır?</string>
-    <string name="no_how_it_works_body">1) Blok: Standart engelleme kelimeleri aktiftir. İstediğiniz kelimeleri pasif hale getirebilir veya kendi engellemek istediğiniz kelimeleri ekleyebilirsiniz.\n2) Odak Modu: Toplantı gibi özel anlarınızda, izin verdiğiniz bildirimleri de dahil olmak üzere tüm bildirimleri engeller ve uygulama içerisine kaydeder.\n3) Uygulama Muafiyeti: Seçtiğiniz uygulamaya ait hiçbir bildirim engellenmez; normal bildirim çubuğunda görünür.\n4) Emoji Blok: Emoji içeren tüm bildirimleri engeller. Emoji bildirimlerinin engellenmesini istemediğiniz uygulamalar için uygulama detayındaki Emojiye izin ver ayarını kullanarak engeli kaldırabilirsiniz.\n5) Arşiv: Son 7 günlük bildirim geçmişinizi kayıt altında tutar.\n6) Özel İzin Kelimeleri: Buraya eklediğiniz kelimeleri içeren bildirimler asla engellenmez.\n7) Google ile Giriş: Telefonunuzdaki çerezleri silseniz veya uygulamayı yeniden yükleseniz bile bildirim geçmişinizi korumak için kullanılır. Google ile giriş yapmak zorunda değilsiniz.</string>
-
+    <string name="no_how_it_works_body">1) Blok: Standart engelleme kelimeleri aktiftir. İstediğiniz kelimeleri pasif hale getirebilir veya kendi engellemek istediğiniz kelimeleri ekleyebilirsiniz.\n2) Odak Modu: Odak Modu açıkken tüm bildirimler sessize alınır ve arşivlenir. Muaf tuttuğunuz uygulamalar Odak Modundan etkilenmez; normal bildirim çubuğunda görünür.\n3) Muaf Tut: Seçtiğiniz uygulamaya ait bildirimler hem normal filtrelerden hem de Odak Modu engellemesinden dışarıda kalır.\n4) Emoji Blok: Emoji içeren tüm bildirimleri engeller. Emoji bildirimlerinin engellenmesini istemediğiniz uygulamalar için uygulama detayındaki Emojiye izin ver ayarını kullanarak engeli kaldırabilirsiniz.\n5) Arşiv: Son 7 günlük bildirim geçmişinizi kayıt altında tutar.\n6) Özel İzin Kelimeleri: Buraya eklediğiniz kelimeleri içeren bildirimler asla engellenmez.\n7) Google ile Giriş: Telefonunuzdaki çerezleri silseniz veya uygulamayı yeniden yükleseniz bile bildirim geçmişinizi korumak için kullanılır. Google ile giriş yapmak zorunda değilsiniz.</string>
     <string name="language_pack">Dil paketi</string>
 
     <string name="emoji_block_title">Emoji içeren bildirimleri engelle</string>
@@ -72,14 +71,14 @@
     <string name="dashboard_mute_save_label">Muaf tut</string>
 
     <string name="applications_installed_title">Yüklü Uygulamalar</string>
-    <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilirsin. Anahtarı açarak o uygulamayı filtreden muaf tut; bildirimleri engellenmeden normal şekilde görünür.</string>
+    <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilirsin. Anahtarı açarak o uygulamayı hem filtrelerden hem de Odak Modundan muaf tut; bildirimleri engellenmeden normal şekilde görünür.</string>
 
     <string name="archive_last_7_days_title">Son 7 Gün - Tüm Bildirimler</string>
     <string name="archive_empty_title">Henüz bildirim yok</string>
     <string name="archive_empty_desc">Son 7 gün içinde kaydedilmiş bir bildirim bulunmuyor.</string>
 
     <string name="detail_exempt_app_title">Muaf tut</string>
-    <string name="detail_exempt_app_desc">Açık olduğunda bu uygulamanın hiçbir bildirimi filtrelenmez.</string>
+    <string name="detail_exempt_app_desc">Açık olduğunda bu uygulama normal filtrelerden ve Odak Modu engellemesinden muaf kalır; bildirimleri normal gelir.</string>
     <string name="detail_notification_history">Bildirim geçmişi</string>
     <string name="detail_allow_words_for_app">İzin kelimeleri</string>
     <string name="detail_block_words_for_app">Engel kelimeleri</string>
@@ -181,7 +180,9 @@
     <string name="help_faq_1_q">Bildirimlerim neden engellenmiyor?</string>
     <string name="help_faq_1_a">Ayarlardan bu uygulamaya \"Bildirim Erişimi\" izni verdiğinden ve uygulamanın arka planda çalışma izinlerinin olduğundan emin ol.</string>
     <string name="help_faq_2_q">Odak Modu nedir?</string>
-    <string name="help_faq_2_a">Odak Modu, gelen tüm bildirimleri geçici olarak susturur ve daha sonra kesintiye uğramadan görebilmen için uygulama içine arşivler.</string>
+    <string name="help_faq_2_a">Odak Modu açıkken gelen tüm bildirimler sessize alınır ve uygulama içinde arşivlenir. Muaf tuttuğun uygulamalar hariç; onların bildirimleri normalde gelmeye devam eder.</string>
+    <string name="help_faq_3_q">Muaf tut ne işe yarar?</string>
+    <string name="help_faq_3_a">Odak Modu veya diğer filtreler aktif olsa bile, seçtiğin uygulamaların bildirimlerinin gelmeye devam etmesini sağlar. Uygulama detayından veya Dashboard listesinden açıp kapatabilirsin.</string>
 
     <!-- Karşılama Turu (Walkthrough) -->
     <string name="wt_welcome_title">NO&quot;ya Hoş Geldin</string>

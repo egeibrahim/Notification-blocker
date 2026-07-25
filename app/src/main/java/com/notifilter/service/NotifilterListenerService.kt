@@ -199,8 +199,13 @@ class NotifilterListenerService : NotificationListenerService() {
             val blockReason: String?
 
             if (focusModePrefs.isFocusModeEnabled) {
-                shouldBlock = true
-                blockReason = "Genel Odak Modu aktif"
+                if (importantChannelsPrefs.isWhitelisted(record.packageName)) {
+                    shouldBlock = false
+                    blockReason = null
+                } else {
+                    shouldBlock = true
+                    blockReason = "Genel Odak Modu aktif"
+                }
             } else if (filterRulesPrefs.isGlobalGamesBlockEnabled && isGamePackage(record.packageName)) {
                 shouldBlock = true
                 blockReason = "Games pack active"

@@ -173,6 +173,12 @@
     <string name="wt_finish">Get Started</string>
     <string name="wt_tooltip_dashboard">See the breakdown of active and blocked notifications.</string>
     <string name="wt_tooltip_rules">Add custom block/allow words and channels here.</string>
+    <string name="wt_permission_title">Allow Notifications</string>
+    <string name="wt_permission_desc">NO needs to send its own notifications so it can archive blocked notifications and show you important alerts. Granting this permission is required for the app to work properly.</string>
+    <string name="wt_access_title">Read and Control Notifications</string>
+    <string name="wt_access_desc">To filter notifications from other apps, you must enable NO in the system Notification Access settings. You may see a warning like "This app can read all your notifications"; this is a standard Android security warning shown to every user and is not dangerous.</string>
+    <string name="wt_permission_button">Allow</string>
+    <string name="wt_access_button">Open Settings</string>
 
     <!-- Rate App & Feedback -->
     <string name="rate_app_title">Rate App</string>

@@ -78,20 +78,25 @@ class MainActivity : ComponentActivity() {
 
         SupabaseAuthManager.handleRedirect(this, intent)
 
-        if (Build.VERSION.SDK_INT >= 33) {
-            val granted = checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
-            if (!granted) {
-                requestNotificationsPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-
         setContent {
             NotifilterTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    MainScreen(
+                        onRequestNotificationPermission = {
+                            if (Build.VERSION.SDK_INT >= 33) {
+                                requestNotificationsPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        },
+                        onOpenNotificationAccess = {
+                            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            }
+                            startActivity(intent)
+                        }
+                    )
                 }
             }
         }
@@ -115,7 +120,10 @@ enum class ProfileSubPage {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    onRequestNotificationPermission: () -> Unit = {},
+    onOpenNotificationAccess: () -> Unit = {}
+) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val focusPrefs = remember { FocusModePreferences(context) }
@@ -126,7 +134,6 @@ fun MainScreen() {
 
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showWalkthrough by remember { mutableStateOf(sharedPrefs.getBoolean("show_walkthrough_v1", true)) }
-    var hasAutoOpenedNotification by remember { mutableStateOf(sharedPrefs.getBoolean("auto_open_notification_settings", false)) }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -245,18 +252,12 @@ fun MainScreen() {
 
         if (showWalkthrough) {
             com.notifilter.ui.components.WalkthroughDialog(
+                onRequestNotificationPermission = onRequestNotificationPermission,
+                onOpenNotificationAccess = onOpenNotificationAccess,
                 onDismiss = {
                     sharedPrefs.edit().putBoolean("show_walkthrough_v1", false).apply()
                     showWalkthrough = false
                     if (!NotificationAccessHelper.isNotificationAccessEnabled(context)) {
-                        if (!hasAutoOpenedNotification) {
-                            sharedPrefs.edit().putBoolean("auto_open_notification_settings", true).apply()
-                            hasAutoOpenedNotification = true
-                            val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).apply {
-                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            }
-                            context.startActivity(intent)
-                        }
                         showPermissionDialog = true
                     }
                 }

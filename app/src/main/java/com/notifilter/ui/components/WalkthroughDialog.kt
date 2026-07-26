@@ -23,10 +23,12 @@ import com.notifilter.R
 
 @Composable
 fun WalkthroughDialog(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onRequestNotificationPermission: () -> Unit,
+    onOpenNotificationAccess: () -> Unit
 ) {
     var currentSlide by remember { mutableIntStateOf(0) }
-    val totalSlides = 3
+    val totalSlides = 5
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -75,8 +77,10 @@ fun WalkthroughDialog(
                     Text(
                         text = when (currentSlide) {
                             0 -> "👋"
-                            1 -> "🛡️"
-                            else -> "👁️‍🗨️"
+                            1 -> "�"
+                            2 -> "👁"
+                            3 -> "�🛡️"
+                            else -> "🧘"
                         },
                         style = MaterialTheme.typography.displayLarge
                     )
@@ -86,7 +90,9 @@ fun WalkthroughDialog(
                 Text(
                     text = when (currentSlide) {
                         0 -> stringResource(R.string.wt_welcome_title)
-                        1 -> stringResource(R.string.wt_filter_title)
+                        1 -> stringResource(R.string.wt_permission_title)
+                        2 -> stringResource(R.string.wt_access_title)
+                        3 -> stringResource(R.string.wt_filter_title)
                         else -> stringResource(R.string.wt_focus_title)
                     },
                     style = MaterialTheme.typography.headlineMedium,
@@ -99,7 +105,9 @@ fun WalkthroughDialog(
                 Text(
                     text = when (currentSlide) {
                         0 -> stringResource(R.string.wt_welcome_desc)
-                        1 -> stringResource(R.string.wt_filter_desc)
+                        1 -> stringResource(R.string.wt_permission_desc)
+                        2 -> stringResource(R.string.wt_access_desc)
+                        3 -> stringResource(R.string.wt_filter_desc)
                         else -> stringResource(R.string.wt_focus_desc)
                     },
                     style = MaterialTheme.typography.bodyLarge,
@@ -138,6 +146,10 @@ fun WalkthroughDialog(
                 // Next or Finish Button
                 Button(
                     onClick = {
+                        when (currentSlide) {
+                            1 -> onRequestNotificationPermission()
+                            2 -> onOpenNotificationAccess()
+                        }
                         if (currentSlide < totalSlides - 1) {
                             currentSlide++
                         } else {
@@ -150,10 +162,11 @@ fun WalkthroughDialog(
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Text(
-                        text = if (currentSlide == totalSlides - 1) {
-                            stringResource(R.string.wt_finish)
-                        } else {
-                            stringResource(R.string.wt_next)
+                        text = when (currentSlide) {
+                            1 -> stringResource(R.string.wt_permission_button)
+                            2 -> stringResource(R.string.wt_access_button)
+                            totalSlides - 1 -> stringResource(R.string.wt_finish)
+                            else -> stringResource(R.string.wt_next)
                         },
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold

@@ -25,6 +25,9 @@
     <string name="quick_access_battery_settings">Pil ayarları</string>
     <string name="quick_access_autostart">Otomatik başlat</string>
     <string name="quick_access_disable_battery_optimization">Arka planda kullanıma izin ver</string>
+    <string name="battery_optimization_unrestricted">Kısıtlama Yok</string>
+    <string name="battery_optimization_restricted">Pil optimizasyonu aktif</string>
+    <string name="autostart_desc">Kısıtlı ayarlara izin ver ve üretici otomatik başlatma ayarlarını kapat</string>
 
     <string name="notification_access">Bildirim erişimi</string>
     <string name="notification_access_on">Açık</string>

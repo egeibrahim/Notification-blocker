@@ -1,9 +1,11 @@
 package com.notifilter.ui.pages
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Notifications
@@ -57,6 +60,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -66,8 +70,19 @@ import com.notifilter.auth.SupabaseAuthManager
 import com.notifilter.billing.BillingManager
 import com.notifilter.sync.CloudSyncManager
 import com.notifilter.ui.components.AppCard
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.notifilter.util.NotificationAccessHelper
 import kotlinx.coroutines.launch
+
+private fun checkBatteryIgnored(context: Context): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val pm = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
+        pm?.isIgnoringBatteryOptimizations(context.packageName) ?: false
+    } else {
+        true
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,10 +106,28 @@ fun ProfilePage(
     var showFeedbackDialog by remember { mutableStateOf(false) }
     var feedbackText by remember { mutableStateOf("") }
 
-    val hasNotificationAccess = NotificationAccessHelper.isNotificationAccessEnabled(context)
+    var hasNotificationAccess by remember { mutableStateOf(NotificationAccessHelper.isNotificationAccessEnabled(context)) }
     var postNotificationsGranted by remember { mutableStateOf(NotificationManagerCompat.from(context).areNotificationsEnabled()) }
+    var isBatteryIgnored by remember { mutableStateOf(checkBatteryIgnored(context)) }
     val notificationPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         postNotificationsGranted = isGranted
+    }
+
+    fun refreshPermissionStates() {
+        hasNotificationAccess = NotificationAccessHelper.isNotificationAccessEnabled(context)
+        postNotificationsGranted = NotificationManagerCompat.from(context).areNotificationsEnabled()
+        isBatteryIgnored = checkBatteryIgnored(context)
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                refreshPermissionStates()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
     fun formatIsoPeriod(isoPeriod: String?): String? {
@@ -109,6 +142,21 @@ fun ProfilePage(
             else -> ""
         }
         return "$count $unit"
+    }
+
+    fun openAppNotificationSettings() {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        } else {
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        }
+        context.startActivity(intent)
     }
 
     fun openAppDetails() {
@@ -261,14 +309,14 @@ fun ProfilePage(
                             )
                         },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable {
-                            if (Build.VERSION.SDK_INT >= 33 && !postNotificationsGranted) {
-                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        trailingContent = {
+                            if (postNotificationsGranted) {
+                                Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
                             } else {
-                                openAppDetails()
+                                Icon(Icons.Default.ChevronRight, contentDescription = null)
                             }
-                        }
+                        },
+                        modifier = Modifier.clickable { openAppNotificationSettings() }
                     )
                     Divider()
                     ListItem(
@@ -280,7 +328,13 @@ fun ProfilePage(
                             )
                         },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        trailingContent = {
+                            if (hasNotificationAccess) {
+                                Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
+                            } else {
+                                Icon(Icons.Default.ChevronRight, contentDescription = null)
+                            }
+                        },
                         modifier = Modifier.clickable {
                             startActivityOrAppDetails(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
                         }
@@ -288,10 +342,22 @@ fun ProfilePage(
                     Divider()
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.quick_access_disable_battery_optimization)) },
+                        supportingContent = {
+                            Text(
+                                text = if (isBatteryIgnored) stringResource(R.string.battery_optimization_unrestricted) else stringResource(R.string.battery_optimization_restricted),
+                                color = if (isBatteryIgnored) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                            )
+                        },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        trailingContent = {
+                            if (isBatteryIgnored) {
+                                Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
+                            } else {
+                                Icon(Icons.Default.ChevronRight, contentDescription = null)
+                            }
+                        },
                         modifier = Modifier.clickable {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isBatteryIgnored) {
                                 val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
                                     data = Uri.parse("package:${context.packageName}")
                                 }
@@ -304,6 +370,7 @@ fun ProfilePage(
                     Divider()
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.quick_access_autostart)) },
+                        supportingContent = { Text(stringResource(R.string.autostart_desc)) },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
                         modifier = Modifier.clickable { openAppDetails() }

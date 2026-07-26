@@ -25,6 +25,9 @@
     <string name="quick_access_battery_settings">Battery settings</string>
     <string name="quick_access_autostart">Autostart</string>
     <string name="quick_access_disable_battery_optimization">Allow background usage</string>
+    <string name="battery_optimization_unrestricted">Unrestricted</string>
+    <string name="battery_optimization_restricted">Battery optimization active</string>
+    <string name="autostart_desc">Allow restricted settings and disable manufacturer autostart restrictions</string>
 
     <string name="notification_access">Notification access</string>
     <string name="notification_access_on">On</string>

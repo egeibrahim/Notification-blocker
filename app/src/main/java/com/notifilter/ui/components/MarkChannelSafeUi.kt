@@ -194,6 +194,7 @@ fun NotificationDetailSheet(
                             refreshTrigger++
                             scope.launch {
                                 ArchiveBlockScanner.rescan(context)
+                                NotifilterListenerService.rescanAndCancelForPackage(packageName)
                                 refreshTrigger++
                             }
                         },

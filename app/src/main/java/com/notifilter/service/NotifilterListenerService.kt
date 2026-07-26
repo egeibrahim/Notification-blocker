@@ -75,6 +75,13 @@ class NotifilterListenerService : NotificationListenerService() {
             svc.performCancelAndSaveForPackage(packageName)
         }
 
+        /** Belirtilen uygulamanın aktif bildirimlerini mevcut blok kurallarına göre yeniden değerlendirir, eşleşenleri gizler. */
+        fun rescanAndCancelForPackage(packageName: String) {
+            val svc = instance ?: return
+            if (!EntitlementStore.isEntitled(svc)) return
+            svc.performRescanAndCancelForPackage(packageName)
+        }
+
         /** Tüm aktif bildirimleri kaydedip çekmeceden temizler. */
         fun cancelAllAndSave() {
             val svc = instance ?: return
@@ -335,6 +342,59 @@ class NotifilterListenerService : NotificationListenerService() {
                         saveAndCancel(sbn, "Gizle kaydet")
                     }
                 }
+        } catch (e: SecurityException) { /* izin yok */ }
+    }
+
+    private fun performRescanAndCancelForPackage(packageName: String) {
+        try {
+            val active = getActiveNotifications()?.filter { it.packageName == packageName } ?: return
+            val whitelistedPackages = importantChannelsPrefs.whitelistedPackages
+            if (packageName in whitelistedPackages) return
+
+            val baseConfig = filterRulesPrefs.toFilterRulesConfig()
+            val appAllow = filterRulesPrefs.getUserAppContentAllowWords(packageName)
+            val appBlock = filterRulesPrefs.getUserAppContentBlockWords(packageName)
+            val emojiBlockEnabled = filterRulesPrefs.isGlobalEmojiBlockEnabled &&
+                !filterRulesPrefs.isUserAppEmojiAllowed(packageName)
+            val config = baseConfig.copy(
+                contentAllow = (baseConfig.contentAllow + appAllow).distinct(),
+                contentBlock = (baseConfig.contentBlock + appBlock).distinct(),
+                blockIfHasEmoji = emojiBlockEnabled
+            )
+
+            active.forEach { sbn ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH &&
+                    (sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY) != 0
+                ) return@forEach
+
+                val content = extractContent(sbn)
+                val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    sbn.notification.channelId
+                } else null
+
+                val record = NotificationRecord(
+                    packageName = sbn.packageName,
+                    appName = getAppName(sbn.packageName),
+                    content = content,
+                    channelId = channelId,
+                    timestamp = sbn.postTime,
+                    isBlocked = false,
+                    blockReason = null
+                )
+
+                val result = spamEngine.analyze(record, whitelistedPackages, config)
+                if (result is SpamResult.Block) {
+                    Log.d(TAG, "RESCAN BLOCK pkg=${sbn.packageName} key=${sbn.key} reason=${result.reason}")
+                    serviceScope.launch {
+                        try {
+                            database.notificationRecordDao().insert(record.copy(isBlocked = true, blockReason = result.reason))
+                        } catch (e: Exception) {
+                            Log.e(TAG, "DB insert failed during rescan", e)
+                        }
+                    }
+                    cancelSbn(sbn, result.reason)
+                }
+            }
         } catch (e: SecurityException) { /* izin yok */ }
     }
 

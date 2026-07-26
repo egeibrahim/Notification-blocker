@@ -83,14 +83,14 @@
     <string name="block_group_marketing">Marketing &amp; Offers</string>
     <string name="block_group_other">Other</string>
     <string name="block_category_words">Words</string>
-    <string name="block_section_allow_words_title">My Allow Categories</string>
-    <string name="block_section_allow_words_desc">Create your own categories with a title and add words. If any of these words appear in a notification, it will never be blocked.</string>
-    <string name="block_section_block_words_title">My Block Categories</string>
-    <string name="block_section_block_words_desc">Create your own categories with a title and add words. If any of these words appear in a notification, it will be blocked.</string>
-    <string name="block_add_category">Add category</string>
-    <string name="block_category_title_hint">Category title</string>
-    <string name="block_category_empty_words">No words added yet</string>
-    <string name="block_no_categories_yet">No custom categories yet</string>
+    <string name="block_section_allow_words_title">Never Block</string>
+    <string name="block_section_allow_words_desc">Words that should never be blocked</string>
+    <string name="block_section_block_words_title">Custom Blocks</string>
+    <string name="block_section_block_words_desc">Extra words to block</string>
+    <string name="block_add_category">Add</string>
+    <string name="block_category_title_hint">New category name</string>
+    <string name="block_category_empty_words">No words yet</string>
+    <string name="block_no_categories_yet">Nothing here yet</string>
 
     <string name="dashboard_notification_access_off_title">Notification access is off</string>
     <string name="dashboard_notification_access_off_desc">Blocking and archiving are not working. Enable access from settings.</string>

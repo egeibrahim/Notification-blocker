@@ -28,14 +28,14 @@
     <string name="title_faq">FAQ</string>
 
     <string name="section_quick_access">Quick access</string>
-    <string name="quick_access_app_info">App Info</string>
-    <string name="quick_access_app_info_desc">Manage permissions and restricted settings here</string>
+    <string name="quick_access_app_info">Allow restricted settings</string>
+    <string name="quick_access_app_info_desc"></string>
     <string name="quick_access_battery_settings">Battery settings</string>
-    <string name="quick_access_autostart">Autostart</string>
+    <string name="quick_access_autostart">Background autostart</string>
     <string name="quick_access_disable_battery_optimization">Disable Battery Optimization</string>
     <string name="battery_optimization_unrestricted">Unrestricted</string>
     <string name="battery_optimization_restricted">Battery optimization active, notifications may be delayed</string>
-    <string name="autostart_desc">We\'ll try to open your phone manufacturer\'s autostart settings. If not found, the app info page opens; you may need to enable \"Allow restricted settings\" there.</string>
+    <string name="autostart_desc"></string>
 
     <string name="notification_access">Notification access</string>
     <string name="notification_access_on">On</string>
@@ -71,6 +71,7 @@
     <string name="emoji_block_toggle">Block emojis</string>
     <string name="global_games_toggle">Block all games</string>
     <string name="block_category_word_count">%1$d words</string>
+    <string name="block_categories_title">Block categories</string>
 
     <string name="category_marketing">Marketing</string>
     <string name="category_credit">Credit &amp; Finance</string>

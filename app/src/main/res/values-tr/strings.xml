@@ -28,14 +28,14 @@
     <string name="title_faq">SSS</string>
 
     <string name="section_quick_access">Hızlı erişim</string>
-    <string name="quick_access_app_info">Uygulama bilgisi</string>
-    <string name="quick_access_app_info_desc">İzinleri ve kısıtlı ayarları buradan yönet</string>
+    <string name="quick_access_app_info">Kısıtlı ayarlara izin ver</string>
+    <string name="quick_access_app_info_desc"></string>
     <string name="quick_access_battery_settings">Pil ayarları</string>
-    <string name="quick_access_autostart">Otomatik Başlatma</string>
+    <string name="quick_access_autostart">Arka planda otomatik başlatma</string>
     <string name="quick_access_disable_battery_optimization">Pil Optimizasyonunu Kapat</string>
     <string name="battery_optimization_unrestricted">Kısıtlama Yok</string>
     <string name="battery_optimization_restricted">Pil optimizasyonu aktif, bildirimler gecikebilir</string>
-    <string name="autostart_desc">Telefonunun üreticisine özel otomatik başlatma ayarını açmayı deneriz. Bulunamazsa uygulama bilgisi sayfası açılır; oradan \"Kısıtlı ayarlara izin ver\" seçeneğini açman gerekebilir.</string>
+    <string name="autostart_desc"></string>
 
     <string name="notification_access">Bildirim erişimi</string>
     <string name="notification_access_on">Açık</string>
@@ -167,6 +167,7 @@
     <string name="restore_now">Şimdi geri yükle</string>
 
     <string name="block_category_word_count">%1$d kelime</string>
+    <string name="block_categories_title">Bloke kategorileri</string>
     <string name="emoji_block_toggle">Emoji engelle</string>
     <string name="global_games_toggle">Tüm oyunları engelle</string>
 

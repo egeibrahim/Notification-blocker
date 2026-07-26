@@ -416,20 +416,42 @@ fun ProfilePage(
                         }
                     )
                     Divider()
+                    val setupPrefs = remember { context.getSharedPreferences("setup_flags", Context.MODE_PRIVATE) }
+                    var hasVisitedAutostart by remember { mutableStateOf(setupPrefs.getBoolean("visited_autostart", false)) }
+                    var hasVisitedRestricted by remember { mutableStateOf(setupPrefs.getBoolean("visited_restricted", false)) }
+
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.quick_access_autostart)) },
-                        supportingContent = { Text(stringResource(R.string.autostart_desc)) },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { openAutostartSettings(context) }
+                        trailingContent = {
+                            if (hasVisitedAutostart) {
+                                Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
+                            } else {
+                                Icon(Icons.Default.Close, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+                            }
+                        },
+                        modifier = Modifier.clickable {
+                            openAutostartSettings(context)
+                            setupPrefs.edit().putBoolean("visited_autostart", true).apply()
+                            hasVisitedAutostart = true
+                        }
                     )
                     Divider()
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.quick_access_app_info)) },
-                        supportingContent = { Text(stringResource(R.string.quick_access_app_info_desc)) },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { openAppDetails() }
+                        trailingContent = {
+                            if (hasVisitedRestricted) {
+                                Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
+                            } else {
+                                Icon(Icons.Default.Close, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+                            }
+                        },
+                        modifier = Modifier.clickable {
+                            openAppDetails()
+                            setupPrefs.edit().putBoolean("visited_restricted", true).apply()
+                            hasVisitedRestricted = true
+                        }
                     )
                 }
             }

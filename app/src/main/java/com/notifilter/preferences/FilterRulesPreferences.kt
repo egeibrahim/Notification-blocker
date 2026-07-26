@@ -105,7 +105,7 @@ class FilterRulesPreferences(private val context: Context) {
         get() {
             val fromPrefs = getStringSetCompat(KEY_ENABLED_LANGUAGE_PACKS)
             if (fromPrefs.isNotEmpty()) return fromPrefs
-            return setOf(PACK_TR, PACK_EN)
+            return setOf(PACK_EN)
         }
         set(value) = prefs.edit(commit = true) {
             putStringSet(KEY_ENABLED_LANGUAGE_PACKS, HashSet(value))
@@ -151,22 +151,30 @@ class FilterRulesPreferences(private val context: Context) {
     }
 
     /**
-     * Onboarding'de kullanıcı ülkesini seçtiğinde çağrılır.
-     *
-     * Telefonun sistem dilinden bağımsızdır çünkü bildirim dili, gönderen
-     * uygulamanın sunucu kararına göre belirlenir — telefon İngilizce olsa
-     * bile Türkiye'de yaşayan biri Türkçe VE İngilizce bildirim alabilir
-     * (bkz. Getir/bankalar TR-only, Instagram/Netflix hesap dili bazlı,
-     * WhatsApp karşı tarafın diline bağlı). Bu yüzden Türkiye seçilirse
-     * güvenlik payı olarak iki paket birden aktif ediliyor; Türkiye dışı
-     * seçilirse Türkçe bildirim alma ihtimali düşük olduğundan sadece EN.
+     * Onboarding'de kullanıcı dil paketlerini seçtiğinde çağrılır.
+     * EN her zaman dahildir. Sistem diline göre otomatik öneri verilir.
+     */
+    fun applyLanguagePackSelection(selectedPacks: Set<String>) {
+        val withEn = (selectedPacks + PACK_EN).filter { it in ALL_PACKS }.toSet()
+        enabledLanguagePacks = withEn
+        hasSelectedCountry = true
+    }
+
+    /**
+     * Sistem dilini algılar, uygun dil paketini + EN döndürür.
+     * Onboarding'de varsayılan seçim olarak kullanılır.
+     */
+    fun getDefaultLanguagePacks(): Set<String> {
+        val locale = java.util.Locale.getDefault().language
+        val pack = localeToPack(locale)
+        return if (pack == PACK_EN) setOf(PACK_EN) else setOf(pack, PACK_EN)
+    }
+
+    /**
+     * Eski applyCountrySelection — geri uyumluluk için korundu.
      */
     fun applyCountrySelection(isTurkey: Boolean) {
-        enabledLanguagePacks = if (isTurkey) {
-            setOf(PACK_TR, PACK_EN)
-        } else {
-            setOf(PACK_EN)
-        }
+        enabledLanguagePacks = if (isTurkey) setOf(PACK_TR, PACK_EN) else setOf(PACK_EN)
         hasSelectedCountry = true
     }
 
@@ -674,7 +682,7 @@ class FilterRulesPreferences(private val context: Context) {
 
     private fun getActiveBlockCategories(): List<BlockCategory> {
         val selected = enabledLanguagePacks.flatMap { getCategoriesForPack(it) }
-            .ifEmpty { TR_BLOCK_CATEGORIES + EN_BLOCK_CATEGORIES }
+            .ifEmpty { EN_BLOCK_CATEGORIES }
         val merged = LinkedHashMap<String, BlockCategory>()
         selected.forEach { cat ->
             val existing = merged[cat.id]
@@ -696,6 +704,9 @@ class FilterRulesPreferences(private val context: Context) {
         return when (packId) {
             PACK_TR -> TR_BLOCK_CATEGORIES
             PACK_EN -> EN_BLOCK_CATEGORIES
+            PACK_ES -> ES_BLOCK_CATEGORIES
+            PACK_DE -> DE_BLOCK_CATEGORIES
+            PACK_FR -> FR_BLOCK_CATEGORIES
             else -> emptyList()
         }
     }
@@ -804,6 +815,37 @@ class FilterRulesPreferences(private val context: Context) {
 
         const val PACK_TR = "tr"
         const val PACK_EN = "en"
+        const val PACK_ES = "es"
+        const val PACK_DE = "de"
+        const val PACK_FR = "fr"
+
+        val ALL_PACKS = listOf(PACK_TR, PACK_EN, PACK_ES, PACK_DE, PACK_FR)
+
+        fun packLabel(packId: String): String = when (packId) {
+            PACK_TR -> "Türkçe"
+            PACK_EN -> "English"
+            PACK_ES -> "Español"
+            PACK_DE -> "Deutsch"
+            PACK_FR -> "Français"
+            else -> packId
+        }
+
+        fun packFlagEmoji(packId: String): String = when (packId) {
+            PACK_TR -> "🇹🇷"
+            PACK_EN -> "🇬🇧"
+            PACK_ES -> "🇪🇸"
+            PACK_DE -> "🇩🇪"
+            PACK_FR -> "🇫🇷"
+            else -> "🌍"
+        }
+
+        fun localeToPack(locale: String): String = when (locale) {
+            "tr" -> PACK_TR
+            "es" -> PACK_ES
+            "de" -> PACK_DE
+            "fr" -> PACK_FR
+            else -> PACK_EN
+        }
 
         /** Eski keyword → yeni kategori ID (migrasyon) */
         private val LEGACY_TO_CATEGORY = mapOf(
@@ -957,6 +999,519 @@ class FilterRulesPreferences(private val context: Context) {
                 label = "Genel",
                 channelKeywords = listOf("bildirim", "hatirlatma"),
                 contentKeywords = listOf("hatırlatma", "sistem bildirimi", "uygulama bildirimi", "bilgilendirme")
+            )
+        )
+
+        val ES_BLOCK_CATEGORIES = listOf(
+            BlockCategory(
+                id = "sosyal_etkilesim",
+                label = "Redes Sociales",
+                channelKeywords = listOf("social", "interaccion"),
+                contentKeywords = listOf("le gustó tu", "comentó en", "te etiquetó", "empezó a seguirte", "solicitud de amistad", "te mencionó", "nuevo seguidor", "vio tu perfil")
+            ),
+            BlockCategory(
+                id = "yeniden_katilim",
+                label = "Recuperación",
+                channelKeywords = listOf("re_engagement", "win_back"),
+                contentKeywords = listOf("te extrañamos", "vuelve", "hace tiempo que no te vemos", "estamos aquí para ti", "bienvenido de nuevo")
+            ),
+            BlockCategory(
+                id = "degerlendirme_istegi",
+                label = "Pide Reseñas",
+                channelKeywords = listOf("rating", "review_request"),
+                contentKeywords = listOf("califícanos", "califica esta app", "deja una reseña", "comparte tu experiencia", "danos 5 estrellas")
+            ),
+            BlockCategory(
+                id = "anket",
+                label = "Encuestas / Feedback",
+                channelKeywords = listOf("survey", "encuesta"),
+                contentKeywords = listOf("participa en nuestra encuesta", "dinos qué piensas", "encuesta rápida", "tu opinión importa")
+            ),
+            BlockCategory(
+                id = "terk_edilen_sepet",
+                label = "Carrito Abandonado",
+                channelKeywords = listOf("cart_reminder", "carrito"),
+                contentKeywords = listOf("artículos en tu carrito", "completa tu compra", "no olvides tu carrito", "te espera en tu carrito")
+            ),
+            BlockCategory(
+                id = "fiyat_stok_uyarisi",
+                label = "Alertas de Precio / Stock",
+                channelKeywords = listOf("price_alert", "stock_alert"),
+                contentKeywords = listOf("bajó el precio", "de nuevo en stock", "antes de que se agote", "alerta de precio", "rebaja en tus favoritos")
+            ),
+            BlockCategory(
+                id = "sadakat_puan",
+                label = "Lealtad / Puntos",
+                channelKeywords = listOf("loyalty", "puntos"),
+                contentKeywords = listOf("tus puntos expiran", "ganaste puntos", "canjea tus puntos", "beneficios de miembro")
+            ),
+            BlockCategory(
+                id = "abonelik_hatirlatma",
+                label = "Renovación de Suscripción",
+                channelKeywords = listOf("subscription_reminder"),
+                contentKeywords = listOf("tu prueba termina", "renueva tu suscripción", "actualiza a premium", "la prueba gratis termina pronto")
+            ),
+            BlockCategory(
+                id = "sistem_guncelleme",
+                label = "Actualizaciones",
+                channelKeywords = listOf("app_update", "actualizacion"),
+                contentKeywords = listOf("nueva versión disponible", "actualización disponible", "ver novedades", "actualiza tu app")
+            ),
+            BlockCategory(
+                id = "spor_canli",
+                label = "Deportes / Resultados",
+                channelKeywords = listOf("sports", "deportes", "resultado"),
+                contentKeywords = listOf("el partido empezó", "gol", "actualización de marcador", "resultado en vivo", "medio tiempo")
+            ),
+            BlockCategory(
+                id = "burc_astroloji",
+                label = "Horóscopo / Astrología",
+                channelKeywords = listOf("horoscope", "horoscopo"),
+                contentKeywords = listOf("tu horóscopo de hoy", "las estrellas hoy", "para tu signo")
+            ),
+            BlockCategory(
+                id = "flort_eslesme",
+                label = "Citas / Matches",
+                channelKeywords = listOf("dating", "match"),
+                contentKeywords = listOf("le gustaste", "nuevo match", "te envió un mensaje", "hiciste match contigo")
+            ),
+            BlockCategory(
+                id = "kariyer_ilan",
+                label = "Alertas de Empleo",
+                channelKeywords = listOf("job_alert", "empleo"),
+                contentKeywords = listOf("nuevas ofertas para ti", "posiciones que coinciden con tu perfil", "oportunidad laboral")
+            ),
+            BlockCategory(
+                id = "kripto_borsa",
+                label = "Cripto / Bolsa",
+                channelKeywords = listOf("price_watch", "cripto", "bolsa"),
+                contentKeywords = listOf("el precio subió", "el precio bajó", "cambio porcentual", "alerta de acciones")
+            ),
+            BlockCategory(
+                id = "pazarlama",
+                label = "Marketing",
+                channelKeywords = emptyList(),
+                contentKeywords = listOf("oferta flash", "mega oferta", "súper oferta", "oferta exclusiva", "solo para miembros", "solo hoy", "último día", "antes de que se agote", "descuento extra", "doble descuento", "oferta vip", "solo para ti", "cupón", "código de cupón", "código promocional", "código de descuento", "tarjeta de regalo", "envío gratis", "la mayor oferta del año", "liquidación", "rebajas de verano", "rebajas de invierno", "fin de temporada", "última oportunidad", "apúrate")
+            ),
+            BlockCategory(
+                id = "kredi",
+                label = "Crédito y Finanzas",
+                channelKeywords = listOf("loan_offer", "finance", "finanzas"),
+                contentKeywords = listOf("tarjeta de crédito", "préstamo personal", "cuotas", "interés", "sin intereses", "límite de crédito", "reestructuración de deuda", "solicitud de préstamo", "oferta de préstamo", "préstamo rápido", "préstamo instantáneo", "préstamo preaprobado", "score crediticio", "avance en efectivo")
+            ),
+            BlockCategory(
+                id = "oneriler",
+                label = "Recomendaciones",
+                channelKeywords = listOf("for_you", "descubre", "para_ti"),
+                contentKeywords = listOf("para ti", "seleccionado para ti", "te puede gustar", "descubre", "según tu historial", "según tus favoritos", "curado para ti")
+            ),
+            BlockCategory(
+                id = "oyun",
+                label = "Juegos",
+                channelKeywords = listOf("daily_reward", "event", "evento"),
+                contentKeywords = listOf("recompensa diaria", "bono de inicio de sesión", "sube de nivel", "nueva etapa", "evento empezó", "evento por tiempo limitado", "tus amigos están jugando", "tabla de clasificación", "torneo", "gana un premio", "misión diaria", "vidas gratis", "monedas gratis", "gemas gratis", "energía llena")
+            ),
+            BlockCategory(
+                id = "haber",
+                label = "Noticias",
+                channelKeywords = listOf("breaking_news", "titulares"),
+                contentKeywords = listOf("última hora", "titulares", "noticias en vivo", "actualización", "resumen", "resumen de noticias", "noticias de hoy", "lo más leído", "selección del editor")
+            ),
+            BlockCategory(
+                id = "genel",
+                label = "General",
+                channelKeywords = listOf("notification", "reminder", "recordatorio"),
+                contentKeywords = listOf("recordatorio", "notificación del sistema", "notificación de la app", "info")
+            ),
+            BlockCategory(
+                id = "global_shopping_events",
+                label = "Ofertas Especiales",
+                channelKeywords = listOf("shopping_event", "seasonal_sale"),
+                contentKeywords = listOf("black friday", "cyber monday", "prime day", "compra uno lleva dos", "oferta relámpago", "rebajas de invierno", "volver a la escuela")
+            ),
+            BlockCategory(
+                id = "global_food_delivery",
+                label = "Delivery de Comida",
+                channelKeywords = listOf("food_delivery", "restaurant_promo"),
+                contentKeywords = listOf("envío gratis", "descuento en tu primer pedido", "descuento en tu próximo pedido", "gastos de envío gratis", "pide ahora y ahorra", "ofertas de restaurantes cerca")
+            ),
+            BlockCategory(
+                id = "global_rideshare",
+                label = "Viajes / Transporte",
+                channelKeywords = listOf("ride_promo", "rideshare"),
+                contentKeywords = listOf("crédito de viaje", "código promocional para tu próximo viaje", "descuento en tu próximo viaje", "viaje gratis", "reserva tu viaje y ahorra")
+            ),
+            BlockCategory(
+                id = "global_real_estate",
+                label = "Inmuebles",
+                channelKeywords = listOf("listing_alert", "real_estate"),
+                contentKeywords = listOf("nueva propiedad coincide con tu búsqueda", "precio reducido en una casa guardada", "nuevas casas en venta cerca", "puertas abiertas este fin de semana")
+            ),
+            BlockCategory(
+                id = "global_insurance",
+                label = "Seguros",
+                channelKeywords = listOf("insurance_offer"),
+                contentKeywords = listOf("cotización gratis", "combina y ahorra", "reduce tu prima", "compara tarifas de seguro", "podrías ahorrar en tu póliza")
+            ),
+            BlockCategory(
+                id = "global_streaming",
+                label = "Streaming",
+                channelKeywords = listOf("streaming_promo"),
+                contentKeywords = listOf("nueva temporada disponible", "prueba gratis hoy", "ahora en streaming", "añadido a tu lista", "maratón de la nueva temporada")
+            ),
+            BlockCategory(
+                id = "global_local_deals",
+                label = "Ofertas Locales",
+                channelKeywords = listOf("local_deal", "daily_deal"),
+                contentKeywords = listOf("oferta de hoy cerca", "oferta del día", "hasta 50% de descuento cerca", "ofertas locales solo para ti")
+            ),
+            BlockCategory(
+                id = "global_travel_alerts",
+                label = "Viajes / Vuelos",
+                channelKeywords = listOf("fare_alert", "travel_deal"),
+                contentKeywords = listOf("precios de vuelos bajaron", "alerta de tarifa", "bajó el precio de tu viaje guardado", "vuelos baratos a", "reserva ahora y ahorra en vuelos")
+            )
+        )
+
+        val DE_BLOCK_CATEGORIES = listOf(
+            BlockCategory(
+                id = "sosyal_etkilesim",
+                label = "Soziale Medien",
+                channelKeywords = listOf("social", "interaktion"),
+                contentKeywords = listOf("hat deinen Beitrag geliked", "hat kommentiert", "hat dich markiert", "folgt dir jetzt", "Freundschaftsanfrage", "hat dich erwähnt", "neuer Follower", "hat dein Profil angesehen")
+            ),
+            BlockCategory(
+                id = "yeniden_katilim",
+                label = "Rückgewinnung",
+                channelKeywords = listOf("re_engagement", "win_back"),
+                contentKeywords = listOf("wir vermissen dich", "komm zurück", "lange nicht gesehen", "wir sind für dich da", "willkommen zurück")
+            ),
+            BlockCategory(
+                id = "degerlendirme_istegi",
+                label = "Bewertungsanfragen",
+                channelKeywords = listOf("rating", "review_request"),
+                contentKeywords = listOf("bewerte uns", "bewerte diese App", "hinterlasse eine Bewertung", "teile deine Erfahrung", "gib uns 5 Sterne")
+            ),
+            BlockCategory(
+                id = "anket",
+                label = "Umfragen / Feedback",
+                channelKeywords = listOf("survey", "umfrage"),
+                contentKeywords = listOf("nimm an unserer Umfrage teil", "sag uns deine Meinung", "kurze Umfrage", "dein Feedback ist wichtig")
+            ),
+            BlockCategory(
+                id = "terk_edilen_sepet",
+                label = "Warenkorb-Erinnerung",
+                channelKeywords = listOf("cart_reminder", "warenkorb"),
+                contentKeywords = listOf("Artikel in deinem Warenkorb", "schließe deinen Kauf ab", "vergiss deinen Warenkorb nicht", "wartet noch in deinem Warenkorb")
+            ),
+            BlockCategory(
+                id = "fiyat_stok_uyarisi",
+                label = "Preis-/Bestandsalarme",
+                channelKeywords = listOf("price_alert", "stock_alert"),
+                contentKeywords = listOf("Preis gesenkt", "wieder auf Lager", "bevor es ausverkauft ist", "Preisalarm", "Angebot für deine Favoriten")
+            ),
+            BlockCategory(
+                id = "sadakat_puan",
+                label = "Treue / Punkte",
+                channelKeywords = listOf("loyalty", "punkte"),
+                contentKeywords = listOf("deine Punkte laufen ab", "du hast Punkte verdient", "löse deine Punkte ein", "Vorteile für Mitglieder")
+            ),
+            BlockCategory(
+                id = "abonelik_hatirlatma",
+                label = "Abo-Erneuerung",
+                channelKeywords = listOf("subscription_reminder"),
+                contentKeywords = listOf("deine Testphase endet", "erneuere dein Abonnement", "upgrade auf Premium", "kostenlose Testphase endet bald")
+            ),
+            BlockCategory(
+                id = "sistem_guncelleme",
+                label = "Updates",
+                channelKeywords = listOf("app_update", "update"),
+                contentKeywords = listOf("neue Version verfügbar", "Update verfügbar", "sieh was neu ist", "aktualisiere deine App")
+            ),
+            BlockCategory(
+                id = "spor_canli",
+                label = "Sport / Live-Ergebnisse",
+                channelKeywords = listOf("sports", "sport", "ergebnis"),
+                contentKeywords = listOf("Spiel gestartet", "Tor", "Stand aktualisiert", "Live-Ergebnis", "Halbzeit")
+            ),
+            BlockCategory(
+                id = "burc_astroloji",
+                label = "Horoskop / Astrologie",
+                channelKeywords = listOf("horoscope", "horoskop"),
+                contentKeywords = listOf("dein Horoskop heute", "die Sterne heute", "für dein Sternzeichen")
+            ),
+            BlockCategory(
+                id = "flort_eslesme",
+                label = "Dating / Matches",
+                channelKeywords = listOf("dating", "match"),
+                contentKeywords = listOf("hat dich geliked", "neuer Match", "hat dir eine Nachricht gesendet", "Match mit dir")
+            ),
+            BlockCategory(
+                id = "kariyer_ilan",
+                label = "Job-Benachrichtigungen",
+                channelKeywords = listOf("job_alert", "jobs"),
+                contentKeywords = listOf("neue Jobs für dich", "Positionen die zu deinem Profil passen", "Karrieremöglichkeit")
+            ),
+            BlockCategory(
+                id = "kripto_borsa",
+                label = "Krypto / Aktien",
+                channelKeywords = listOf("price_watch", "krypto", "aktien"),
+                contentKeywords = listOf("Preis steigt", "Preis fällt", "Prozentuale Änderung", "Aktienalarm")
+            ),
+            BlockCategory(
+                id = "pazarlama",
+                label = "Marketing",
+                channelKeywords = emptyList(),
+                contentKeywords = listOf("Blitzangebot", "Mega-Angebot", "Super-Angebot", "exklusives Angebot", "nur für Mitglieder", "nur heute", "letzter Tag", "solange Vorrat reicht", "zusätzlicher Rabatt", "Doppelrabatt", "VIP-Angebot", "nur für dich", "Gutschein", "Gutscheincode", "Promo-Code", "Rabattcode", "Geschenkkarte", "kostenloser Versand", "größter Sale des Jahres", "Ausverkauf", "Sommerschlussverkauf", "Winterschlussverkauf", "Saisonsende", "letzte Chance", "beeil dich")
+            ),
+            BlockCategory(
+                id = "kredi",
+                label = "Kredit & Finanzen",
+                channelKeywords = listOf("loan_offer", "finance", "finanzen"),
+                contentKeywords = listOf("Kreditkarte", "Privatkredit", "Raten", "Zinsen", "zinsfrei", "Kreditlimit", "Schuldenerstrukturierung", "Kreditantrag", "Kreditangebot", "Schnellkredit", "Sofortkredit", "vorab genehmigter Kredit", "Bonität", "Bargeldvorschuss")
+            ),
+            BlockCategory(
+                id = "oneriler",
+                label = "Empfehlungen",
+                channelKeywords = listOf("for_you", "entdecken", "fuer_dich"),
+                contentKeywords = listOf("für dich", "für dich ausgewählt", "könnte dir gefallen", "entdecke", "basierend auf deinem Verlauf", "basierend auf deinen Favoriten", "für dich kuratiert")
+            ),
+            BlockCategory(
+                id = "oyun",
+                label = "Spiele",
+                channelKeywords = listOf("daily_reward", "event", "ereignis"),
+                contentKeywords = listOf("tägliche Belohnung", "Tageslogin-Bonus", "Level aufsteigen", "neue Stufe", "Event gestartet", "zeitlich begrenztes Event", "deine Freunde spielen", "Bestenliste", "Turnier", "gewinne einen Preis", "tägliche Quest", "kostenlose Leben", "kostenlose Münzen", "kostenlose Edelsteine", "Energie voll")
+            ),
+            BlockCategory(
+                id = "haber",
+                label = "Nachrichten",
+                channelKeywords = listOf("breaking_news", "schlagzeilen"),
+                contentKeywords = listOf("Eilmeldung", "Schlagzeilen", "Live-Nachrichten", "Aktualisierung", "Zusammenfassung", "Nachrichtenüberblick", "Nachrichten von heute", "meistgelesen", "Empfehlungen der Redaktion")
+            ),
+            BlockCategory(
+                id = "genel",
+                label = "Allgemein",
+                channelKeywords = listOf("notification", "reminder", "erinnerung"),
+                contentKeywords = listOf("Erinnerung", "Systembenachrichtigung", "App-Benachrichtigung", "Info")
+            ),
+            BlockCategory(
+                id = "global_shopping_events",
+                label = "Shopping-Events",
+                channelKeywords = listOf("shopping_event", "seasonal_sale"),
+                contentKeywords = listOf("Black Friday", "Cyber Monday", "Prime Day", "kauf eins bekomm eins", "Blitzangebot", "Winterschlussverkauf", "Schulstart-Angebot")
+            ),
+            BlockCategory(
+                id = "global_food_delivery",
+                label = "Essenslieferung",
+                channelKeywords = listOf("food_delivery", "restaurant_promo"),
+                contentKeywords = listOf("kostenlose Lieferung", "Rabatt auf deine erste Bestellung", "Rabatt auf deine nächste Bestellung", "Liefergebühren erlassen", "bestelle jetzt und spare", "Restaurant-Angebote in deiner Nähe")
+            ),
+            BlockCategory(
+                id = "global_rideshare",
+                label = "Fahrgemeinschaft",
+                channelKeywords = listOf("ride_promo", "rideshare"),
+                contentKeywords = listOf("Fahrtguthaben", "Promo-Code für deine nächste Fahrt", "Rabatt auf deine nächste Fahrt", "kostenlose Fahrt", "buche deine Fahrt und spare")
+            ),
+            BlockCategory(
+                id = "global_real_estate",
+                label = "Immobilien",
+                channelKeywords = listOf("listing_alert", "real_estate"),
+                contentKeywords = listOf("neues Angebot passt zu deiner Suche", "Preis reduziert für ein gespeichertes Haus", "neue Häuser zum Verkauf in der Nähe", "Open House dieses Wochenende")
+            ),
+            BlockCategory(
+                id = "global_insurance",
+                label = "Versicherungen",
+                channelKeywords = listOf("insurance_offer"),
+                contentKeywords = listOf("kostenloses Angebot", "bündeln und sparen", "senke deine Prämie", "vergleiche Versicherungstarife", "du könntest bei deiner Police sparen")
+            ),
+            BlockCategory(
+                id = "global_streaming",
+                label = "Streaming",
+                channelKeywords = listOf("streaming_promo"),
+                contentKeywords = listOf("neue Staffel verfügbar", "kostenlose Testphase startet heute", "jetzt streamen", "zu deiner Watchlist hinzugefügt", "Binge die neue Staffel")
+            ),
+            BlockCategory(
+                id = "global_local_deals",
+                label = "Lokale Angebote",
+                channelKeywords = listOf("local_deal", "daily_deal"),
+                contentKeywords = listOf("Angebot des Tages in deiner Nähe", "Angebot des Tages", "bis zu 50% Rabatt in der Nähe", "lokale Angebote nur für dich")
+            ),
+            BlockCategory(
+                id = "global_travel_alerts",
+                label = "Reisen / Flüge",
+                channelKeywords = listOf("fare_alert", "travel_deal"),
+                contentKeywords = listOf("Flugpreise gesunken", "Tarifalarm", "Preissturz für deine gespeicherte Reise", "günstige Flüge nach", "buche jetzt und spare bei Flügen")
+            )
+        )
+
+        val FR_BLOCK_CATEGORIES = listOf(
+            BlockCategory(
+                id = "sosyal_etkilesim",
+                label = "Réseaux Sociaux",
+                channelKeywords = listOf("social", "interaction"),
+                contentKeywords = listOf("a aimé votre", "a commenté", "vous a tagué", "a commencé à vous suivre", "demande d'ami", "vous a mentionné", "nouvel abonné", "a vu votre profil")
+            ),
+            BlockCategory(
+                id = "yeniden_katilim",
+                label = "Rétention",
+                channelKeywords = listOf("re_engagement", "win_back"),
+                contentKeywords = listOf("vous nous manquez", "revenez", "ça fait longtemps", "nous sommes là pour vous", "bon retour")
+            ),
+            BlockCategory(
+                id = "degerlendirme_istegi",
+                label = "Demandes d'Avis",
+                channelKeywords = listOf("rating", "review_request"),
+                contentKeywords = listOf("notez-nous", "notez cette app", "laissez un avis", "partagez votre expérience", "donnez-nous 5 étoiles")
+            ),
+            BlockCategory(
+                id = "anket",
+                label = "Sondages / Feedback",
+                channelKeywords = listOf("survey", "sondage"),
+                contentKeywords = listOf("participez à notre sondage", "dites-nous ce que vous pensez", "sondage rapide", "votre avis compte")
+            ),
+            BlockCategory(
+                id = "terk_edilen_sepet",
+                label = "Panier Abandonné",
+                channelKeywords = listOf("cart_reminder", "panier"),
+                contentKeywords = listOf("articles dans votre panier", "finalisez votre achat", "n'oubliez pas votre panier", "vous attend dans votre panier")
+            ),
+            BlockCategory(
+                id = "fiyat_stok_uyarisi",
+                label = "Alertes Prix / Stock",
+                channelKeywords = listOf("price_alert", "stock_alert"),
+                contentKeywords = listOf("baisse de prix", "de nouveau en stock", "avant épuisement", "alerte de prix", "promo sur vos favoris")
+            ),
+            BlockCategory(
+                id = "sadakat_puan",
+                label = "Fidélité / Points",
+                channelKeywords = listOf("loyalty", "points"),
+                contentKeywords = listOf("vos points expirent", "vous avez gagné des points", "échangez vos points", "avantages membres")
+            ),
+            BlockCategory(
+                id = "abonelik_hatirlatma",
+                label = "Renouvellement d'Abonnement",
+                channelKeywords = listOf("subscription_reminder"),
+                contentKeywords = listOf("votre essai se termine", "renouvelez votre abonnement", "passez à premium", "l'essai gratuit se termine bientôt")
+            ),
+            BlockCategory(
+                id = "sistem_guncelleme",
+                label = "Mises à Jour",
+                channelKeywords = listOf("app_update", "mise_a_jour"),
+                contentKeywords = listOf("nouvelle version disponible", "mise à jour disponible", "voir les nouveautés", "mettez à jour votre app")
+            ),
+            BlockCategory(
+                id = "spor_canli",
+                label = "Sport / Scores en Direct",
+                channelKeywords = listOf("sports", "sport", "score"),
+                contentKeywords = listOf("le match a commencé", "but", "mise à jour du score", "résultat en direct", "mi-temps")
+            ),
+            BlockCategory(
+                id = "burc_astroloji",
+                label = "Horoscope / Astrologie",
+                channelKeywords = listOf("horoscope"),
+                contentKeywords = listOf("votre horoscope du jour", "les étoiles aujourd'hui", "pour votre signe")
+            ),
+            BlockCategory(
+                id = "flort_eslesme",
+                label = "Rencontres / Matches",
+                channelKeywords = listOf("dating", "match"),
+                contentKeywords = listOf("vous a liké", "nouveau match", "vous a envoyé un message", "match avec vous")
+            ),
+            BlockCategory(
+                id = "kariyer_ilan",
+                label = "Alertes Emploi",
+                channelKeywords = listOf("job_alert", "emploi"),
+                contentKeywords = listOf("nouvelles offres pour vous", "postes correspondant à votre profil", "opportunité de carrière")
+            ),
+            BlockCategory(
+                id = "kripto_borsa",
+                label = "Crypto / Bourse",
+                channelKeywords = listOf("price_watch", "crypto", "bourse"),
+                contentKeywords = listOf("le prix monte", "le prix baisse", "variation en pourcentage", "alerte action")
+            ),
+            BlockCategory(
+                id = "pazarlama",
+                label = "Marketing",
+                channelKeywords = emptyList(),
+                contentKeywords = listOf("vente flash", "méga vente", "super offre", "offre exclusive", "réservé aux membres", "aujourd'hui seulement", "dernier jour", "avant épuisement", "remise supplémentaire", "double remise", "offre VIP", "juste pour vous", "coupon", "code promo", "code de réduction", "carte cadeau", "livraison gratuite", "la plus grande promo de l'année", "liquidation", "soldes d'été", "soldes d'hiver", "fin de saison", "dernière chance", "dépêchez-vous")
+            ),
+            BlockCategory(
+                id = "kredi",
+                label = "Crédit & Finances",
+                channelKeywords = listOf("loan_offer", "finance", "finances"),
+                contentKeywords = listOf("carte de crédit", "prêt personnel", "mensualités", "intérêt", "sans intérêt", "limite de crédit", "restructuration de dette", "demande de prêt", "offre de prêt", "prêt rapide", "prêt instantané", "prêt pré-approuvé", "score de crédit", "avance de fonds")
+            ),
+            BlockCategory(
+                id = "oneriler",
+                label = "Recommandations",
+                channelKeywords = listOf("for_you", "decouvrir", "pour_vous"),
+                contentKeywords = listOf("pour vous", "sélectionné pour vous", "ça pourrait vous plaire", "découvrez", "selon votre historique", "selon vos favoris", "curaté pour vous")
+            ),
+            BlockCategory(
+                id = "oyun",
+                label = "Jeux",
+                channelKeywords = listOf("daily_reward", "event", "evenement"),
+                contentKeywords = listOf("récompense quotidienne", "bonus de connexion quotidien", "montez de niveau", "nouvel étage", "événement commencé", "événement à durée limitée", "vos amis jouent", "classement", "tournoi", "gagnez un prix", "quête quotidienne", "vies gratuites", "pièces gratuites", "gemmes gratuites", "énergie pleine")
+            ),
+            BlockCategory(
+                id = "haber",
+                label = "Actualités",
+                channelKeywords = listOf("breaking_news", "titres"),
+                contentKeywords = listOf("dernière minute", "titres", "actualités en direct", "mise à jour", "résumé", "résumé des actualités", "actualités du jour", "les plus lus", "sélection de la rédaction")
+            ),
+            BlockCategory(
+                id = "genel",
+                label = "Général",
+                channelKeywords = listOf("notification", "reminder", "rappel"),
+                contentKeywords = listOf("rappel", "notification système", "notification de l'app", "info")
+            ),
+            BlockCategory(
+                id = "global_shopping_events",
+                label = "Événements Shopping",
+                channelKeywords = listOf("shopping_event", "seasonal_sale"),
+                contentKeywords = listOf("Black Friday", "Cyber Monday", "Prime Day", "achetez un obtenez un", "offre éclair", "soldes d'hiver", "rentrée scolaire")
+            ),
+            BlockCategory(
+                id = "global_food_delivery",
+                label = "Livraison de Repas",
+                channelKeywords = listOf("food_delivery", "restaurant_promo"),
+                contentKeywords = listOf("livraison gratuite", "réduction sur votre première commande", "réduction sur votre prochaine commande", "frais de livraison offerts", "commandez maintenant et économisez", "offres de restaurants près de vous")
+            ),
+            BlockCategory(
+                id = "global_rideshare",
+                label = "VTC / Transport",
+                channelKeywords = listOf("ride_promo", "rideshare"),
+                contentKeywords = listOf("crédit de trajet", "code promo pour votre prochain trajet", "réduction sur votre prochain trajet", "trajet gratuit", "réservez votre trajet et économisez")
+            ),
+            BlockCategory(
+                id = "global_real_estate",
+                label = "Immobilier",
+                channelKeywords = listOf("listing_alert", "real_estate"),
+                contentKeywords = listOf("nouveau bien correspondant à votre recherche", "prix réduit sur un bien sauvegardé", "nouveaux biens à vendre près de vous", "portes ouvertes ce week-end")
+            ),
+            BlockCategory(
+                id = "global_insurance",
+                label = "Assurances",
+                channelKeywords = listOf("insurance_offer"),
+                contentKeywords = listOf("devis gratuit", "combinez et économisez", "réduisez votre prime", "comparez les tarifs d'assurance", "vous pourriez économiser sur votre police")
+            ),
+            BlockCategory(
+                id = "global_streaming",
+                label = "Streaming",
+                channelKeywords = listOf("streaming_promo"),
+                contentKeywords = listOf("nouvelle saison disponible", "essai gratuit aujourd'hui", "maintenant en streaming", "ajouté à votre liste", "bingez la nouvelle saison")
+            ),
+            BlockCategory(
+                id = "global_local_deals",
+                label = "Offres Locales",
+                channelKeywords = listOf("local_deal", "daily_deal"),
+                contentKeywords = listOf("offre du jour près de vous", "offre du jour", "jusqu'à 50% de réduction à proximité", "offres locales juste pour vous")
+            ),
+            BlockCategory(
+                id = "global_travel_alerts",
+                label = "Voyages / Vols",
+                channelKeywords = listOf("fare_alert", "travel_deal"),
+                contentKeywords = listOf("prix des vols baissés", "alerte de tarif", "baisse de prix sur votre voyage sauvegardé", "vols pas chers vers", "réservez maintenant et économisez sur les vols")
             )
         )
 

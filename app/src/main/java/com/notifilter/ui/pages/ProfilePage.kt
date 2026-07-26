@@ -524,45 +524,69 @@ fun ProfilePage(
                         }
                     )
                     Divider()
-                    var isTurkeySelected by remember { mutableStateOf(filterPrefs.isLanguagePackEnabled(FilterRulesPreferences.PACK_TR)) }
-                    var showRegionDialog by remember { mutableStateOf(false) }
+                    var enabledPacks by remember { mutableStateOf(filterPrefs.enabledLanguagePacks) }
+                    var showLangPackDialog by remember { mutableStateOf(false) }
 
-                    if (showRegionDialog) {
+                    if (showLangPackDialog) {
                         AlertDialog(
-                            onDismissRequest = { showRegionDialog = false },
-                            title = { Text(stringResource(R.string.country_selection_title)) },
-                            text = { Text(stringResource(R.string.country_selection_desc)) },
-                            confirmButton = {
-                                TextButton(onClick = {
-                                    filterPrefs.applyCountrySelection(isTurkey = true)
-                                    isTurkeySelected = true
-                                    showRegionDialog = false
-                                }) {
-                                    Text(stringResource(R.string.country_selection_turkey))
+                            onDismissRequest = { showLangPackDialog = false },
+                            title = { Text(stringResource(R.string.lang_pack_selection_title)) },
+                            text = {
+                                Column {
+                                    FilterRulesPreferences.ALL_PACKS.forEach { packId ->
+                                        val isEnabled = packId in enabledPacks
+                                        val isEn = packId == FilterRulesPreferences.PACK_EN
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(vertical = 8.dp)
+                                                .clickable {
+                                                    if (!isEn) {
+                                                        filterPrefs.toggleLanguagePack(packId)
+                                                        enabledPacks = filterPrefs.enabledLanguagePacks
+                                                    }
+                                                },
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                        ) {
+                                            Text(
+                                                text = FilterRulesPreferences.packFlagEmoji(packId),
+                                                style = MaterialTheme.typography.headlineMedium
+                                            )
+                                            Text(
+                                                text = FilterRulesPreferences.packLabel(packId),
+                                                style = MaterialTheme.typography.titleMedium,
+                                                modifier = Modifier.weight(1f)
+                                            )
+                                            if (isEnabled) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Check,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.primary
+                                                )
+                                            }
+                                        }
+                                    }
                                 }
                             },
-                            dismissButton = {
-                                TextButton(onClick = {
-                                    filterPrefs.applyCountrySelection(isTurkey = false)
-                                    isTurkeySelected = false
-                                    showRegionDialog = false
-                                }) {
-                                    Text(stringResource(R.string.country_selection_other))
+                            confirmButton = {
+                                TextButton(onClick = { showLangPackDialog = false }) {
+                                    Text(stringResource(R.string.lang_pack_continue))
                                 }
                             }
                         )
                     }
 
                     ListItem(
-                        headlineContent = { Text(stringResource(R.string.country_selection_title)) },
+                        headlineContent = { Text(stringResource(R.string.lang_pack_selection_title)) },
                         supportingContent = {
                             Text(
-                                if (isTurkeySelected) stringResource(R.string.country_selection_turkey) else stringResource(R.string.country_selection_other)
+                                enabledPacks.joinToString(", ") { FilterRulesPreferences.packLabel(it) }
                             )
                         },
                         leadingContent = { Icon(Icons.Default.Public, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { showRegionDialog = true }
+                        modifier = Modifier.clickable { showLangPackDialog = true }
                     )
                     Divider()
                     ListItem(

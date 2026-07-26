@@ -161,9 +161,8 @@ fun MainScreen(
     val isEntitled = (entitlement is BillingManager.EntitlementState.Active) || EntitlementStore.isEntitled(context)
 
     if (!isCountrySelected) {
-        com.notifilter.ui.components.CountrySelectionPage(
-            onCountrySelected = { isTurkey ->
-                filterPrefs.applyCountrySelection(isTurkey)
+        com.notifilter.ui.components.LanguagePackSelectionPage(
+            onDone = {
                 isCountrySelected = true
             }
         )

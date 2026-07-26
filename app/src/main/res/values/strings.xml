@@ -2,12 +2,12 @@
 <resources>
     <string name="app_name">NO:Notification Spam Blocker</string>
 
-    <!-- Country Selection (first launch) -->
-    <string name="country_selection_title">Which country do you live in?</string>
-    <string name="country_selection_desc">This helps us automatically set the right notification-blocking categories and word pack for your region. It\'s independent of your phone\'s system language — because notification language is decided by the sending app, not your phone. If you select Turkey, you\'ll keep using the mixed Turkish + English categories; if you select outside Turkey, categories will be shown fully in English.</string>
-    <string name="country_selection_turkey">Turkey</string>
-    <string name="country_selection_other">Outside Turkey</string>
-    <string name="country_selection_footnote">You can change this anytime from the Settings screen.</string>
+    <!-- Language Pack Selection (first launch) -->
+    <string name="lang_pack_selection_title">Select Language Packs</string>
+    <string name="lang_pack_selection_desc">Choose which languages you want to filter notifications in. English is always active. Your phone\'s language has been auto-selected — you can add more below.</string>
+    <string name="lang_pack_selection_footnote">You can change this anytime from the Settings screen.</string>
+    <string name="lang_pack_continue">Continue</string>
+    <string name="lang_pack_english_locked">English (always active)</string>
 
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_archive">Archive</string>

@@ -302,23 +302,6 @@ private fun NotificationRow(notification: NotificationRecord) {
             color = if (notification.isBlocked) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp)
         )
-
-        if (BuildConfig.DEBUG) {
-            val debugText = buildString {
-                append("pkg=")
-                append(notification.packageName)
-                if (!notification.channelId.isNullOrBlank()) {
-                    append(" | ch=")
-                    append(notification.channelId)
-                }
-            }
-            Text(
-                text = debugText,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 4.dp)
-            )
-        }
     }
 }
 
@@ -332,14 +315,10 @@ private fun localizedBlockReason(reason: String?): String {
         reason == "Odak Modu açık" -> stringResource(R.string.reason_focus_mode_active)
         reason == "Games pack active" -> stringResource(R.string.reason_games_pack_active)
         reason == "Oyun paketi aktif" -> stringResource(R.string.reason_games_pack_active)
-        reason.startsWith("Manuel engellenen kanal:") -> {
-            val channel = reason.substringAfter(":").trim().trim('"', '\'', '’')
-            stringResource(R.string.reason_manual_blocked_channel, channel)
-        }
-        reason.startsWith("Kanal ID:") -> {
-            val keyword = reason.substringAfter(":").trim().trim('"', '\'', '’')
-            stringResource(R.string.reason_channel_id, keyword)
-        }
+        reason.startsWith("Manuel engellenen kanal:") ->
+            stringResource(R.string.reason_manual_blocked_channel)
+        reason.startsWith("Kanal ID:") ->
+            stringResource(R.string.reason_channel_id)
         reason.startsWith("İçerik:") -> {
             val keyword = reason.substringAfter(":").trim().trim('"', '\'', '’')
             stringResource(R.string.reason_content, keyword)

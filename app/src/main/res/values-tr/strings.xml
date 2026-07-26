@@ -57,10 +57,14 @@
     <string name="block_group_marketing">Pazarlama ve Teklifler</string>
     <string name="block_group_other">Diğer</string>
     <string name="block_category_words">Kelimeler</string>
-    <string name="block_section_allow_words_title">Özel İzin Kelimeleri</string>
-    <string name="block_section_allow_words_desc">Bu kelimeler önceliklidir. Bildirim içeriğinde geçerse engellenmez.</string>
-    <string name="block_section_block_words_title">Özel Blok Kelimeleri</string>
-    <string name="block_section_block_words_desc">Kendi istediğin kelimeleri ekle. Bildirim içeriğinde geçerse engellenir.</string>
+    <string name="block_section_allow_words_title">Kendi İzin Kategorilerim</string>
+    <string name="block_section_allow_words_desc">Kendi başlığını verdiğin kategoriler oluştur ve içine kelimeler ekle. Bu kelimelerden biri bir bildirimde geçerse o bildirim asla engellenmez.</string>
+    <string name="block_section_block_words_title">Kendi Blok Kategorilerim</string>
+    <string name="block_section_block_words_desc">Kendi başlığını verdiğin kategoriler oluştur ve içine kelimeler ekle. Bu kelimelerden biri bir bildirimde geçerse o bildirim engellenir.</string>
+    <string name="block_add_category">Kategori ekle</string>
+    <string name="block_category_title_hint">Kategori başlığı</string>
+    <string name="block_category_empty_words">Henüz kelime eklenmemiş</string>
+    <string name="block_no_categories_yet">Henüz özel kategori yok</string>
 
     <string name="dashboard_notification_access_off_title">Bildirim erişimi kapalı</string>
     <string name="dashboard_notification_access_off_desc">Engelleme ve kayıt çalışmıyor. Ayarlardan erişimi açın.</string>
@@ -94,8 +98,8 @@
     <string name="reason_focus_mode_active">Odak Modu açık</string>
     <string name="reason_games_pack_active">Oyun paketi aktif</string>
     <string name="reason_mute_and_save">Muaf tutuldu</string>
-    <string name="reason_manual_blocked_channel">Manuel engellenen kanal: %1$s</string>
-    <string name="reason_channel_id">Kanal ID: %1$s</string>
+    <string name="reason_manual_blocked_channel">Manuel engellenen kanal</string>
+    <string name="reason_channel_id">Kanal kuralı ile engellendi</string>
     <string name="reason_content">İçerik: %1$s</string>
 
     <string name="detail_allow_emoji_in_app">Emojiye izin ver</string>

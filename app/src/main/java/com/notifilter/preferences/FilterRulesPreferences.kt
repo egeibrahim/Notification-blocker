@@ -3,7 +3,10 @@ package com.notifilter.preferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.notifilter.R
 import com.notifilter.engine.FilterRulesConfig
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.Locale
 
 /**
@@ -11,6 +14,12 @@ import java.util.Locale
  * Her blok kategorisi hem kanal ID hem içerik kelimelerini kapsar (Google Play kategorileri mantığı).
  * - channel_allow: Kanal ID'de geçerse bypass
  */
+data class CustomWordCategory(
+    val id: String,
+    val title: String,
+    val words: Set<String>
+)
+
 class FilterRulesPreferences(private val context: Context) {
 
     private val prefs: SharedPreferences = context.getSharedPreferences(
@@ -468,6 +477,152 @@ class FilterRulesPreferences(private val context: Context) {
         userContentBlockWords = userContentBlockWords - word
     }
 
+    /** Kullanıcının kendi başlığıyla oluşturduğu içerik blok kategorileri */
+    fun getUserContentBlockCategories(): List<CustomWordCategory> {
+        val loaded = loadCustomCategories(KEY_USER_CONTENT_BLOCK_CATEGORIES)
+        if (loaded.isEmpty()) {
+            val legacy = getStringSetCompat(KEY_USER_CONTENT_BLOCK_WORDS)
+            if (legacy.isNotEmpty()) {
+                val migrated = listOf(
+                    CustomWordCategory(
+                        id = "migrated_block",
+                        title = context.getString(R.string.block_section_block_words_title),
+                        words = legacy
+                    )
+                )
+                saveCustomCategories(KEY_USER_CONTENT_BLOCK_CATEGORIES, migrated)
+                prefs.edit(commit = true) { remove(KEY_USER_CONTENT_BLOCK_WORDS) }
+                return migrated
+            }
+        }
+        return loaded
+    }
+
+    fun addUserContentBlockCategory(title: String): String {
+        val t = title.trim()
+        if (t.isBlank()) return ""
+        val id = "user_block_${System.currentTimeMillis()}"
+        val list = getUserContentBlockCategories() + CustomWordCategory(id, t, emptySet())
+        saveCustomCategories(KEY_USER_CONTENT_BLOCK_CATEGORIES, list)
+        return id
+    }
+
+    fun removeUserContentBlockCategory(id: String) {
+        val list = getUserContentBlockCategories().filter { it.id != id }
+        saveCustomCategories(KEY_USER_CONTENT_BLOCK_CATEGORIES, list)
+    }
+
+    fun addUserContentBlockCategoryWord(id: String, word: String) {
+        val w = word.trim().lowercase()
+        if (w.isBlank()) return
+        val list = getUserContentBlockCategories().map { cat ->
+            if (cat.id == id) cat.copy(words = cat.words + w) else cat
+        }
+        saveCustomCategories(KEY_USER_CONTENT_BLOCK_CATEGORIES, list)
+    }
+
+    fun removeUserContentBlockCategoryWord(id: String, word: String) {
+        val w = word.trim().lowercase()
+        if (w.isBlank()) return
+        val list = getUserContentBlockCategories().map { cat ->
+            if (cat.id == id) cat.copy(words = cat.words - w) else cat
+        }
+        saveCustomCategories(KEY_USER_CONTENT_BLOCK_CATEGORIES, list)
+    }
+
+    fun getAllUserContentBlockWords(): Set<String> {
+        return getUserContentBlockCategories().flatMap { it.words }.toSet()
+    }
+
+    /** Kullanıcının kendi başlığıyla oluşturduğu izin kelimesi kategorileri */
+    fun getUserContentAllowCategories(): List<CustomWordCategory> {
+        val loaded = loadCustomCategories(KEY_USER_CONTENT_ALLOW_CATEGORIES)
+        if (loaded.isEmpty()) {
+            val legacy = getStringSetCompat(KEY_USER_CONTENT_ALLOW_WORDS)
+            if (legacy.isNotEmpty()) {
+                val migrated = listOf(
+                    CustomWordCategory(
+                        id = "migrated_allow",
+                        title = context.getString(R.string.block_section_allow_words_title),
+                        words = legacy
+                    )
+                )
+                saveCustomCategories(KEY_USER_CONTENT_ALLOW_CATEGORIES, migrated)
+                prefs.edit(commit = true) { remove(KEY_USER_CONTENT_ALLOW_WORDS) }
+                return migrated
+            }
+        }
+        return loaded
+    }
+
+    fun addUserContentAllowCategory(title: String): String {
+        val t = title.trim()
+        if (t.isBlank()) return ""
+        val id = "user_allow_${System.currentTimeMillis()}"
+        val list = getUserContentAllowCategories() + CustomWordCategory(id, t, emptySet())
+        saveCustomCategories(KEY_USER_CONTENT_ALLOW_CATEGORIES, list)
+        return id
+    }
+
+    fun removeUserContentAllowCategory(id: String) {
+        val list = getUserContentAllowCategories().filter { it.id != id }
+        saveCustomCategories(KEY_USER_CONTENT_ALLOW_CATEGORIES, list)
+    }
+
+    fun addUserContentAllowCategoryWord(id: String, word: String) {
+        val w = word.trim().lowercase()
+        if (w.isBlank()) return
+        val list = getUserContentAllowCategories().map { cat ->
+            if (cat.id == id) cat.copy(words = cat.words + w) else cat
+        }
+        saveCustomCategories(KEY_USER_CONTENT_ALLOW_CATEGORIES, list)
+    }
+
+    fun removeUserContentAllowCategoryWord(id: String, word: String) {
+        val w = word.trim().lowercase()
+        if (w.isBlank()) return
+        val list = getUserContentAllowCategories().map { cat ->
+            if (cat.id == id) cat.copy(words = cat.words - w) else cat
+        }
+        saveCustomCategories(KEY_USER_CONTENT_ALLOW_CATEGORIES, list)
+    }
+
+    fun getAllUserContentAllowWords(): Set<String> {
+        return getUserContentAllowCategories().flatMap { it.words }.toSet()
+    }
+
+    private fun loadCustomCategories(key: String): List<CustomWordCategory> {
+        val raw = prefs.getString(key, null) ?: return emptyList()
+        return try {
+            val arr = JSONArray(raw)
+            (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                val id = obj.getString("id")
+                val title = obj.getString("title")
+                val wordsArr = obj.getJSONArray("words")
+                val words = (0 until wordsArr.length()).map { j -> wordsArr.getString(j) }.toSet()
+                CustomWordCategory(id, title, words)
+            }
+        } catch (_: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun saveCustomCategories(key: String, categories: List<CustomWordCategory>) {
+        val arr = JSONArray()
+        categories.forEach { cat ->
+            val obj = JSONObject().apply {
+                put("id", cat.id)
+                put("title", cat.title)
+                val wordsArr = JSONArray()
+                cat.words.forEach { wordsArr.put(it) }
+                put("words", wordsArr)
+            }
+            arr.put(obj)
+        }
+        prefs.edit(commit = true) { putString(key, arr.toString()) }
+    }
+
     /** Kullanıcının tek tıkla engellediği kanallar: "packageName|channelId" */
     var userBlockedChannelKeys: Set<String>
         get() = getStringSetCompat(KEY_USER_BLOCKED_CHANNELS)
@@ -595,8 +750,8 @@ class FilterRulesPreferences(private val context: Context) {
     fun toFilterRulesConfig(): FilterRulesConfig = FilterRulesConfig(
         channelBlock = getEnabledRecommendedChannelWords().toList(),
         channelAllow = channelAllowKeywords.toList(),
-        contentAllow = userContentAllowWords.toList(),
-        contentBlock = (getEnabledRecommendedContentWords() + userContentBlockWords + getUserCategoryWordsForActiveCategories()).toList(),
+        contentAllow = getAllUserContentAllowWords().toList(),
+        contentBlock = (getEnabledRecommendedContentWords() + getAllUserContentBlockWords() + getUserCategoryWordsForActiveCategories()).toList(),
         channelIdsBlocked = userBlockedChannelKeys.toList()
     )
 
@@ -609,6 +764,8 @@ class FilterRulesPreferences(private val context: Context) {
         private const val KEY_USER_BLOCKED_CHANNELS = "filter_user_blocked_channels"
         private const val KEY_USER_CONTENT_BLOCK_WORDS = "filter_user_content_block_words"
         private const val KEY_USER_CONTENT_ALLOW_WORDS = "filter_user_content_allow_words"
+        private const val KEY_USER_CONTENT_BLOCK_CATEGORIES = "filter_user_content_block_categories_json"
+        private const val KEY_USER_CONTENT_ALLOW_CATEGORIES = "filter_user_content_allow_categories_json"
         private const val KEY_ENABLED_LANGUAGE_PACKS = "filter_enabled_language_packs"
 
         private const val KEY_DISABLED_RECOMMENDED_CONTENT_WORDS = "filter_disabled_recommended_content_words"

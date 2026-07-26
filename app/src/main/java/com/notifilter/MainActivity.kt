@@ -57,7 +57,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.notifilter.auth.SupabaseAuthManager
-import com.notifilter.preferences.CountryPreferences
 import com.notifilter.preferences.FilterRulesPreferences
 import com.notifilter.sync.CloudSyncManager
 import com.notifilter.util.NotificationAccessHelper
@@ -139,8 +138,8 @@ fun MainScreen(
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showWalkthrough by remember { mutableStateOf(sharedPrefs.getBoolean("show_walkthrough_v1", true)) }
 
-    val countryPrefs = remember { CountryPreferences(context) }
-    var isCountrySelected by remember { mutableStateOf(countryPrefs.isCountrySelected) }
+    val filterPrefs = remember { FilterRulesPreferences(context) }
+    var isCountrySelected by remember { mutableStateOf(filterPrefs.hasSelectedCountry) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
@@ -163,14 +162,8 @@ fun MainScreen(
 
     if (!isCountrySelected) {
         com.notifilter.ui.components.CountrySelectionPage(
-            onCountrySelected = { code ->
-                countryPrefs.countryCode = code
-                val filterPrefs = FilterRulesPreferences(context)
-                if (code.equals(CountryPreferences.TURKEY_CODE, ignoreCase = true)) {
-                    filterPrefs.enabledLanguagePacks = setOf(FilterRulesPreferences.PACK_TR, FilterRulesPreferences.PACK_EN)
-                } else {
-                    filterPrefs.setSingleLanguagePack(FilterRulesPreferences.PACK_EN)
-                }
+            onCountrySelected = { isTurkey ->
+                filterPrefs.applyCountrySelection(isTurkey)
                 isCountrySelected = true
             }
         )

@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -69,6 +70,7 @@ import com.notifilter.BuildConfig
 import com.notifilter.R
 import com.notifilter.auth.SupabaseAuthManager
 import com.notifilter.billing.BillingManager
+import com.notifilter.preferences.FilterRulesPreferences
 import com.notifilter.sync.CloudSyncManager
 import com.notifilter.ui.components.AppCard
 import androidx.lifecycle.Lifecycle
@@ -137,6 +139,7 @@ fun ProfilePage(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val filterPrefs = remember { FilterRulesPreferences(context) }
     val billingManager = remember { BillingManager(context.applicationContext) }
     DisposableEffect(Unit) {
         billingManager.start()
@@ -497,6 +500,47 @@ fun ProfilePage(
                                 showSignOutConfirm = true
                             }
                         }
+                    )
+                    Divider()
+                    var isTurkeySelected by remember { mutableStateOf(filterPrefs.isLanguagePackEnabled(FilterRulesPreferences.PACK_TR)) }
+                    var showRegionDialog by remember { mutableStateOf(false) }
+
+                    if (showRegionDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showRegionDialog = false },
+                            title = { Text(stringResource(R.string.country_selection_title)) },
+                            text = { Text(stringResource(R.string.country_selection_desc)) },
+                            confirmButton = {
+                                TextButton(onClick = {
+                                    filterPrefs.applyCountrySelection(isTurkey = true)
+                                    isTurkeySelected = true
+                                    showRegionDialog = false
+                                }) {
+                                    Text(stringResource(R.string.country_selection_turkey))
+                                }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = {
+                                    filterPrefs.applyCountrySelection(isTurkey = false)
+                                    isTurkeySelected = false
+                                    showRegionDialog = false
+                                }) {
+                                    Text(stringResource(R.string.country_selection_other))
+                                }
+                            }
+                        )
+                    }
+
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.country_selection_title)) },
+                        supportingContent = {
+                            Text(
+                                if (isTurkeySelected) stringResource(R.string.country_selection_turkey) else stringResource(R.string.country_selection_other)
+                            )
+                        },
+                        leadingContent = { Icon(Icons.Default.Public, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { showRegionDialog = true }
                     )
                     Divider()
                     ListItem(

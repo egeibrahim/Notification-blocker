@@ -150,6 +150,32 @@ class FilterRulesPreferences(private val context: Context) {
         enabledLanguagePacks = setOf(packId)
     }
 
+    /**
+     * Onboarding'de kullanıcı ülkesini seçtiğinde çağrılır.
+     *
+     * Telefonun sistem dilinden bağımsızdır çünkü bildirim dili, gönderen
+     * uygulamanın sunucu kararına göre belirlenir — telefon İngilizce olsa
+     * bile Türkiye'de yaşayan biri Türkçe VE İngilizce bildirim alabilir
+     * (bkz. Getir/bankalar TR-only, Instagram/Netflix hesap dili bazlı,
+     * WhatsApp karşı tarafın diline bağlı). Bu yüzden Türkiye seçilirse
+     * güvenlik payı olarak iki paket birden aktif ediliyor; Türkiye dışı
+     * seçilirse Türkçe bildirim alma ihtimali düşük olduğundan sadece EN.
+     */
+    fun applyCountrySelection(isTurkey: Boolean) {
+        enabledLanguagePacks = if (isTurkey) {
+            setOf(PACK_TR, PACK_EN)
+        } else {
+            setOf(PACK_EN)
+        }
+        hasSelectedCountry = true
+    }
+
+    var hasSelectedCountry: Boolean
+        get() = prefs.getBoolean(KEY_HAS_SELECTED_COUNTRY, false)
+        set(value) = prefs.edit(commit = true) {
+            putBoolean(KEY_HAS_SELECTED_COUNTRY, value)
+        }
+
     fun getDisabledRecommendedContentWords(packId: String): Set<String> = getDisabledRecommendedContentWords()
 
     fun isRecommendedContentWordEnabled(packId: String, word: String): Boolean =
@@ -648,6 +674,7 @@ class FilterRulesPreferences(private val context: Context) {
 
     private fun getActiveBlockCategories(): List<BlockCategory> {
         val selected = enabledLanguagePacks.flatMap { getCategoriesForPack(it) }
+            .ifEmpty { TR_BLOCK_CATEGORIES + EN_BLOCK_CATEGORIES }
         val merged = LinkedHashMap<String, BlockCategory>()
         selected.forEach { cat ->
             val existing = merged[cat.id]
@@ -767,6 +794,7 @@ class FilterRulesPreferences(private val context: Context) {
         private const val KEY_USER_CONTENT_BLOCK_CATEGORIES = "filter_user_content_block_categories_json"
         private const val KEY_USER_CONTENT_ALLOW_CATEGORIES = "filter_user_content_allow_categories_json"
         private const val KEY_ENABLED_LANGUAGE_PACKS = "filter_enabled_language_packs"
+        private const val KEY_HAS_SELECTED_COUNTRY = "filter_has_selected_country"
 
         private const val KEY_DISABLED_RECOMMENDED_CONTENT_WORDS = "filter_disabled_recommended_content_words"
         private const val KEY_DISABLED_RECOMMENDED_CHANNEL_WORDS = "filter_disabled_recommended_channel_words"
@@ -1054,6 +1082,55 @@ class FilterRulesPreferences(private val context: Context) {
                 label = "General",
                 channelKeywords = listOf("notification", "reminder"),
                 contentKeywords = listOf("reminder", "system notification", "app notification", "info")
+            ),
+            // Global-market-only categories (no Turkish equivalent, not added to TR_BLOCK_CATEGORIES)
+            BlockCategory(
+                id = "global_shopping_events",
+                label = "Shopping Day Sales",
+                channelKeywords = listOf("shopping_event", "seasonal_sale"),
+                contentKeywords = listOf("black friday", "cyber monday", "prime day", "buy one get one", "bogo", "doorbuster", "boxing day sale", "back to school sale")
+            ),
+            BlockCategory(
+                id = "global_food_delivery",
+                label = "Food Delivery Promos",
+                channelKeywords = listOf("food_delivery", "restaurant_promo"),
+                contentKeywords = listOf("free delivery", "% off your first order", "off your next order", "delivery fee waived", "order now and save", "restaurant deals near you")
+            ),
+            BlockCategory(
+                id = "global_rideshare",
+                label = "Ride-share Promos",
+                channelKeywords = listOf("ride_promo", "rideshare"),
+                contentKeywords = listOf("ride credit", "promo code for your next ride", "off your next ride", "free ride", "book your ride and save")
+            ),
+            BlockCategory(
+                id = "global_real_estate",
+                label = "Real Estate Alerts",
+                channelKeywords = listOf("listing_alert", "real_estate"),
+                contentKeywords = listOf("new listing matches your search", "price reduced on a saved home", "new homes for sale near you", "open house this weekend")
+            ),
+            BlockCategory(
+                id = "global_insurance",
+                label = "Insurance Marketing",
+                channelKeywords = listOf("insurance_offer"),
+                contentKeywords = listOf("get a free quote", "bundle and save", "lower your premium", "compare insurance rates", "you could save on your policy")
+            ),
+            BlockCategory(
+                id = "global_streaming",
+                label = "Streaming Platform Promos",
+                channelKeywords = listOf("streaming_promo"),
+                contentKeywords = listOf("new season available", "free trial starts today", "now streaming", "added to your watchlist", "binge the new season")
+            ),
+            BlockCategory(
+                id = "global_local_deals",
+                label = "Local Deals",
+                channelKeywords = listOf("local_deal", "daily_deal"),
+                contentKeywords = listOf("today's deal near you", "deal of the day", "up to 50% off nearby", "local deals just for you")
+            ),
+            BlockCategory(
+                id = "global_travel_alerts",
+                label = "Travel / Flight Price Alerts",
+                channelKeywords = listOf("fare_alert", "travel_deal"),
+                contentKeywords = listOf("flight prices dropped", "fare alert", "price drop on your saved trip", "cheap flights to", "book now and save on flights")
             )
         )
     }

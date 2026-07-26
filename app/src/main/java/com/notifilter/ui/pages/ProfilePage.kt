@@ -270,7 +270,7 @@ fun ProfilePage(
                     )
                     Divider()
                     ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_faq)) },
+                        headlineContent = { Text(stringResource(R.string.title_help_faq)) },
                         leadingContent = { Icon(Icons.Default.Feedback, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
                         modifier = Modifier.clickable { onFaqClick() }

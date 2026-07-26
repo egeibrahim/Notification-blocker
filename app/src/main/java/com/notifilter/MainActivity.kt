@@ -65,7 +65,7 @@ import com.notifilter.preferences.ImportantChannelsPreferences
 import com.notifilter.ui.pages.ArchivePage
 import com.notifilter.ui.pages.BlacklistPage
 import com.notifilter.ui.pages.DashboardPage
-import com.notifilter.ui.pages.FaqPage
+import com.notifilter.ui.pages.HelpFaqPage
 import com.notifilter.ui.pages.ProfilePage
 import com.notifilter.ui.theme.NotifilterTheme
 
@@ -153,7 +153,7 @@ fun MainScreen() {
 
     if (currentSubPage != null) {
         when (currentSubPage) {
-            ProfileSubPage.Faq -> FaqPage(onBackClick = { currentSubPage = null })
+            ProfileSubPage.Faq -> HelpFaqPage(onBackClick = { currentSubPage = null })
             else -> Unit
         }
         return

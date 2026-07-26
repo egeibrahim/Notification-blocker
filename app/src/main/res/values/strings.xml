@@ -200,4 +200,28 @@
     <string name="error_generic">Error: %1$s</string>
     <string name="error_auth_not_configured">Sign-in isn\'t available right now</string>
     <string name="error_no_email_app">No email app found on this device</string>
+
+    <string name="title_help_faq">Help &amp; FAQs</string>
+    <string name="hiw_1_title">1. Block: Standard Block Keywords</string>
+    <string name="hiw_1_body">When you first install the app, the built-in keyword categories (Marketing, Credit, Games, News and General spam) are turned off. Open them from the Block screen. Each category can be toggled on or off, and you can add or remove your own words. When a notification arrives, NO checks the notification channel ID and the full message text against the active keyword lists. If it finds a match, the notification is silenced and moved to the Archive instead of showing on top of the screen.</string>
+    <string name="hiw_2_title">2. Focus Mode: Total Silence</string>
+    <string name="hiw_2_body">Focus Mode is turned on and off from the main Dashboard switch. While it is active, every incoming notification is redirected to the Archive without making a sound or vibration, no matter which app or channel it comes from. This keeps you focused and you can still review the full history later inside the app.</string>
+    <string name="hiw_3_title">3. Exempt: Never-Block List</string>
+    <string name="hiw_3_body">Tap any app in the Apps screen to open its detail sheet. Turn on "Exempt" for apps whose notifications must always reach you. When an app is exempt, NO will not block any notification from that app, not by standard filters, not by custom block words, and not even by Focus Mode. This is recommended for banking, messaging, delivery and authentication apps.</string>
+    <string name="hiw_4_title">4. Emoji Block</string>
+    <string name="hiw_4_body">When Emoji Block is enabled, any notification that is only emojis or contains a heavy amount of emojis will be blocked automatically. If you want emoji notifications from a specific app, open the app detail and turn on "Allow emojis". That app will then bypass the emoji filter.</string>
+    <string name="hiw_5_title">5. Archive: 7-Day History</string>
+    <string name="hiw_5_body">Blocked and Focus-Mode notifications are kept in the Archive tab for 7 days. You can see the app name, the exact time it arrived and the reason it was filtered. The Archive is automatically cleaned after 7 days so it never takes up too much storage.</string>
+    <string name="hiw_6_title">6. Allow Words: Your Whitelist</string>
+    <string name="hiw_6_body">Words you add to "Allow Words" in the Block screen have the highest priority. If a notification contains one of these words, it will never be blocked, no matter how spam-like the rest of the message looks. Add words like "order", "shipment" or "verification" so that important messages always get through.</string>
+    <string name="hiw_7_title">7. Google Sign-In and Cloud Backup</string>
+    <string name="hiw_7_body">Signing in with Google is completely optional. When you sign in, your notification history and settings are backed up to the cloud end-to-end encrypted. If you change phones, reinstall the app or clear data, you can sign back in and restore everything. The app also works locally without signing in.</string>
+    <string name="help_setup_title">Setup: First-Time Steps</string>
+    <string name="help_setup_body">For NO to work correctly, please grant notification access, disable battery optimization or allow background usage, accept the restricted settings dialog, and disable manufacturer-specific auto-start or background restrictions. This lets NO restart automatically after your phone reboots.</string>
+    <string name="faq_1_title">FAQ: Why are my notifications not being blocked?</string>
+    <string name="faq_1_body">The most common reasons are: notification access is not granted, battery optimization is killing the app in the background, the app is on the Exempt list, or the notification contains a word in your Allow Words list. Some manufacturer interfaces (Xiaomi, Samsung, Oppo, etc.) are extra aggressive; check battery and auto-start settings manually.</string>
+    <string name="faq_2_title">FAQ: What is the difference between Focus Mode and Archive?</string>
+    <string name="faq_2_body">Focus Mode immediately silences all incoming notifications and sends them to the Archive to protect your attention. The Archive is the history area where both blocked and Focus Mode notifications are stored for 7 days. You can open the Archive and see why each notification was filtered.</string>
+    <string name="faq_3_title">FAQ: What is the difference between Exempt and Allow Words?</string>
+    <string name="faq_3_body">"Exempt" works per app: every notification from the selected app is allowed. "Allow Words" works by content: any notification containing one of those words is allowed, regardless of the app. They can be used together and never conflict. Use both sparingly and only for apps or words that are truly important.</string>
 </resources>

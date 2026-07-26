@@ -647,7 +647,7 @@ class FilterRulesPreferences(private val context: Context) {
         "$packageName|${channelId ?: ""}"
 
     private fun getActiveBlockCategories(): List<BlockCategory> {
-        val selected = TR_BLOCK_CATEGORIES + EN_BLOCK_CATEGORIES
+        val selected = enabledLanguagePacks.flatMap { getCategoriesForPack(it) }
         val merged = LinkedHashMap<String, BlockCategory>()
         selected.forEach { cat ->
             val existing = merged[cat.id]
@@ -936,122 +936,122 @@ class FilterRulesPreferences(private val context: Context) {
             // New categories
             BlockCategory(
                 id = "sosyal_etkilesim",
-                label = "Sosyal Medya",
+                label = "Social Media",
                 channelKeywords = listOf("social", "engagement"),
                 contentKeywords = listOf("liked your", "commented on", "tagged you", "started following you", "friend request", "mentioned you", "new follower", "viewed your profile")
             ),
             BlockCategory(
                 id = "yeniden_katilim",
-                label = "Geri Kazanım",
+                label = "Win-back",
                 channelKeywords = listOf("re_engagement", "win_back"),
                 contentKeywords = listOf("we miss you", "come back", "haven't seen you in a while", "we're here for you", "welcome back")
             ),
             BlockCategory(
                 id = "degerlendirme_istegi",
-                label = "Puanlama İstekleri",
+                label = "Review Requests",
                 channelKeywords = listOf("rating", "review_request"),
                 contentKeywords = listOf("rate us", "rate this app", "leave a review", "share your experience", "give us 5 stars")
             ),
             BlockCategory(
                 id = "anket",
-                label = "Anket / Geri Bildirim",
+                label = "Surveys / Feedback",
                 channelKeywords = listOf("survey"),
                 contentKeywords = listOf("take our survey", "tell us what you think", "quick survey", "your feedback matters")
             ),
             BlockCategory(
                 id = "terk_edilen_sepet",
-                label = "Sepet Hatırlatma",
+                label = "Cart Reminders",
                 channelKeywords = listOf("cart_reminder"),
                 contentKeywords = listOf("items in your cart", "complete your purchase", "don't forget your cart", "still waiting in your cart")
             ),
             BlockCategory(
                 id = "fiyat_stok_uyarisi",
-                label = "Fiyat / Stok Uyarısı",
+                label = "Price / Stock Alerts",
                 channelKeywords = listOf("price_alert", "stock_alert"),
                 contentKeywords = listOf("price drop", "back in stock", "before it sells out", "price alert", "sale on your favorites")
             ),
             BlockCategory(
                 id = "sadakat_puan",
-                label = "Sadakat / Puan",
+                label = "Loyalty / Points",
                 channelKeywords = listOf("loyalty"),
                 contentKeywords = listOf("points expiring", "you earned points", "redeem your points", "membership perks")
             ),
             BlockCategory(
                 id = "abonelik_hatirlatma",
-                label = "Abonelik Yenileme",
+                label = "Subscription Renewal",
                 channelKeywords = listOf("subscription_reminder"),
                 contentKeywords = listOf("your trial is ending", "renew your subscription", "upgrade to premium", "free trial ends soon")
             ),
             BlockCategory(
                 id = "sistem_guncelleme",
-                label = "Güncelleme",
+                label = "App Updates",
                 channelKeywords = listOf("app_update"),
                 contentKeywords = listOf("new version available", "update available", "see what's new", "update your app")
             ),
             BlockCategory(
                 id = "spor_canli",
-                label = "Spor / Canlı Skor",
+                label = "Sports / Live Score",
                 channelKeywords = listOf("sports", "live_score"),
                 contentKeywords = listOf("match started", "goal", "score update", "live result", "halftime")
             ),
             BlockCategory(
                 id = "burc_astroloji",
-                label = "Burç / Astroloji",
+                label = "Horoscope / Astrology",
                 channelKeywords = listOf("horoscope"),
                 contentKeywords = listOf("your horoscope today", "the stars today", "for your sign")
             ),
             BlockCategory(
                 id = "flort_eslesme",
-                label = "Flört / Eşleşme",
+                label = "Dating / Matches",
                 channelKeywords = listOf("dating", "match"),
                 contentKeywords = listOf("likes you", "new match", "sent you a message", "matched with you")
             ),
             BlockCategory(
                 id = "kariyer_ilan",
-                label = "Kariyer / İş İlanı",
+                label = "Job Alerts",
                 channelKeywords = listOf("job_alert"),
                 contentKeywords = listOf("new jobs for you", "positions matching your profile", "career opportunity")
             ),
             BlockCategory(
                 id = "kripto_borsa",
-                label = "Kripto / Borsa",
+                label = "Crypto / Stocks",
                 channelKeywords = listOf("price_watch"),
                 contentKeywords = listOf("price is up", "price is down", "percent change", "stock alert")
             ),
             // Expanded categories
             BlockCategory(
                 id = "pazarlama",
-                label = "Pazarlama",
+                label = "Marketing",
                 channelKeywords = emptyList(), // Same reason: marketing slogans, not real notification channel IDs
                 contentKeywords = listOf("flash sale", "mega sale", "super deal", "exclusive offer", "members only", "today only", "last day", "while supplies last", "extra discount", "double discount", "vip offer", "just for you", "coupon", "coupon code", "promo code", "discount code", "gift card", "free shipping", "biggest sale of the year", "clearance", "summer sale", "winter sale", "end of season", "last chance", "hurry")
             ),
             BlockCategory(
                 id = "kredi",
-                label = "Kredi ve Finans",
+                label = "Credit & Finance",
                 channelKeywords = listOf("loan_offer", "finance"),
                 contentKeywords = listOf("credit card", "personal loan", "installment", "interest", "interest-free", "credit limit", "debt restructuring", "loan application", "loan offer", "quick loan", "instant loan", "pre-approved loan", "credit score", "cash advance")
             ),
             BlockCategory(
                 id = "oneriler",
-                label = "Öneriler",
+                label = "Recommendations",
                 channelKeywords = listOf("for_you", "discover"),
                 contentKeywords = listOf("for you", "picked for you", "you might like", "discover", "based on your history", "based on your favorites", "curated for you")
             ),
             BlockCategory(
                 id = "oyun",
-                label = "Oyunlar",
+                label = "Games",
                 channelKeywords = listOf("daily_reward", "event"),
                 contentKeywords = listOf("daily reward", "daily login bonus", "level up", "new stage", "event started", "limited time event", "your friends are playing", "leaderboard", "tournament", "win a prize", "daily quest", "free lives", "free coins", "free gems", "energy full")
             ),
             BlockCategory(
                 id = "haber",
-                label = "Haberler",
+                label = "News",
                 channelKeywords = listOf("breaking_news", "headlines"),
                 contentKeywords = listOf("breaking news", "breaking", "headlines", "live news", "update", "briefing", "news digest", "today's news", "most read", "editor's picks")
             ),
             BlockCategory(
                 id = "genel",
-                label = "Genel",
+                label = "General",
                 channelKeywords = listOf("notification", "reminder"),
                 contentKeywords = listOf("reminder", "system notification", "app notification", "info")
             )

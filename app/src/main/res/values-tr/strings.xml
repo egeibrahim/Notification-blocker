@@ -2,6 +2,12 @@
 <resources>
     <string name="app_name">NO:Akıllı Bildirim Engelleyici</string>
 
+    <!-- Ülke Seçimi (ilk kurulum) -->
+    <string name="country_select_title">Yaşadığın Ülkeyi Seç</string>
+    <string name="country_select_desc">Bu bilgiyi, hazır bildirim engelleme kategorilerini bulunduğun bölgeye en uygun şekilde hazırlamak için soruyoruz. Türkiye\'yi seçersen Türkçe\'ye özel hazırlanmış mevcut kategorileri kullanmaya devam edersin. Türkiye dışında bir ülke seçersen, kategoriler tamamen İngilizce olarak sunulur. Telefonunun sistem dili farklı olsa bile bu seçim geçerli olur.</string>
+    <string name="country_select_search_hint">Ülke ara</string>
+    <string name="country_select_continue">Devam Et</string>
+
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_archive">Arşiv</string>
     <string name="nav_block_management">Blok</string>

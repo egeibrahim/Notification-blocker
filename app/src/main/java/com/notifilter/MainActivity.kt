@@ -57,6 +57,8 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.notifilter.auth.SupabaseAuthManager
+import com.notifilter.preferences.CountryPreferences
+import com.notifilter.preferences.FilterRulesPreferences
 import com.notifilter.sync.CloudSyncManager
 import com.notifilter.util.NotificationAccessHelper
 import kotlinx.coroutines.CoroutineScope
@@ -137,6 +139,9 @@ fun MainScreen(
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showWalkthrough by remember { mutableStateOf(sharedPrefs.getBoolean("show_walkthrough_v1", true)) }
 
+    val countryPrefs = remember { CountryPreferences(context) }
+    var isCountrySelected by remember { mutableStateOf(countryPrefs.isCountrySelected) }
+
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -155,6 +160,22 @@ fun MainScreen(
     }
     val entitlement by billingManager.entitlement.collectAsState(initial = BillingManager.EntitlementState.Unknown)
     val isEntitled = (entitlement is BillingManager.EntitlementState.Active) || EntitlementStore.isEntitled(context)
+
+    if (!isCountrySelected) {
+        com.notifilter.ui.components.CountrySelectionPage(
+            onCountrySelected = { code ->
+                countryPrefs.countryCode = code
+                val filterPrefs = FilterRulesPreferences(context)
+                if (code.equals(CountryPreferences.TURKEY_CODE, ignoreCase = true)) {
+                    filterPrefs.enabledLanguagePacks = setOf(FilterRulesPreferences.PACK_TR, FilterRulesPreferences.PACK_EN)
+                } else {
+                    filterPrefs.setSingleLanguagePack(FilterRulesPreferences.PACK_EN)
+                }
+                isCountrySelected = true
+            }
+        )
+        return
+    }
 
     if (currentSubPage != null) {
         when (currentSubPage) {

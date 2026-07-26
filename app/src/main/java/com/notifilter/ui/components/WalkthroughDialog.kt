@@ -12,7 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +30,7 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.core.graphics.drawable.toBitmap
 import com.notifilter.R
 
 private data class WalkthroughSlide(
@@ -55,6 +58,17 @@ fun WalkthroughDialog(
     val totalSlides = slides.size
     var currentSlide by remember { mutableIntStateOf(0) }
 
+    val context = LocalContext.current
+    // painterResource can't load the adaptive-icon XML used on API 26+, so render the
+    // real (already-composited) app icon bitmap via PackageManager instead.
+    val appIconPainter = remember {
+        runCatching {
+            val drawable = context.packageManager.getApplicationIcon(context.packageName)
+            val bitmap = drawable.toBitmap(width = 192, height = 192)
+            BitmapPainter(bitmap.asImageBitmap())
+        }.getOrNull()
+    }
+
     Dialog(
         onDismissRequest = onDismiss,
         properties = DialogProperties(
@@ -81,13 +95,30 @@ fun WalkthroughDialog(
                 val slide = slides[currentSlide]
 
                 if (currentSlide == 0) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.ic_launcher),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(96.dp)
-                            .clip(RoundedCornerShape(24.dp))
-                    )
+                    if (appIconPainter != null) {
+                        Image(
+                            painter = appIconPainter,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(96.dp)
+                                .clip(RoundedCornerShape(24.dp))
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .size(96.dp)
+                                .clip(RoundedCornerShape(24.dp))
+                                .background(MaterialTheme.colorScheme.primaryContainer),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Notifications,
+                                contentDescription = null,
+                                modifier = Modifier.size(48.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(R.string.app_name),

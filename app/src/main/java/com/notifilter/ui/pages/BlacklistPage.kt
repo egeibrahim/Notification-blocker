@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -28,6 +29,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import com.notifilter.ui.components.AppCard
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,8 +64,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
     var refreshTrigger by remember { mutableStateOf(0) }
     var categoryWordDrafts by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
 
-    val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
-    var showRulesTooltip by remember { mutableStateOf(sharedPrefs.getBoolean("show_tooltip_rules", true)) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
@@ -87,16 +87,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
         )
 
-        if (showRulesTooltip) {
-            com.notifilter.ui.components.TooltipCard(
-                message = stringResource(R.string.wt_tooltip_rules),
-                onDismiss = {
-                    sharedPrefs.edit().putBoolean("show_tooltip_rules", false).apply()
-                    showRulesTooltip = false
-                },
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-        }
 
         key(refreshTrigger) {
             val categories = filterPrefs.getMergedBlockCategories()
@@ -273,23 +263,33 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                                                     (!isInChannel || filterPrefs.isRecommendedChannelWordEnabled(word))
                                                 )
 
-                                            FilterChip(
-                                                selected = wordEnabled,
+                                            Surface(
                                                 onClick = {
                                                     if (isInContent) filterPrefs.toggleRecommendedContentWord(word)
                                                     if (isInChannel) filterPrefs.toggleRecommendedChannelWord(word)
                                                     refreshTrigger++
                                                 },
-                                                label = { Text(word) },
-                                                leadingIcon = {
-                                                    // Sabit ikon: bu bir "öneri" chip'i, kullanıcı
-                                                    // kelimelerinden (AssistChip + X) görsel olarak ayrışır
+                                                shape = RoundedCornerShape(8.dp),
+                                                color = if (wordEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                                                contentColor = if (wordEnabled) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                                modifier = Modifier.height(32.dp)
+                                            ) {
+                                                Row(
+                                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                                ) {
                                                     Icon(
-                                                        imageVector = Icons.Default.Tune,
-                                                        contentDescription = null
+                                                        imageVector = if (wordEnabled) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                                        contentDescription = null,
+                                                        modifier = Modifier.size(18.dp)
+                                                    )
+                                                    Text(
+                                                        text = word,
+                                                        style = MaterialTheme.typography.labelLarge
                                                     )
                                                 }
-                                            )
+                                            }
                                         }
                                     }
                                 }

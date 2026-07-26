@@ -99,8 +99,6 @@ fun DashboardPage(
     val since = System.currentTimeMillis() - 24 * 60 * 60 * 1000L
     var searchQuery by remember { mutableStateOf("") }
 
-    val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
-    var showDashboardTooltip by remember { mutableStateOf(sharedPrefs.getBoolean("show_tooltip_dashboard", true)) }
 
     LaunchedEffect(Unit) {
         val installed = withContext(Dispatchers.IO) {
@@ -184,16 +182,6 @@ fun DashboardPage(
     }
 
     Column(modifier = modifier.padding(16.dp)) {
-        if (showDashboardTooltip) {
-            com.notifilter.ui.components.TooltipCard(
-                message = stringResource(R.string.wt_tooltip_dashboard),
-                onDismiss = {
-                    sharedPrefs.edit().putBoolean("show_tooltip_dashboard", false).apply()
-                    showDashboardTooltip = false
-                },
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-        }
         if (!hasNotificationAccess) {
             Card(
                 modifier = Modifier.fillMaxWidth(),

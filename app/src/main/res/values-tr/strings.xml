@@ -207,7 +207,7 @@
     <string name="wt_permission_button">İzin Ver</string>
     <string name="wt_access_button">Ayarlara Git</string>
     <string name="wt_app_words_title">Uygulama Özelinde Kelimeler</string>
-    <string name="wt_app_words_desc">Bir uygulamaya özel blok veya izin kelimeleri tanımla. Mesela bir mesajlaşma uygulamasında sadece bir kişinin mesajlarını engelleyip başkalarının ulaşmasına izin verebilirsin.</string>
+    <string name="wt_app_words_desc">Bir uygulamaya özel blok veya izin kelimeleri tanımla. Mesela WhatsApp\'ta bir kişinin mesajlarını engelleyip başkalarının ulaşmasına izin verebilirsin.</string>
 
     <!-- BlacklistPage.kt / ProfilePage.kt güncellemesiyle eklenen hata mesajları -->
     <string name="error_billing_requires_activity">Satın alma işlemi başlatılamadı, lütfen tekrar deneyin</string>

@@ -180,7 +180,7 @@
     <string name="wt_permission_button">Allow</string>
     <string name="wt_access_button">Open Settings</string>
     <string name="wt_app_words_title">Per-App Word Rules</string>
-    <string name="wt_app_words_desc">Set block or allow words for a single app. For example, in a messaging app you can block messages from one contact while still allowing others.</string>
+    <string name="wt_app_words_desc">Set block or allow words for a single app. For example, in WhatsApp you can block messages from one contact while still allowing others.</string>
 
     <!-- Rate App & Feedback -->
     <string name="rate_app_title">Rate App</string>

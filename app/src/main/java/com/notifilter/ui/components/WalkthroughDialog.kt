@@ -19,6 +19,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.DoNotDisturb
+import androidx.compose.material.icons.filled.Sms
 import com.notifilter.R
 
 @Composable
@@ -62,28 +69,45 @@ fun WalkthroughDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.Center),
+                    .align(Alignment.TopCenter)
+                    .padding(top = 56.dp, bottom = 140.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(24.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Giant Graphic / Emoji representation
+                // Graphic icon
                 Box(
                     modifier = Modifier
-                        .size(140.dp)
+                        .size(110.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = when (currentSlide) {
-                            0 -> "👋"
-                            1 -> "�"
-                            2 -> "👁"
-                            3 -> "�️"
-                            4 -> "🧘"
-                            else -> "✉️🚫"
-                        },
-                        style = MaterialTheme.typography.displayLarge
+                    val icon = when (currentSlide) {
+
+                        0 -> Icons.Filled.ThumbUp
+
+                        1 -> Icons.Filled.Notifications
+
+                        2 -> Icons.Filled.Visibility
+
+                        3 -> Icons.Filled.FilterList
+
+                        4 -> Icons.Filled.DoNotDisturb
+
+                        else -> Icons.Filled.Sms
+
+                    }
+
+                    Icon(
+
+                        imageVector = icon,
+
+                        contentDescription = null,
+
+                        modifier = Modifier.size(56.dp),
+
+                        tint = MaterialTheme.colorScheme.primary
+
                     )
                 }
 

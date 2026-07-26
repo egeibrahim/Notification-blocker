@@ -23,12 +23,13 @@ android {
         if (localPropertiesFile.exists()) {
             FileInputStream(localPropertiesFile).use { localProperties.load(it) }
         }
-        val supabaseUrl = (localProperties.getProperty("SUPABASE_URL") ?: "").trim()
-        val supabaseAnonKey = (localProperties.getProperty("SUPABASE_ANON_KEY") ?: "").trim()
-        val billingProductId = (localProperties.getProperty("BILLING_PRODUCT_ID") ?: "").trim()
-        val billingBasePlanId = (localProperties.getProperty("BILLING_BASE_PLAN_ID") ?: "").trim()
-        val billingOfferId = (localProperties.getProperty("BILLING_OFFER_ID") ?: "").trim()
-        val billingBypass = (localProperties.getProperty("BILLING_BYPASS") ?: "").trim()
+        fun propOrEnv(key: String): String = (localProperties.getProperty(key) ?: System.getenv(key) ?: "").trim()
+        val supabaseUrl = propOrEnv("SUPABASE_URL")
+        val supabaseAnonKey = propOrEnv("SUPABASE_ANON_KEY")
+        val billingProductId = propOrEnv("BILLING_PRODUCT_ID")
+        val billingBasePlanId = propOrEnv("BILLING_BASE_PLAN_ID")
+        val billingOfferId = propOrEnv("BILLING_OFFER_ID")
+        val billingBypass = propOrEnv("BILLING_BYPASS")
         buildConfigField("String", "SUPABASE_URL", "\"$supabaseUrl\"")
         buildConfigField("String", "SUPABASE_ANON_KEY", "\"$supabaseAnonKey\"")
         buildConfigField("String", "BILLING_PRODUCT_ID", "\"$billingProductId\"")

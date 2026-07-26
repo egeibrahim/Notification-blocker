@@ -93,7 +93,7 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
 
             var globalEmojiBlock by remember { mutableStateOf(filterPrefs.isGlobalEmojiBlockEnabled) }
 
-            var expandedCategoryIds by remember(categories) { mutableStateOf(categories.map { it.id }.toSet()) }
+            var expandedCategoryIds by remember(categories) { mutableStateOf(emptySet<String>()) }
 
             val wordOwnerCategoryId = LinkedHashMap<String, String>()
             val wordInAnyContent = HashSet<String>()

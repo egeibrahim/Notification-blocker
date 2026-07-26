@@ -198,6 +198,15 @@
     <string name="wt_access_button">Open Settings</string>
     <string name="wt_app_words_title">Per-App Rules</string>
     <string name="wt_app_words_desc">Define separate block and allow words for each app. For example, in WhatsApp you can block messages from one contact while letting others through.</string>
+    <string name="wt_battery_title">Disable Battery Optimization</string>
+    <string name="wt_battery_desc">Android may kill NO in the background to save battery. Allow it to run unrestricted so it never misses a notification.</string>
+    <string name="wt_battery_button">Allow</string>
+    <string name="wt_autostart_title">Background Autostart</string>
+    <string name="wt_autostart_desc">Some manufacturers block apps from starting in the background. Enable autostart for NO so it stays active after device restart.</string>
+    <string name="wt_autostart_button">Open Settings</string>
+    <string name="wt_restricted_title">Allow Restricted Settings</string>
+    <string name="wt_restricted_desc">On Android 13+, the system may restrict notification access. Allow restricted settings so NO can connect and filter your notifications.</string>
+    <string name="wt_restricted_button">Open Settings</string>
 
     <!-- Rate App & Feedback -->
     <string name="rate_app_title">Rate App</string>

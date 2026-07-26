@@ -245,6 +245,49 @@ fun MainScreen(
             com.notifilter.ui.components.WalkthroughDialog(
                 onRequestNotificationPermission = onRequestNotificationPermission,
                 onOpenNotificationAccess = onOpenNotificationAccess,
+                onOpenBatterySettings = {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                            data = Uri.parse("package:${context.packageName}")
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        runCatching { context.startActivity(intent) }
+                    }
+                },
+                onOpenAutostartSettings = {
+                    val manufacturer = Build.MANUFACTURER.lowercase()
+                    val candidates = when {
+                        manufacturer.contains("xiaomi") -> listOf("com.miui.securitycenter" to "com.miui.permcenter.autostart.AutoStartManagementActivity")
+                        manufacturer.contains("huawei") || manufacturer.contains("honor") -> listOf("com.huawei.systemmanager" to "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
+                        manufacturer.contains("oppo") -> listOf("com.coloros.safecenter" to "com.coloros.safecenter.permission.startup.StartupAppListActivity")
+                        manufacturer.contains("vivo") -> listOf("com.vivo.permissionmanager" to "com.vivo.permissionmanager.activity.BgStartUpManagerActivity")
+                        manufacturer.contains("samsung") -> listOf("com.samsung.android.lool" to "com.samsung.android.sm.ui.battery.BatteryActivity")
+                        manufacturer.contains("asus") -> listOf("com.asus.mobilemanager" to "com.asus.mobilemanager.autostart.AutoStartActivity")
+                        else -> emptyList()
+                    }
+                    var opened = false
+                    for ((pkg, cls) in candidates) {
+                        val intent = Intent().apply {
+                            component = android.content.ComponentName(pkg, cls)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        if (runCatching { context.startActivity(intent) }.isSuccess) { opened = true; break }
+                    }
+                    if (!opened) {
+                        val fallback = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                            data = Uri.parse("package:${context.packageName}")
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        context.startActivity(fallback)
+                    }
+                },
+                onOpenRestrictedSettings = {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.parse("package:${context.packageName}")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    context.startActivity(intent)
+                },
                 onDismiss = {
                     sharedPrefs.edit().putBoolean("show_walkthrough_v1", false).apply()
                     showWalkthrough = false

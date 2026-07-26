@@ -31,6 +31,9 @@ import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.CenterFocusStrong
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.BatteryFull
+import androidx.compose.material.icons.filled.RocketLaunch
+import androidx.compose.material.icons.filled.Security
 import androidx.core.graphics.drawable.toBitmap
 import com.notifilter.R
 
@@ -44,13 +47,19 @@ private data class WalkthroughSlide(
 fun WalkthroughDialog(
     onDismiss: () -> Unit,
     onRequestNotificationPermission: () -> Unit,
-    onOpenNotificationAccess: () -> Unit
+    onOpenNotificationAccess: () -> Unit,
+    onOpenBatterySettings: () -> Unit = {},
+    onOpenAutostartSettings: () -> Unit = {},
+    onOpenRestrictedSettings: () -> Unit = {}
 ) {
     val slides = remember {
         listOf(
             WalkthroughSlide(null, R.string.wt_welcome_title, R.string.wt_welcome_desc),
             WalkthroughSlide(Icons.Filled.Notifications, R.string.wt_permission_title, R.string.wt_permission_desc),
             WalkthroughSlide(Icons.Filled.Visibility, R.string.wt_access_title, R.string.wt_access_desc),
+            WalkthroughSlide(Icons.Filled.BatteryFull, R.string.wt_battery_title, R.string.wt_battery_desc),
+            WalkthroughSlide(Icons.Filled.RocketLaunch, R.string.wt_autostart_title, R.string.wt_autostart_desc),
+            WalkthroughSlide(Icons.Filled.Security, R.string.wt_restricted_title, R.string.wt_restricted_desc),
             WalkthroughSlide(Icons.Filled.FilterList, R.string.wt_filter_title, R.string.wt_filter_desc),
             WalkthroughSlide(Icons.Filled.CenterFocusStrong, R.string.wt_focus_title, R.string.wt_focus_desc),
             WalkthroughSlide(Icons.Filled.Apps, R.string.wt_app_words_title, R.string.wt_app_words_desc)
@@ -236,6 +245,9 @@ fun WalkthroughDialog(
                         when (currentSlide) {
                             1 -> onRequestNotificationPermission()
                             2 -> onOpenNotificationAccess()
+                            3 -> onOpenBatterySettings()
+                            4 -> onOpenAutostartSettings()
+                            5 -> onOpenRestrictedSettings()
                         }
                         if (currentSlide < totalSlides - 1) {
                             currentSlide++
@@ -252,6 +264,9 @@ fun WalkthroughDialog(
                         text = when (currentSlide) {
                             1 -> stringResource(R.string.wt_permission_button)
                             2 -> stringResource(R.string.wt_access_button)
+                            3 -> stringResource(R.string.wt_battery_button)
+                            4 -> stringResource(R.string.wt_autostart_button)
+                            5 -> stringResource(R.string.wt_restricted_button)
                             totalSlides - 1 -> stringResource(R.string.wt_finish)
                             else -> stringResource(R.string.wt_next)
                         },

@@ -225,6 +225,15 @@
     <string name="wt_access_button">Ayarlara Git</string>
     <string name="wt_app_words_title">Uygulamaya Özel Kurallar</string>
     <string name="wt_app_words_desc">Her uygulama için ayrı blok ve izin kelimeleri tanımla. Örneğin WhatsApp\'ta belirli bir kişiden gelen mesajları engellerken diğer kişilerin mesajlarının gelmesine izin verebilirsin.</string>
+    <string name="wt_battery_title">Pil Optimizasyonunu Kapat</string>
+    <string name="wt_battery_desc">Android, NO\'yu pil tasarrufu için arka planda kapatabilir. Kısıtlamasız çalışmasına izin ver ki hiçbir bildirimi kaçırmasın.</string>
+    <string name="wt_battery_button">İzin Ver</string>
+    <string name="wt_autostart_title">Arka Planda Otomatik Başlatma</string>
+    <string name="wt_autostart_desc">Bazı üreticiler uygulamaların arka planda başlamasını engeller. NO\'nun otomatik başlatmayı aç ki cihaz yeniden başlatıldıktan sonra da aktif kalsın.</string>
+    <string name="wt_autostart_button">Ayarlara Git</string>
+    <string name="wt_restricted_title">Kısıtlı Ayarlara İzin Ver</string>
+    <string name="wt_restricted_desc">Android 13+ sistemde bildirim erişimini kısıtlayabilir. Kısıtlı ayarlara izin ver ki NO bağlanabilsin ve bildirimlerini filtreleyebilsin.</string>
+    <string name="wt_restricted_button">Ayarlara Git</string>
 
     <!-- BlacklistPage.kt / ProfilePage.kt güncellemesiyle eklenen hata mesajları -->
     <string name="error_billing_requires_activity">Satın alma işlemi başlatılamadı, lütfen tekrar deneyin</string>

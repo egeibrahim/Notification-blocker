@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -82,6 +83,50 @@ private fun checkBatteryIgnored(context: Context): Boolean {
     } else {
         true
     }
+}
+
+private fun openAutostartSettings(context: Context) {
+    val manufacturer = Build.MANUFACTURER.lowercase()
+    val candidates = when {
+        manufacturer.contains("xiaomi") -> listOf(
+            "com.miui.securitycenter" to "com.miui.permcenter.autostart.AutoStartManagementActivity"
+        )
+        manufacturer.contains("huawei") || manufacturer.contains("honor") -> listOf(
+            "com.huawei.systemmanager" to "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity",
+            "com.huawei.systemmanager" to "com.huawei.systemmanager.optimize.process.ProtectActivity"
+        )
+        manufacturer.contains("oppo") -> listOf(
+            "com.coloros.safecenter" to "com.coloros.safecenter.permission.startup.StartupAppListActivity",
+            "com.coloros.safecenter" to "com.coloros.safecenter.startupapp.StartupAppListActivity",
+            "com.oppo.safe" to "com.oppo.safe.permission.startup.StartupAppListActivity"
+        )
+        manufacturer.contains("vivo") -> listOf(
+            "com.vivo.permissionmanager" to "com.vivo.permissionmanager.activity.BgStartUpManagerActivity",
+            "com.iqoo.secure" to "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity"
+        )
+        manufacturer.contains("samsung") -> listOf(
+            "com.samsung.android.lool" to "com.samsung.android.sm.ui.battery.BatteryActivity"
+        )
+        manufacturer.contains("asus") -> listOf(
+            "com.asus.mobilemanager" to "com.asus.mobilemanager.autostart.AutoStartActivity"
+        )
+        else -> emptyList()
+    }
+
+    for ((pkg, cls) in candidates) {
+        val intent = Intent().apply {
+            component = android.content.ComponentName(pkg, cls)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        val resolved = runCatching { context.startActivity(intent) }.isSuccess
+        if (resolved) return
+    }
+
+    val fallback = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+        data = Uri.parse("package:${context.packageName}")
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(fallback)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -353,7 +398,7 @@ fun ProfilePage(
                             if (isBatteryIgnored) {
                                 Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
                             } else {
-                                Icon(Icons.Default.ChevronRight, contentDescription = null)
+                                Icon(Icons.Default.Close, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                             }
                         },
                         modifier = Modifier.clickable {
@@ -373,12 +418,12 @@ fun ProfilePage(
                         supportingContent = { Text(stringResource(R.string.autostart_desc)) },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable { openAppDetails() }
+                        modifier = Modifier.clickable { openAutostartSettings(context) }
                     )
                     Divider()
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.quick_access_app_info)) },
-                        supportingContent = { Text(stringResource(R.string.setup_guide_open)) },
+                        supportingContent = { Text(stringResource(R.string.quick_access_app_info_desc)) },
                         leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
                         trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
                         modifier = Modifier.clickable { openAppDetails() }

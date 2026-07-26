@@ -88,6 +88,12 @@ fun NotificationDetailSheet(
             Text(
                 text = appName,
                 style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(bottom = 2.dp)
+            )
+            Text(
+                text = stringResource(R.string.detail_app_rules_title),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
@@ -165,7 +171,13 @@ fun NotificationDetailSheet(
                 text = stringResource(R.string.detail_block_words_for_app),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 8.dp, bottom = 6.dp)
+                modifier = Modifier.padding(top = 8.dp, bottom = 2.dp)
+            )
+            Text(
+                text = stringResource(R.string.detail_block_words_for_app_desc),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
             OutlinedTextField(
@@ -217,7 +229,13 @@ fun NotificationDetailSheet(
                 text = stringResource(R.string.detail_allow_words_for_app),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 4.dp, bottom = 6.dp)
+                modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)
+            )
+            Text(
+                text = stringResource(R.string.detail_allow_words_for_app_desc),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
             OutlinedTextField(

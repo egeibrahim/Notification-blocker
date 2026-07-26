@@ -21,13 +21,14 @@
     <string name="title_faq">SSS</string>
 
     <string name="section_quick_access">Hızlı erişim</string>
-    <string name="quick_access_app_info">Uygulama bilgisi (izinler, kısıtlı ayarlar)</string>
+    <string name="quick_access_app_info">Uygulama bilgisi</string>
+    <string name="quick_access_app_info_desc">İzinleri ve kısıtlı ayarları buradan yönet</string>
     <string name="quick_access_battery_settings">Pil ayarları</string>
-    <string name="quick_access_autostart">Otomatik başlat</string>
-    <string name="quick_access_disable_battery_optimization">Arka planda kullanıma izin ver</string>
+    <string name="quick_access_autostart">Otomatik Başlatma</string>
+    <string name="quick_access_disable_battery_optimization">Pil Optimizasyonunu Kapat</string>
     <string name="battery_optimization_unrestricted">Kısıtlama Yok</string>
-    <string name="battery_optimization_restricted">Pil optimizasyonu aktif</string>
-    <string name="autostart_desc">Kısıtlı ayarlara izin ver ve üretici otomatik başlatma ayarlarını kapat</string>
+    <string name="battery_optimization_restricted">Pil optimizasyonu aktif, bildirimler gecikebilir</string>
+    <string name="autostart_desc">Telefonunun üreticisine özel otomatik başlatma ayarını açmayı deneriz. Bulunamazsa uygulama bilgisi sayfası açılır; oradan \"Kısıtlı ayarlara izin ver\" seçeneğini açman gerekebilir.</string>
 
     <string name="notification_access">Bildirim erişimi</string>
     <string name="notification_access_on">Açık</string>
@@ -84,11 +85,14 @@
     <string name="archive_empty_title">Henüz bildirim yok</string>
     <string name="archive_empty_desc">Son 7 gün içinde kaydedilmiş bir bildirim bulunmuyor.</string>
 
+    <string name="detail_app_rules_title">Bu Uygulamaya Özel Kurallar</string>
     <string name="detail_exempt_app_title">Bildirimlere izin ver</string>
-    <string name="detail_exempt_app_desc">odak modundan etkilenen bildirimler gelmesini aktif et.</string>
+    <string name="detail_exempt_app_desc">Odak Modu veya diğer filtreler aktifken bile bu uygulamanın bildirimlerinin gelmesine izin ver.</string>
     <string name="detail_notification_history">Bildirim geçmişi</string>
     <string name="detail_allow_words_for_app">İzin kelimeleri</string>
+    <string name="detail_allow_words_for_app_desc">Bu kelimeleri içeren bildirimler, diğer filtreler tarafından engellense bile her zaman gösterilir.</string>
     <string name="detail_block_words_for_app">Engel kelimeleri</string>
+    <string name="detail_block_words_for_app_desc">Bu uygulamadan gelen ve bu kelimeleri içeren bildirimler otomatik olarak engellenir.</string>
 
     <string name="search">Ara</string>
     <string name="global_focus_mode">Odak Modu</string>
@@ -192,25 +196,26 @@
     <string name="help_faq_3_a">Odak Modu veya diğer filtreler aktif olsa bile, seçtiğin uygulamaların bildirimlerinin gelmeye devam etmesini sağlar. Uygulama detayından veya Dashboard listesinden açıp kapatabilirsin.</string>
 
     <!-- Karşılama Turu (Walkthrough) -->
-    <string name="wt_welcome_title">NO&quot;ya Hoş Geldin</string>
-    <string name="wt_welcome_desc">İstenmeyen bildirimleri filtrelemek ve engellemek için nihai uygulama. Bildirim çekmeceni temiz ve düzenli tut!</string>
+    <string name="wt_welcome_title">Hoş Geldin</string>
+    <string name="wt_welcome_tagline">Bildirimlerinin kontrolü artık sende</string>
+    <string name="wt_welcome_desc">NO, gereksiz bildirimleri güvenilir ve akıllı bir filtreleme sistemiyle ayıklayan bir uygulamadır. Bildirim çekmeceni sade, düzenli ve sadece senin için önemli olan uyarılarla tutar.</string>
     <string name="wt_filter_title">Akıllı Filtreleme</string>
-    <string name="wt_filter_desc">Artık spam yok! Hazır kategorilerimizle pazarlama, kredi ve haber spamlerini otomatik engelle, ya da kendi kurallarını tanımla.</string>
+    <string name="wt_filter_desc">Pazarlama, kredi ve haber gibi spam kategorilerini tek dokunuşla otomatik olarak engelle. Dilersen kendi anahtar kelimelerini ekleyerek filtreyi tamamen kendine göre şekillendir.</string>
     <string name="wt_focus_title">Odak Modu</string>
-    <string name="wt_focus_desc">Sessiz bir ana mı ihtiyacın var? Odak Modu\'nu açarak tüm bildirimleri sustur, istediğin zaman güvenli uygulama çekmecemizden kontrol et.</string>
+    <string name="wt_focus_desc">Odaklanman gereken anlarda tek dokunuşla tüm bildirimleri sessize al. Hiçbir bildirim kaybolmaz; hepsi güvenli arşivde seni bekler ve istediğin an gözden geçirebilirsin.</string>
     <string name="wt_next">İleri</string>
-    <string name="wt_skip">Geç</string>
+    <string name="wt_back">Geri</string>
     <string name="wt_finish">Başla</string>
     <string name="wt_tooltip_dashboard">Aktif ve engellenen bildirimlerin dökümünü gör.</string>
     <string name="wt_tooltip_rules">Buraya özel engelle/izin ver kelimeleri ve kanalları ekle.</string>
     <string name="wt_permission_title">Bildirimlere İzin Ver</string>
-    <string name="wt_permission_desc">NO, engellenen bildirimleri senin için arşivlemek ve önemli uyarıları göstermek için kendi bildirimlerini gönderebilir. Bu izni vermek uygulamanın düzgün çalışması için gereklidir.</string>
+    <string name="wt_permission_desc">NO, engellediği bildirimleri senin için arşivleyebilmek ve önemli uyarıları gösterebilmek için kendi bildirimlerini gönderir. Bu izin, uygulamanın düzgün çalışması için gereklidir.</string>
     <string name="wt_access_title">Bildirimleri Oku ve Kontrol Et</string>
-    <string name="wt_access_desc">Diğer uygulamaların bildirimlerini filtreleyebilmemiz için sistem ayarlarında NO\'yu açman gerekir. Açılan ekranda "Bu uygulama tüm bildirimlerinizi okuyabilir" gibi bir uyarı görebilirsin; bu her kullanıcıya çıkan normal Android güvenlik uyarısıdır, tehlikeli değildir.</string>
+    <string name="wt_access_desc">Diğer uygulamaların bildirimlerini filtreleyebilmemiz için sistem ayarlarında NO\'yu açman gerekir. Açılan ekranda "Bu uygulama tüm bildirimlerinizi okuyabilir" gibi bir uyarı görebilirsin; bu her kullanıcıya çıkan standart Android güvenlik uyarısıdır, tehlikeli değildir.</string>
     <string name="wt_permission_button">İzin Ver</string>
     <string name="wt_access_button">Ayarlara Git</string>
-    <string name="wt_app_words_title">Uygulama Özelinde Kelimeler</string>
-    <string name="wt_app_words_desc">Bir uygulamaya özel blok veya izin kelimeleri tanımla. Mesela WhatsApp\'ta bir kişinin mesajlarını engelleyip başkalarının ulaşmasına izin verebilirsin.</string>
+    <string name="wt_app_words_title">Uygulamaya Özel Kurallar</string>
+    <string name="wt_app_words_desc">Her uygulama için ayrı blok ve izin kelimeleri tanımla. Örneğin WhatsApp\'ta belirli bir kişiden gelen mesajları engellerken diğer kişilerin mesajlarının gelmesine izin verebilirsin.</string>
 
     <!-- BlacklistPage.kt / ProfilePage.kt güncellemesiyle eklenen hata mesajları -->
     <string name="error_billing_requires_activity">Satın alma işlemi başlatılamadı, lütfen tekrar deneyin</string>

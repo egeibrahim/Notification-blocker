@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.EmojiEmotions
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
@@ -258,13 +259,18 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                                             ) {
                                                 Icon(
-                                                    imageVector = if (globalEmojiBlock) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                                    imageVector = Icons.Default.EmojiEmotions,
                                                     contentDescription = null,
                                                     modifier = Modifier.size(18.dp)
                                                 )
                                                 Text(
                                                     text = stringResource(R.string.emoji_block_toggle),
                                                     style = MaterialTheme.typography.labelLarge
+                                                )
+                                                Icon(
+                                                    imageVector = if (globalEmojiBlock) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(18.dp)
                                                 )
                                             }
                                         }

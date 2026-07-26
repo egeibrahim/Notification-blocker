@@ -660,7 +660,7 @@ class FilterRulesPreferences(private val context: Context) {
                 )
             }
         }
-        return merged.values.toList()
+        return merged.values.sortedBy { if (it.id == "pazarlama") 0 else 1 }
     }
 
     fun getMergedBlockCategories(): List<BlockCategory> = getActiveBlockCategories()

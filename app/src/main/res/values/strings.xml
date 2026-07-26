@@ -139,6 +139,17 @@
     <string name="add">Add</string>
     <string name="delete">Delete</string>
 
+    <string name="app_category_game">Game</string>
+    <string name="app_category_audio">Music &amp; Audio</string>
+    <string name="app_category_video">Video</string>
+    <string name="app_category_image">Photography</string>
+    <string name="app_category_social">Social</string>
+    <string name="app_category_news">News</string>
+    <string name="app_category_maps">Maps</string>
+    <string name="app_category_productivity">Productivity</string>
+    <string name="app_category_accessibility">Accessibility</string>
+    <string name="app_category_unknown">—</string>
+
     <string name="account">Account</string>
     <string name="sign_in_with_google">Continue with Google</string>
     <string name="auth_google_explanation">Sign in with Google to back up your notifications and settings.</string>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NO:Bloqueur de Notifications Spam</string>
+
+    <!-- Language Pack Selection (first launch) -->
+    <string name="lang_pack_selection_title">Sélectionner les packs de langue</string>
+    <string name="lang_pack_selection_desc">Choisissez dans quelles langues vous souhaitez filtrer les notifications. L\'anglais est toujours actif. La langue de votre téléphone a été automatiquement sélectionnée — vous pouvez en ajouter d\'autres ci-dessous.</string>
+    <string name="lang_pack_selection_footnote">Vous pouvez changer cela à tout moment depuis l\'écran des Paramètres.</string>
+    <string name="lang_pack_continue">Continuer</string>
+    <string name="lang_pack_english_locked">Anglais (toujours actif)</string>
+    <string name="lang_pack_native_locked">Langue de votre téléphone (toujours actif)</string>
+
+    <string name="nav_dashboard">Tableau de bord</string>
+    <string name="nav_archive">Archives</string>
+    <string name="nav_block_management">Bloquer</string>
+    <string name="nav_profile">Paramètres</string>
+
+    <string name="title_settings">Paramètres</string>
+    <string name="title_block_management">Bloquer</string>
+
+    <string name="settings_setup_header">Pour que NO fonctionne correctement, activez les paramètres ci-dessous</string>
+    <string name="settings_setup_body">Les autorisations d\'accès aux notifications, de démarrage automatique et d\'optimisation de la batterie sont requises pour le blocage et l\'archivage.</string>
+    <string name="settings_info_title">Aide &amp; Informations</string>
+    <string name="settings_help">Aide</string>
+    <string name="settings_how_it_works">Comment fonctionne NO</string>
+    <string name="settings_faq">FAQ</string>
+    <string name="title_help">Aide</string>
+    <string name="title_how_it_works">Comment fonctionne NO</string>
+    <string name="title_faq">FAQ</string>
+
+    <string name="section_quick_access">Accès rapide</string>
+    <string name="quick_access_app_info">Autoriser les paramètres restreints</string>
+    <string name="quick_access_app_info_desc"></string>
+    <string name="quick_access_battery_settings">Paramètres de batterie</string>
+    <string name="quick_access_autostart">Démarrage automatique en arrière-plan</string>
+    <string name="quick_access_disable_battery_optimization">Désactiver l\'optimisation de la batterie</string>
+    <string name="battery_optimization_unrestricted">Sans restriction</string>
+    <string name="battery_optimization_restricted">Optimisation de batterie active, les notifications peuvent être retardées</string>
+    <string name="autostart_desc"></string>
+
+    <string name="notification_access">Accès aux notifications</string>
+    <string name="notification_access_on">Activé</string>
+    <string name="notification_access_off">Désactivé</string>
+    <string name="notification_access_action">Complétez ces paramètres</string>
+    <string name="notification_access_manage">Gérer l\'accès aux notifications</string>
+    <string name="notification_access_dialog_title">Accès aux notifications requis</string>
+    <string name="notification_access_dialog_message">Pour bloquer et filtrer les notifications, veuillez activer l\'accès aux notifications pour cette app dans les paramètres système.</string>
+    <string name="notification_access_dialog_positive">Ouvrir les paramètres</string>
+    <string name="notification_access_dialog_dismiss">Fermer</string>
+
+    <string name="how_to_use_title">Configurez les paramètres requis</string>
+    <string name="how_to_use_q1">Étapes de configuration</string>
+    <string name="how_to_use_a1">1) Autoriser l\'accès aux notifications\n2) Autoriser l\'utilisation en arrière-plan</string>
+
+    <string name="setup_guide_title">Terminer la configuration</string>
+    <string name="setup_guide_message">Pour que l\'app fonctionne, veuillez accorder les autorisations suivantes :</string>
+    <string name="setup_guide_notifications">1. Autoriser l\'accès aux notifications</string>
+    <string name="setup_guide_battery">2. Autoriser l\'utilisation en arrière-plan</string>
+    <string name="setup_guide_open">Ouvrir</string>
+    <string name="setup_guide_done">Configuration terminée</string>
+    <string name="how_to_use_q2"></string>
+    <string name="how_to_use_a2"></string>
+    <string name="how_to_use_q3"></string>
+    <string name="how_to_use_a3"></string>
+
+    <string name="no_how_it_works_title">Comment fonctionne \"NO\" ?</string>
+    <string name="no_how_it_works_body">1) Bloquer : Les mots de blocage standard sont actifs par défaut. Vous pouvez désactiver cualquier mot ou ajouter les vôtres.\n2) Mode Focus : Quand le Mode Focus est actif, toutes les notifications sont silenciées et archivées. Les apps exemptées ne sont pas affectées et apparaissent normalement.\n3) Exempter : Les notifications de l\'app sélectionnée ne sont jamais bloquées, ni par les filtres ni par le Mode Focus.\n4) Blocage d\'Emoji : Bloque toutes les notifications contenant des emojis. Pour les apps où vous ne voulez pas bloquer les emojis, utilisez l\'option Autoriser les emojis dans le détail de l\'app.\n5) Archives : Conserve votre historique de notifications des 7 derniers jours.\n6) Mots Autorisés : Les notifications contenant les mots que vous ajoutez ici ne seront jamais bloquées.\n7) Connexion Google : Utilisée pour protéger votre historique de notifications même si vous effacez les cookies ou réinstallez l\'app. La connexion Google est facultative.</string>
+    <string name="language_pack">Pack de langue</string>
+
+    <string name="emoji_block_title">Notifications avec emojis</string>
+    <string name="emoji_block_description">Lorsqu\'activé, les emojis ne seront pas bloqués pour les apps que vous autorisez depuis le détail de l\'app.</string>
+    <string name="emoji_block_toggle">Emoji</string>
+    <string name="global_games_toggle">Bloquer tous les jeux</string>
+    <string name="block_category_word_count">%1$d mots</string>
+    <string name="block_categories_title">Catégories de blocage</string>
+
+    <string name="category_marketing">Marketing</string>
+    <string name="category_credit">Crédit &amp; Finances</string>
+    <string name="category_recommendations">Recommandations</string>
+    <string name="category_games">Jeux</string>
+    <string name="category_news">Actualités</string>
+    <string name="category_general">Général</string>
+
+    <string name="block_group_marketing">Marketing &amp; Offres</string>
+    <string name="block_group_other">Autres</string>
+    <string name="block_category_words">Mots</string>
+    <string name="block_section_allow_words_title">Ne jamais bloquer ces mots</string>
+    <string name="block_section_allow_words_desc">Les notifications contenant ces mots ne seront jamais bloquées</string>
+    <string name="block_section_block_words_title">Bloquer ces mots</string>
+    <string name="block_section_block_words_desc">Les notifications contenant ces mots seront bloquées</string>
+    <string name="block_add_category">Ajouter</string>
+    <string name="block_category_title_hint">Nom de nouvelle catégorie</string>
+    <string name="block_category_empty_words">Pas encore de mots</string>
+    <string name="block_no_categories_yet">Rien ici pour l\'instant</string>
+
+    <string name="dashboard_notification_access_off_title">L\'accès aux notifications est désactivé</string>
+    <string name="dashboard_notification_access_off_desc">Le blocage et l\'archivage ne fonctionnent pas. Activez l\'accès depuis les paramètres.</string>
+    <string name="dashboard_last_24h_sorted">Dernières 24 heures - triées par volume de notifications</string>
+
+    <string name="dashboard_total_fmt">Total : %1$d</string>
+    <string name="dashboard_blocked_fmt">Bloquées : %1$d</string>
+    <string name="dashboard_mute_save_label">Mettre en sourdine &amp; sauvegarder</string>
+
+    <string name="applications_installed_title">Apps installées</string>
+    <string name="applications_installed_desc">Touchez une app pour voir son historique de notifications. En la mettant en sourdine, ses notifications sont exclues du filtrage.</string>
+
+    <string name="archive_last_7_days_title">7 derniers jours - toutes les notifications</string>
+    <string name="archive_empty_title">Pas encore de notifications</string>
+    <string name="archive_empty_desc">Rien n\'a été enregistré dans les 7 derniers jours.</string>
+
+    <string name="detail_app_rules_title">Règles pour cette app</string>
+    <string name="detail_exempt_app_title">Autoriser les notifications</string>
+    <string name="detail_exempt_app_desc">Laissez les notifications de cette app arriver même en Mode Focus ou avec d\'autres filtres actifs.</string>
+    <string name="detail_notification_history">Historique des notifications</string>
+    <string name="detail_allow_words_for_app">Mots autorisés</string>
+    <string name="detail_allow_words_for_app_desc">Les notifications contenant ces mots sont toujours affichées, même si d\'autres filtres les bloqueraient.</string>
+    <string name="detail_block_words_for_app">Mots bloqués</string>
+    <string name="detail_block_words_for_app_desc">Les notifications de cette app contenant ces mots sont automatiquement bloquées.</string>
+
+    <string name="search">Rechercher</string>
+    <string name="global_focus_mode">Mode Focus</string>
+
+    <string name="archive_source_blocked">Source : %1$s</string>
+    <string name="archive_source_notification">Source : Notification</string>
+    <string name="generic_notification">Notification</string>
+
+    <string name="reason_contains_emoji">Contient un emoji</string>
+    <string name="reason_focus_mode_active">Mode Focus actif</string>
+    <string name="reason_games_pack_active">Pack de jeux actif</string>
+    <string name="reason_mute_and_save">Mettre en sourdine &amp; sauvegarder</string>
+    <string name="reason_manual_blocked_channel">Canal bloqué manuellement</string>
+    <string name="reason_channel_id">Bloqué par règle de canal</string>
+    <string name="reason_content">Contenu : %1$s</string>
+
+    <string name="detail_allow_emoji_in_app">Autoriser les emojis</string>
+
+    <string name="word">Mot</string>
+    <string name="add_word">Ajouter un mot</string>
+    <string name="add">Ajouter</string>
+    <string name="delete">Supprimer</string>
+
+    <string name="app_category_game">Jeu</string>
+    <string name="app_category_audio">Musique &amp; Audio</string>
+    <string name="app_category_video">Vidéo</string>
+    <string name="app_category_image">Photographie</string>
+    <string name="app_category_social">Social</string>
+    <string name="app_category_news">Actualités</string>
+    <string name="app_category_maps">Cartes</string>
+    <string name="app_category_productivity">Productivité</string>
+    <string name="app_category_accessibility">Accessibilité</string>
+    <string name="app_category_unknown">—</string>
+
+    <string name="account">Compte</string>
+    <string name="sign_in_with_google">Continuer avec Google</string>
+    <string name="auth_google_explanation">Connectez-vous avec Google pour sauvegarder vos notifications et paramètres.</string>
+    <string name="signed_in_as">Connecté en tant que</string>
+    <string name="logout">Déconnexion</string>
+    <string name="sign_out_confirm_message">Êtes-vous sûr de vouloir vous déconnecter ? Vos paramètres et archives resteront sauvegardés sur ce compte et seront restaurés à votre prochaine connexion.</string>
+    <string name="backup_now">Sauvegarder maintenant</string>
+    <string name="restore_now">Restaurer maintenant</string>
+
+    <string name="subscription_required_title">Abonnement requis</string>
+    <string name="subscription_required_body">Commencez votre essai gratuit pour continuer à utiliser l\'app.</string>
+    <string name="start_free_trial">Démarrer l\'essai gratuit de 7 jours</string>
+    <string name="manage_subscription">Gérer l\'abonnement</string>
+    <string name="cancel_subscription">Annuler l\'abonnement</string>
+    <string name="subscription_info_title">Abonnement</string>
+    <string name="subscription_status_active">Abonnement actif</string>
+    <string name="subscription_status_inactive">Pas d\'abonnement actif</string>
+    <string name="subscription_status_unknown">Vérification de l\'abonnement…</string>
+    <string name="subscription_trial_desc">%1$s gratuit, puis %2$s</string>
+    <string name="subscription_price_desc">%1$s / %2$s</string>
+    <string name="subscription_cancel_desc">Vous pouvez annuler votre abonnement à tout moment via Google Play.</string>
+    <string name="subscription_not_configured">Produit d\'abonnement non configuré.</string>
+
+    <!-- Email Sign-In and Registration -->
+    <string name="auth_email">E-mail</string>
+    <string name="auth_password">Mot de passe</string>
+    <string name="auth_login">Se connecter</string>
+    <string name="auth_register">S\'inscrire</string>
+    <string name="auth_forgot_password">Mot de passe oublié ?</string>
+    <string name="auth_send_recovery">Envoyer l\'e-mail de récupération</string>
+    <string name="auth_back_to_login">Retour à la connexion</string>
+    <string name="auth_no_account">Pas de compte ? Inscrivez-vous</string>
+    <string name="auth_have_account">Déjà un compte ? Connectez-vous</string>
+    <string name="auth_invalid_email">Veuillez entrer une adresse e-mail valide</string>
+    <string name="auth_invalid_password">Le mot de passe doit comporter au moins 6 caractères</string>
+    <string name="auth_success_signup">Inscription réussie ! Si la vérification est activée, vérifiez votre boîte de réception.</string>
+    <string name="auth_success_recovery">E-mail de récupération envoyé avec succès.</string>
+    <string name="auth_or_divider">OU</string>
+
+    <!-- Walkthrough -->
+    <string name="wt_welcome_title">Bienvenue</string>
+    <string name="wt_welcome_tagline">Prenez le contrôle de vos notifications</string>
+    <string name="wt_welcome_desc">NO est une app de filtrage intelligente et fiable qui trie les notifications dont vous n\'avez pas besoin. Elle garde votre tiroir de notifications propre, organisé et concentré sur ce qui compte pour vous.</string>
+    <string name="wt_filter_title">Filtrage Intelligent</string>
+    <string name="wt_filter_desc">Bloquez automatiquement les catégories de spam comme le marketing, les offres de crédit et les actualités d\'un seul geste. Vous pouvez aussi ajouter vos propres mots-clés pour personnaliser entièrement le filtre.</string>
+    <string name="wt_focus_title">Mode Focus</string>
+    <string name="wt_focus_desc">Silencez toutes les notifications d\'un geste quand vous avez besoin de vous concentrer. Rien ne se perd, tout est conservé en sécurité dans les archives.</string>
+    <string name="wt_next">Suivant</string>
+    <string name="wt_back">Retour</string>
+    <string name="wt_finish">Commencer</string>
+    <string name="wt_tooltip_dashboard">Voir la répartition des notifications actives et bloquées.</string>
+    <string name="wt_tooltip_rules">Ajoutez des mots de blocage/autorisation personnalisés et des canaux ici.</string>
+    <string name="wt_permission_title">Autoriser les Notifications</string>
+    <string name="wt_permission_desc">NO envoie ses propres notifications pour archiver celles bloquées et vous afficher les alertes importantes. Cette autorisation est requise pour que l\'app fonctionne correctement.</string>
+    <string name="wt_access_title">Lire et Contrôler les Notifications</string>
+    <string name="wt_access_desc">Pour filtrer les notifications d\'autres apps, vous devez activer NO dans les paramètres d\'Accès aux Notifications du système. Vous pouvez voir un avertissement comme \"Cette app peut lire toutes vos notifications\" ; c\'est un avertissement de sécurité Android standard affiché à tous les utilisateurs et il n\'est pas dangereux.</string>
+    <string name="wt_permission_button">Autoriser</string>
+    <string name="wt_access_button">Ouvrir les Paramètres</string>
+    <string name="wt_app_words_title">Règles par App</string>
+    <string name="wt_app_words_desc">Définissez des mots de blocage et d\'autorisation séparés pour chaque app. Par exemple, dans WhatsApp vous pouvez bloquer les messages d\'un contact tout en laissant passer les autres.</string>
+    <string name="wt_battery_title">Optimisation de Batterie : Sans Restriction</string>
+    <string name="wt_battery_desc">Android peut fermer NO en arrière-plan pour économiser la batterie. Réglez l\'optimisation de batterie sur \"Sans restriction\" pour qu\'aucune notification ne soit manquée.</string>
+    <string name="wt_battery_button">Autoriser</string>
+    <string name="wt_autostart_title">Démarrage Automatique en Arrière-plan</string>
+    <string name="wt_autostart_desc">Certains fabricants bloquent le démarrage des apps en arrière-plan. Activez le démarrage automatique pour NO afin qu\'il reste actif après le redémarrage de l\'appareil.</string>
+    <string name="wt_autostart_button">Ouvrir les Paramètres</string>
+    <string name="wt_restricted_title">Autoriser les Paramètres Restreints</string>
+    <string name="wt_restricted_desc">Sous Android 13+, le système peut restreindre l\'accès aux notifications. Autorisez les paramètres restreints pour que NO puisse se connecter et filtrer vos notifications.</string>
+    <string name="wt_restricted_button">Ouvrir les Paramètres</string>
+
+    <!-- Rate App & Feedback -->
+    <string name="rate_app_title">Noter l\'App</string>
+    <string name="rate_app_desc">Soutenez-nous en laissant une note de 5 étoiles sur Google Play !</string>
+    <string name="feedback_title">Envoyer un Commentaire</string>
+    <string name="feedback_desc">Un problème ou une suggestion ? Contactez-nous directement !</string>
+    <string name="feedback_dialog_title">Commentaires &amp; Suggestions</string>
+    <string name="feedback_dialog_hint">Écrivez vos commentaires ici...</string>
+    <string name="feedback_dialog_send">Envoyer</string>
+    <string name="feedback_dialog_cancel">Annuler</string>
+    <string name="feedback_success">Merci pour votre commentaire !</string>
+    <string name="feedback_empty_error">Veuillez écrire votre commentaire avant d\'envoyer.</string>
+
+    <!-- Help Section -->
+    <string name="help_section_title">Aide &amp; FAQ</string>
+    <string name="help_faq_1_q">Pourquoi mes notifications ne sont-elles pas bloquées ?</string>
+    <string name="help_faq_1_a">Assurez-vous d\'avoir accordé l\'\"Accès aux Notifications\" à cette app dans les paramètres et qu\'elle dispose des permissions d\'exécution en arrière-plan.</string>
+    <string name="help_faq_2_q">Qu\'est-ce que le Mode Focus ?</string>
+    <string name="help_faq_2_a">Quand le Mode Focus est actif, toutes les notifications entrantes sont silenciées et archivées dans l\'app. Les apps exemptées font exception ; leurs notifications continuent d\'arriver normalement.</string>
+    <string name="help_faq_3_q">Que fait Exempter ?</string>
+    <string name="help_faq_3_a">Cela permet aux notifications des apps sélectionnées de continuer à arriver même quand le Mode Focus ou d\'autres filtres sont actifs. Activez-le depuis le détail de l\'app ou la liste du Tableau de bord.</string>
+
+    <!-- Added with the BlacklistPage.kt / ProfilePage.kt update -->
+    <string name="auth_password_hide">Masquer</string>
+    <string name="auth_password_show">Afficher</string>
+    <string name="error_billing_requires_activity">Impossible de démarrer le paiement. Réessayez</string>
+    <string name="error_billing_not_configured">L\'abonnement n\'est pas encore configuré</string>
+    <string name="error_action_requires_activity">Impossible d\'effectuer cette action. Réessayez</string>
+    <string name="error_generic">Erreur : %1$s</string>
+    <string name="error_auth_not_configured">La connexion n\'est pas disponible pour le moment</string>
+    <string name="error_no_email_app">Aucune app d\'e-mail trouvée sur l\'appareil</string>
+
+    <string name="title_help_faq">Aide &amp; FAQ</string>
+    <string name="hiw_1_title">1. Bloquer : Mots-Clés par Défaut</string>
+    <string name="hiw_1_body">À la première installation, les catégories de mots prédéfinies (Marketing, Crédit, Jeux, Actualités et Spam général) sont désactivées. Ouvrez-les depuis l\'écran Bloquer. Chaque catégorie peut être activée ou désactivée ; vous pouvez ajouter ou supprimer vos propres mots. Quand une notification arrive, NO vérifie l\'ID du canal et le texte complet du message avec les listes de mots actives. S\'il trouve une correspondance, la notification est silenciée et déplacée vers les Archives.</string>
+    <string name="hiw_2_title">2. Mode Focus : Silence Total</string>
+    <string name="hiw_2_body">Le Mode Focus s\'active et se désactive depuis l\'interrupteur principal du Tableau de bord. Quand il est actif, toutes les notifications entrantes sont redirigées vers les Archives sans son ni vibration, quelle que soit l\'app ou le canal. Cela vous garde concentré et vous pouvez consulter l\'historique complet plus tard.</string>
+    <string name="hiw_3_title">3. Autoriser les Notifications : Liste de Non-Blocage</string>
+    <string name="hiw_3_body">Touchez une app dans l\'écran Apps pour ouvrir son détail. Activez \"Autoriser les notifications\" pour les apps dont les notifications doivent toujours vous parvenir. Quand activé, NO ne bloquera aucune notification de cette app, ni par les filtres standard, ni par les mots de blocage personnalisés, ni par le Mode Focus. Recommandé pour les apps de banque, messagerie, livraison et authentification.</string>
+    <string name="hiw_4_title">4. Blocage d\'Emoji</string>
+    <string name="hiw_4_body">Quand le Blocage d\'Emoji est activé, toute notification qui n\'est qu\'emojis ou en contient beaucoup est automatiquement bloquée. Si vous voulez des notifications avec emojis d\'une app spécifique, ouvrez le détail de l\'app et activez \"Autoriser les emojis\". Cette app contournera alors le filtre d\'emojis.</string>
+    <string name="hiw_5_title">5. Archives : Historique de 7 Jours</string>
+    <string name="hiw_5_body">Les notifications bloquées et du Mode Focus sont conservées dans l\'onglet Archives pendant 7 jours. Vous pouvez voir le nom de l\'app, l\'heure exacte et la raison du filtrage. Les Archives sont automatiquement nettoyées après 7 jours.</string>
+    <string name="hiw_6_title">6. Mots Autorisés : Votre Liste Blanche</string>
+    <string name="hiw_6_body">Les mots que vous ajoutez à \"Mots Autorisés\" dans l\'écran Bloquer ont la plus haute priorité. Si une notification contient un de ces mots, elle ne sera jamais bloquée, peu importe à quel point le reste du message ressemble à du spam. Ajoutez des mots comme \"commande\", \"livraison\" ou \"vérification\" pour que les messages importants passent toujours.</string>
+    <string name="hiw_7_title">7. Connexion Google et Sauvegarde Cloud</string>
+    <string name="hiw_7_body">La connexion avec Google est complètement facultative. Quand vous vous connectez, votre historique de notifications et vos paramètres sont sauvegardés dans le cloud, chiffrés de bout en bout. Si vous changez de téléphone, réinstallez l\'app ou effacez les données, vous pouvez vous reconnecter et tout restaurer. L\'app fonctionne aussi localement sans connexion.</string>
+    <string name="help_setup_title">Configuration : Premières Étapes</string>
+    <string name="help_setup_body">Pour que NO fonctionne correctement, accordez l\'accès aux notifications, désactivez l\'optimisation de batterie ou autorisez l\'utilisation en arrière-plan, acceptez le dialogue des paramètres restreints et désactivez les restrictions de démarrage automatique spécifiques au fabricant. Cela permet à NO de redémarrer automatiquement après le redémarrage du téléphone.</string>
+    <string name="faq_1_title">FAQ : Pourquoi mes notifications ne sont-elles pas bloquées ?</string>
+    <string name="faq_1_body">Les raisons les plus courantes sont : l\'accès aux notifications n\'est pas accordé, l\'optimisation de batterie ferme l\'app en arrière-plan, l\'app est sur la liste des exemptées, ou la notification contient un mot de vos Mots Autorisés. Certaines interfaces de fabricants (Xiaomi, Samsung, Oppo, etc.) sont plus agressives ; vérifiez manuellement les paramètres de batterie et de démarrage automatique.</string>
+    <string name="faq_2_title">FAQ : Quelle est la différence entre Mode Focus et Archives ?</string>
+    <string name="faq_2_body">Le Mode Focus coupe immédiatement le son de toutes les notifications entrantes et les envoie aux Archives pour protéger votre attention. Les Archives sont la zone d\'historique où les notifications bloquées et du Mode Focus sont stockées pendant 7 jours. Vous pouvez ouvrir les Archives et voir pourquoi chaque notification a été filtrée.</string>
+    <string name="faq_3_title">FAQ : Quelle est la différence entre \"Mettre en sourdine &amp; sauvegarder\", \"Autoriser les notifications\" et Mots Autorisés ?</string>
+    <string name="faq_3_body">L\'app a deux interrupteurs au niveau de l\'app : \"Mettre en sourdine &amp; sauvegarder\" et \"Autoriser les notifications\". \"Mettre en sourdine &amp; sauvegarder\" bloque toutes les notifications de cette app et les archive quand le Mode Focus est DÉSACTIVÉ — c\'est du blocage par app. \"Autoriser les notifications\" laisse les notifications de cette app vous parvenir normalement quand le Mode Focus est ACTIVÉ — c\'est une véritable exemption du Mode Focus. \"Mots Autorisés\" fonctionne par contenu : toute notification contenant un de ces mots est autorisée, indépendamment de l\'app.</string>
+    <string name="faq_4_title">FAQ : Comment fonctionnent les Mots de Blocage et d\'Autorisation par app ?</string>
+    <string name="faq_4_body">Quand vous touchez une app dans l\'écran Apps, le détail vous permet d\'ajouter des \"Mots bloqués\" et des \"Mots autorisés\" qui ne s\'appliquent qu\'à cette app. Par exemple, si vous ajoutez \"Pierre\" aux mots bloqués de WhatsApp, chaque message de Pierre sera bloqué et archivé tant que son nom apparaît dans la notification. Cela ne fonctionne qu\'avec le texte visible dans la notification.</string>
+</resources>

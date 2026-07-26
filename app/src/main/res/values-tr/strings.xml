@@ -124,6 +124,17 @@
     <string name="add">Ekle</string>
     <string name="delete">Sil</string>
 
+    <string name="app_category_game">Oyun</string>
+    <string name="app_category_audio">Müzik ve Ses</string>
+    <string name="app_category_video">Video</string>
+    <string name="app_category_image">Fotoğrafçılık</string>
+    <string name="app_category_social">Sosyal</string>
+    <string name="app_category_news">Haberler</string>
+    <string name="app_category_maps">Haritalar</string>
+    <string name="app_category_productivity">Verimlilik</string>
+    <string name="app_category_accessibility">Erişilebilirlik</string>
+    <string name="app_category_unknown">—</string>
+
     <string name="account">Hesap</string>
     <string name="sign_in_with_google">Google ile devam et</string>
     <string name="auth_google_explanation">Bildirim geçmişinizi ve ayarlarınızı yedeklemek için Google ile giriş yapın.</string>

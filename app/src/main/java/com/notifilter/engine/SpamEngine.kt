@@ -163,23 +163,23 @@ class SpamEngine {
         }
 
         if (config.blockIfHasEmoji && containsEmoji(notification.content)) {
-            return SpamResult.Block("Emoji içeriyor")
+            return SpamResult.Block("EMOJI")
         }
 
-        if (channelKey in config.channelIdsBlocked) return SpamResult.Block("Manuel engellenen kanal: '${notification.channelId ?: "varsayılan"}'")
+        if (channelKey in config.channelIdsBlocked) return SpamResult.Block("MANUAL_CHANNEL:${notification.channelId ?: ""}")
 
         if (config.channelAllow.any { channelId.contains(it) || channelIdDefault.contains(it) }) return SpamResult.Allow
 
         config.channelBlock.find { keyword -> 
             channelId.contains(keyword) || channelIdDefault.contains(keyword.lowercase())
         }?.let { keyword ->
-            return SpamResult.Block("Kanal ID: '$keyword'")
+            return SpamResult.Block("CHANNEL_ID:$keyword")
         }
 
         config.contentBlock.find { keyword ->
             contentMatchesKeyword(lowerContent, lowerContentDefault, tokenVariants, keyword)
         }?.let { keyword ->
-            return SpamResult.Block("İçerik: '$keyword'")
+            return SpamResult.Block("CONTENT:$keyword")
         }
 
         return SpamResult.Allow

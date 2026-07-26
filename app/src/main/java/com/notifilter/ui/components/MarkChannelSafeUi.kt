@@ -337,18 +337,19 @@ private fun NotificationRow(notification: NotificationRecord) {
 @Composable
 private fun localizedBlockReason(reason: String?): String {
     if (reason.isNullOrBlank()) return ""
-    if (reason == "Gizle kaydet") return stringResource(R.string.reason_mute_and_save)
     return when {
-        reason == "Emoji içeriyor" -> stringResource(R.string.reason_contains_emoji)
-        reason == "Genel Odak Modu aktif" -> stringResource(R.string.reason_focus_mode_active)
-        reason == "Odak Modu açık" -> stringResource(R.string.reason_focus_mode_active)
-        reason == "Games pack active" -> stringResource(R.string.reason_games_pack_active)
-        reason == "Oyun paketi aktif" -> stringResource(R.string.reason_games_pack_active)
-        reason.startsWith("Manuel engellenen kanal:") ->
+        reason == "EMOJI" -> stringResource(R.string.reason_contains_emoji)
+        reason == "FOCUS_MODE" || reason == "Genel Odak Modu aktif" || reason == "Odak Modu açık" ->
+            stringResource(R.string.reason_focus_mode_active)
+        reason == "GAMES_PACK" || reason == "Games pack active" || reason == "Oyun paketi aktif" ->
+            stringResource(R.string.reason_games_pack_active)
+        reason == "MUTE_SAVE" || reason == "Gizle kaydet" ->
+            stringResource(R.string.reason_mute_and_save)
+        reason.startsWith("MANUAL_CHANNEL") || reason.startsWith("Manuel engellenen kanal:") ->
             stringResource(R.string.reason_manual_blocked_channel)
-        reason.startsWith("Kanal ID:") ->
+        reason.startsWith("CHANNEL_ID") || reason.startsWith("Kanal ID:") ->
             stringResource(R.string.reason_channel_id)
-        reason.startsWith("İçerik:") -> {
+        reason.startsWith("CONTENT") || reason.startsWith("İçerik:") -> {
             val keyword = reason.substringAfter(":").trim().trim('"', '\'', '’')
             stringResource(R.string.reason_content, keyword)
         }

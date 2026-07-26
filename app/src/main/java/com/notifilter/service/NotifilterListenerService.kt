@@ -222,11 +222,11 @@ class NotifilterListenerService : NotificationListenerService() {
                     blockReason = null
                 } else {
                     shouldBlock = true
-                    blockReason = "Genel Odak Modu aktif"
+                    blockReason = "FOCUS_MODE"
                 }
             } else if (filterRulesPrefs.isGlobalGamesBlockEnabled && isGamePackage(record.packageName)) {
                 shouldBlock = true
-                blockReason = "Games pack active"
+                blockReason = "GAMES_PACK"
             } else {
                 val whitelistedPackages = importantChannelsPrefs.whitelistedPackages
                 val baseConfig = filterRulesPrefs.toFilterRulesConfig()
@@ -282,7 +282,7 @@ class NotifilterListenerService : NotificationListenerService() {
                     TAG,
                     "BLOCK decision pkg=${sbn.packageName} key=${sbn.key} id=${sbn.id} tag=${sbn.tag} groupSummary=$isGroupSummary reason=$blockReason"
                 )
-                cancelSbn(sbn, blockReason ?: "blocked")
+                cancelSbn(sbn, blockReason ?: "BLOCKED")
             }
             pruneOldKeys(now)
         } catch (e: Exception) {
@@ -350,7 +350,7 @@ class NotifilterListenerService : NotificationListenerService() {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH ||
                         (sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY) == 0
                     ) {
-                        saveAndCancel(sbn, "Gizle kaydet")
+                        saveAndCancel(sbn, "MUTE_SAVE")
                     }
                 }
         } catch (e: SecurityException) { /* izin yok */ }
@@ -523,7 +523,7 @@ class NotifilterListenerService : NotificationListenerService() {
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT_WATCH ||
                         (sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY) == 0
                     ) {
-                        saveAndCancel(sbn, "Genel Odak Modu aktif")
+                        saveAndCancel(sbn, "FOCUS_MODE")
                     }
                 }
         } catch (e: SecurityException) { /* izin yok */ }

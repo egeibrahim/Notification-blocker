@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NO:Spam-Benachrichtigungsblocker</string>
+
+    <!-- Language Pack Selection (first launch) -->
+    <string name="lang_pack_selection_title">Sprachpakete auswählen</string>
+    <string name="lang_pack_selection_desc">Wähle, in welchen Sprachen du Benachrichtigungen filtern möchtest. Englisch ist immer aktiv. Die Sprache deines Telefons wurde automatisch ausgewählt — du kannst unten weitere hinzufügen.</string>
+    <string name="lang_pack_selection_footnote">Du kannst dies jederzeit in den Einstellungen ändern.</string>
+    <string name="lang_pack_continue">Weiter</string>
+    <string name="lang_pack_english_locked">Englisch (immer aktiv)</string>
+    <string name="lang_pack_native_locked">Deine Telefonsprache (immer aktiv)</string>
+
+    <string name="nav_dashboard">Übersicht</string>
+    <string name="nav_archive">Archiv</string>
+    <string name="nav_block_management">Blockieren</string>
+    <string name="nav_profile">Einstellungen</string>
+
+    <string name="title_settings">Einstellungen</string>
+    <string name="title_block_management">Blockieren</string>
+
+    <string name="settings_setup_header">Damit NO richtig funktioniert, aktiviere die folgenden Einstellungen</string>
+    <string name="settings_setup_body">Berechtigungen für Benachrichtigungszugriff, Autostart und Akkuoptimierung sind zum Blockieren und Archivieren erforderlich.</string>
+    <string name="settings_info_title">Hilfe &amp; Informationen</string>
+    <string name="settings_help">Hilfe</string>
+    <string name="settings_how_it_works">Wie NO funktioniert</string>
+    <string name="settings_faq">FAQ</string>
+    <string name="title_help">Hilfe</string>
+    <string name="title_how_it_works">Wie NO funktioniert</string>
+    <string name="title_faq">FAQ</string>
+
+    <string name="section_quick_access">Schnellzugriff</string>
+    <string name="quick_access_app_info">Eingeschränkte Einstellungen erlauben</string>
+    <string name="quick_access_app_info_desc"></string>
+    <string name="quick_access_battery_settings">Akku-Einstellungen</string>
+    <string name="quick_access_autostart">Autostart im Hintergrund</string>
+    <string name="quick_access_disable_battery_optimization">Akkuoptimierung deaktivieren</string>
+    <string name="battery_optimization_unrestricted">Uneingeschränkt</string>
+    <string name="battery_optimization_restricted">Akkuoptimierung aktiv, Benachrichtigungen können verzögert werden</string>
+    <string name="autostart_desc"></string>
+
+    <string name="notification_access">Benachrichtigungszugriff</string>
+    <string name="notification_access_on">An</string>
+    <string name="notification_access_off">Aus</string>
+    <string name="notification_access_action">Diese Einstellungen abschließen</string>
+    <string name="notification_access_manage">Benachrichtigungszugriff verwalten</string>
+    <string name="notification_access_dialog_title">Benachrichtigungszugriff erforderlich</string>
+    <string name="notification_access_dialog_message">Um Benachrichtigungen zu blockieren und zu filtern, aktiviere bitte den Benachrichtigungszugriff für diese App in den Systemeinstellungen.</string>
+    <string name="notification_access_dialog_positive">Einstellungen öffnen</string>
+    <string name="notification_access_dialog_dismiss">Schließen</string>
+
+    <string name="how_to_use_title">Erforderliche Einstellungen vornehmen</string>
+    <string name="how_to_use_q1">Einrichtungsschritte</string>
+    <string name="how_to_use_a1">1) Benachrichtigungszugriff erlauben\n2) Hintergrundnutzung erlauben</string>
+
+    <string name="setup_guide_title">Einrichtung abschließen</string>
+    <string name="setup_guide_message">Damit die App funktioniert, gewähre bitte die folgenden Berechtigungen:</string>
+    <string name="setup_guide_notifications">1. Benachrichtigungszugriff erlauben</string>
+    <string name="setup_guide_battery">2. Hintergrundnutzung erlauben</string>
+    <string name="setup_guide_open">Öffnen</string>
+    <string name="setup_guide_done">Einrichtung abgeschlossen</string>
+    <string name="how_to_use_q2"></string>
+    <string name="how_to_use_a2"></string>
+    <string name="how_to_use_q3"></string>
+    <string name="how_to_use_a3"></string>
+
+    <string name="no_how_it_works_title">Wie funktioniert \"NO\"?</string>
+    <string name="no_how_it_works_body">1) Blockieren: Standard-Blockierwörter sind standardmäßig aktiv. Du kannst jedes Wort deaktivieren oder eigene hinzufügen.\n2) Fokusmodus: Wenn der Fokusmodus aktiv ist, werden alle Benachrichtigungen stummgeschaltet und archiviert. Ausgenommene Apps sind nicht betroffen und erscheinen normal.\n3) Ausnehmen: Benachrichtigungen der ausgewählten App werden nie blockiert, weder durch Filter noch durch den Fokusmodus.\n4) Emoji-Blockade: Blockiert alle Benachrichtigungen, die Emojis enthalten. Für Apps, bei denen du Emoji-Benachrichtigungen nicht blockieren möchtest, verwende die Option \"Emojis erlauben\" im App-Detail.\n5) Archiv: Behält deinen Benachrichtigungsverlauf der letzten 7 Tage.\n6) Erlaubte Wörter: Benachrichtigungen, die die hier hinzugefügten Wörter enthalten, werden nie blockiert.\n7) Google-Anmeldung: Wird verwendet, um deinen Benachrichtigungsverlauf zu schützen, auch wenn du Cookies löschst oder die App neu installierst. Die Google-Anmeldung ist optional.</string>
+    <string name="language_pack">Sprachpaket</string>
+
+    <string name="emoji_block_title">Benachrichtigungen mit Emojis</string>
+    <string name="emoji_block_description">Wenn aktiviert, werden Emojis für Apps, die du im App-Detail erlaubst, nicht blockiert.</string>
+    <string name="emoji_block_toggle">Emoji</string>
+    <string name="global_games_toggle">Alle Spiele blockieren</string>
+    <string name="block_category_word_count">%1$d Wörter</string>
+    <string name="block_categories_title">Block-Kategorien</string>
+
+    <string name="category_marketing">Marketing</string>
+    <string name="category_credit">Kredit &amp; Finanzen</string>
+    <string name="category_recommendations">Empfehlungen</string>
+    <string name="category_games">Spiele</string>
+    <string name="category_news">Nachrichten</string>
+    <string name="category_general">Allgemein</string>
+
+    <string name="block_group_marketing">Marketing &amp; Angebote</string>
+    <string name="block_group_other">Andere</string>
+    <string name="block_category_words">Wörter</string>
+    <string name="block_section_allow_words_title">Diese Wörter nie blockieren</string>
+    <string name="block_section_allow_words_desc">Benachrichtigungen, die diese Wörter enthalten, werden nie blockiert</string>
+    <string name="block_section_block_words_title">Diese Wörter blockieren</string>
+    <string name="block_section_block_words_desc">Benachrichtigungen, die diese Wörter enthalten, werden blockiert</string>
+    <string name="block_add_category">Hinzufügen</string>
+    <string name="block_category_title_hint">Neuer Kategoriename</string>
+    <string name="block_category_empty_words">Noch keine Wörter</string>
+    <string name="block_no_categories_yet">Noch nichts hier</string>
+
+    <string name="dashboard_notification_access_off_title">Benachrichtigungszugriff ist aus</string>
+    <string name="dashboard_notification_access_off_desc">Blockieren und Archivieren funktionieren nicht. Aktiviere den Zugriff in den Einstellungen.</string>
+    <string name="dashboard_last_24h_sorted">Letzte 24 Stunden - sortiert nach Benachrichtigungsvolumen</string>
+
+    <string name="dashboard_total_fmt">Gesamt: %1$d</string>
+    <string name="dashboard_blocked_fmt">Blockiert: %1$d</string>
+    <string name="dashboard_mute_save_label">Stumm &amp; speichern</string>
+
+    <string name="applications_installed_title">Installierte Apps</string>
+    <string name="applications_installed_desc">Tippe auf eine App, um den Benachrichtigungsverlauf zu sehen. Bei Stummschaltung werden Benachrichtigungen dieser App vom Filter ausgeschlossen.</string>
+
+    <string name="archive_last_7_days_title">Letzte 7 Tage - alle Benachrichtigungen</string>
+    <string name="archive_empty_title">Noch keine Benachrichtigungen</string>
+    <string name="archive_empty_desc">In den letzten 7 Tagen wurde nichts aufgezeichnet.</string>
+
+    <string name="detail_app_rules_title">Regeln für diese App</string>
+    <string name="detail_exempt_app_title">Benachrichtigungen erlauben</string>
+    <string name="detail_exempt_app_desc">Lass Benachrichtigungen dieser App auch bei aktivem Fokusmodus oder anderen Filtern durch.</string>
+    <string name="detail_notification_history">Benachrichtigungsverlauf</string>
+    <string name="detail_allow_words_for_app">Erlaubte Wörter</string>
+    <string name="detail_allow_words_for_app_desc">Benachrichtigungen, die diese Wörter enthalten, werden immer angezeigt, auch wenn andere Filter sie blockieren würden.</string>
+    <string name="detail_block_words_for_app">Blockierte Wörter</string>
+    <string name="detail_block_words_for_app_desc">Benachrichtigungen dieser App, die diese Wörter enthalten, werden automatisch blockiert.</string>
+
+    <string name="search">Suchen</string>
+    <string name="global_focus_mode">Fokusmodus</string>
+
+    <string name="archive_source_blocked">Quelle: %1$s</string>
+    <string name="archive_source_notification">Quelle: Benachrichtigung</string>
+    <string name="generic_notification">Benachrichtigung</string>
+
+    <string name="reason_contains_emoji">Enthält Emoji</string>
+    <string name="reason_focus_mode_active">Fokusmodus aktiv</string>
+    <string name="reason_games_pack_active">Spielepaket aktiv</string>
+    <string name="reason_mute_and_save">Stumm &amp; speichern</string>
+    <string name="reason_manual_blocked_channel">Manuell blockierter Kanal</string>
+    <string name="reason_channel_id">Durch Kanalregel blockiert</string>
+    <string name="reason_content">Inhalt: %1$s</string>
+
+    <string name="detail_allow_emoji_in_app">Emojis erlauben</string>
+
+    <string name="word">Wort</string>
+    <string name="add_word">Wort hinzufügen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="delete">Löschen</string>
+
+    <string name="app_category_game">Spiel</string>
+    <string name="app_category_audio">Musik &amp; Audio</string>
+    <string name="app_category_video">Video</string>
+    <string name="app_category_image">Fotografie</string>
+    <string name="app_category_social">Sozial</string>
+    <string name="app_category_news">Nachrichten</string>
+    <string name="app_category_maps">Karten</string>
+    <string name="app_category_productivity">Produktivität</string>
+    <string name="app_category_accessibility">Barrierefreiheit</string>
+    <string name="app_category_unknown">—</string>
+
+    <string name="account">Konto</string>
+    <string name="sign_in_with_google">Mit Google fortfahren</string>
+    <string name="auth_google_explanation">Melde dich mit Google an, um deine Benachrichtigungen und Einstellungen zu sichern.</string>
+    <string name="signed_in_as">Angemeldet als</string>
+    <string name="logout">Abmelden</string>
+    <string name="sign_out_confirm_message">Bist du sicher, dass du dich abmelden möchtest? Deine Einstellungen und dein Archiv bleiben auf diesem Konto gespeichert und werden beim nächsten Anmelden wiederhergestellt.</string>
+    <string name="backup_now">Jetzt sichern</string>
+    <string name="restore_now">Jetzt wiederherstellen</string>
+
+    <string name="subscription_required_title">Abonnement erforderlich</string>
+    <string name="subscription_required_body">Starte deine kostenlose Testversion, um die App weiter zu nutzen.</string>
+    <string name="start_free_trial">7-Tage-Testversion starten</string>
+    <string name="manage_subscription">Abonnement verwalten</string>
+    <string name="cancel_subscription">Abonnement kündigen</string>
+    <string name="subscription_info_title">Abonnement</string>
+    <string name="subscription_status_active">Aktives Abonnement</string>
+    <string name="subscription_status_inactive">Kein aktives Abonnement</string>
+    <string name="subscription_status_unknown">Abonnement wird geprüft…</string>
+    <string name="subscription_trial_desc">%1$s kostenlos, danach %2$s</string>
+    <string name="subscription_price_desc">%1$s / %2$s</string>
+    <string name="subscription_cancel_desc">Du kannst dein Abonnement jederzeit über Google Play kündigen.</string>
+    <string name="subscription_not_configured">Abonnement-Produkt nicht konfiguriert.</string>
+
+    <!-- Email Sign-In and Registration -->
+    <string name="auth_email">E-Mail</string>
+    <string name="auth_password">Passwort</string>
+    <string name="auth_login">Anmelden</string>
+    <string name="auth_register">Registrieren</string>
+    <string name="auth_forgot_password">Passwort vergessen?</string>
+    <string name="auth_send_recovery">Wiederherstellungs-E-Mail senden</string>
+    <string name="auth_back_to_login">Zurück zur Anmeldung</string>
+    <string name="auth_no_account">Kein Konto? Registrieren</string>
+    <string name="auth_have_account">Schon ein Konto? Anmelden</string>
+    <string name="auth_invalid_email">Bitte gib eine gültige E-Mail-Adresse ein</string>
+    <string name="auth_invalid_password">Passwort muss mindestens 6 Zeichen lang sein</string>
+    <string name="auth_success_signup">Registrierung erfolgreich! Wenn die Verifizierung aktiviert ist, überprüfe deinen Posteingang.</string>
+    <string name="auth_success_recovery">Wiederherstellungs-E-Mail erfolgreich gesendet.</string>
+    <string name="auth_or_divider">ODER</string>
+
+    <!-- Walkthrough -->
+    <string name="wt_welcome_title">Willkommen</string>
+    <string name="wt_welcome_tagline">Übernimm die Kontrolle über deine Benachrichtigungen</string>
+    <string name="wt_welcome_desc">NO ist eine zuverlässige, intelligente Filter-App, die unbrauchbare Benachrichtigungen aussortiert. Sie hält deine Benachrichtigungsleiste sauber, organisiert und fokussiert auf das, was dir wichtig ist.</string>
+    <string name="wt_filter_title">Intelligentes Filtern</string>
+    <string name="wt_filter_desc">Blockiere automatisch Spam-Kategorien wie Marketing, Kreditangebote und Nachrichten mit einem Tipp. Du kannst auch eigene Schlüsselwörter hinzufügen, um den Filter vollständig anzupassen.</string>
+    <string name="wt_focus_title">Fokusmodus</string>
+    <string name="wt_focus_desc">Schalte alle Benachrichtigungen mit einem Tipp stumm, wenn du dich konzentrieren musst. Nichts geht verloren, alles wird sicher im Archiv aufbewahrt.</string>
+    <string name="wt_next">Weiter</string>
+    <string name="wt_back">Zurück</string>
+    <string name="wt_finish">Loslegen</string>
+    <string name="wt_tooltip_dashboard">Siehe die Aufschlüsselung aktiver und blockierter Benachrichtigungen.</string>
+    <string name="wt_tooltip_rules">Füge hier eigene Blockier-/Erlaubnis-Wörter und Kanäle hinzu.</string>
+    <string name="wt_permission_title">Benachrichtigungen erlauben</string>
+    <string name="wt_permission_desc">NO sendet eigene Benachrichtigungen, um blockierte zu archivieren und dir wichtige Warnungen zu zeigen. Diese Berechtigung ist erforderlich, damit die App richtig funktioniert.</string>
+    <string name="wt_access_title">Benachrichtigungen lesen und steuern</string>
+    <string name="wt_access_desc">Um Benachrichtigungen anderer Apps zu filtern, musst du NO in den System-Einstellungen für Benachrichtigungszugriff aktivieren. Möglicherweise siehst du eine Warnung wie \"Diese App kann alle deine Benachrichtigungen lesen\"; dies ist eine Standard-Android-Sicherheitswarnung, die jedem Benutzer angezeigt wird und nicht gefährlich ist.</string>
+    <string name="wt_permission_button">Erlauben</string>
+    <string name="wt_access_button">Einstellungen öffnen</string>
+    <string name="wt_app_words_title">App-spezifische Regeln</string>
+    <string name="wt_app_words_desc">Definiere separate Blockier- und Erlaubnis-Wörter für jede App. Zum Beispiel kannst du in WhatsApp Nachrichten von einem Kontakt blockieren, während du andere durchlässt.</string>
+    <string name="wt_battery_title">Akkuoptimierung: Uneingeschränkt</string>
+    <string name="wt_battery_desc">Android kann NO im Hintergrund beenden, um Akku zu sparen. Setze die Akkuoptimierung auf \"Uneingeschränkt\", damit keine Benachrichtigung verpasst wird.</string>
+    <string name="wt_battery_button">Erlauben</string>
+    <string name="wt_autostart_title">Autostart im Hintergrund</string>
+    <string name="wt_autostart_desc">Einige Hersteller blockieren den Start von Apps im Hintergrund. Aktiviere Autostart für NO, damit es nach einem Neustart aktiv bleibt.</string>
+    <string name="wt_autostart_button">Einstellungen öffnen</string>
+    <string name="wt_restricted_title">Eingeschränkte Einstellungen erlauben</string>
+    <string name="wt_restricted_desc">Unter Android 13+ kann das System den Benachrichtigungszugriff einschränken. Erlaube eingeschränkte Einstellungen, damit NO sich verbinden und deine Benachrichtigungen filtern kann.</string>
+    <string name="wt_restricted_button">Einstellungen öffnen</string>
+
+    <!-- Rate App & Feedback -->
+    <string name="rate_app_title">App bewerten</string>
+    <string name="rate_app_desc">Unterstütze uns mit einer 5-Sterne-Bewertung im Google Play Store!</string>
+    <string name="feedback_title">Feedback senden</string>
+    <string name="feedback_desc">Problem oder Vorschlag? Kontaktiere uns direkt!</string>
+    <string name="feedback_dialog_title">Feedback &amp; Vorschläge</string>
+    <string name="feedback_dialog_hint">Schreibe deinen Kommentar hier...</string>
+    <string name="feedback_dialog_send">Senden</string>
+    <string name="feedback_dialog_cancel">Abbrechen</string>
+    <string name="feedback_success">Danke für dein Feedback!</string>
+    <string name="feedback_empty_error">Bitte schreibe dein Feedback vor dem Senden.</string>
+
+    <!-- Help Section -->
+    <string name="help_section_title">Hilfe &amp; FAQ</string>
+    <string name="help_faq_1_q">Warum werden meine Benachrichtigungen nicht blockiert?</string>
+    <string name="help_faq_1_a">Stelle sicher, dass du dieser App \"Benachrichtigungszugriff\" in den Einstellungen gewährt hast und dass sie Berechtigungen für die Hintergrundausführung hat.</string>
+    <string name="help_faq_2_q">Was ist der Fokusmodus?</string>
+    <string name="help_faq_2_a">Wenn der Fokusmodus aktiv ist, werden alle eingehenden Benachrichtigungen stummgeschaltet und in der App archiviert. Ausgenommene Apps sind ausgenommen; deren Benachrichtigungen kommen weiterhin normal durch.</string>
+    <string name="help_faq_3_q">Was macht Ausnehmen?</string>
+    <string name="help_faq_3_a">Es lässt Benachrichtigungen ausgewählter Apps weiterhin durchkommen, auch wenn der Fokusmodus oder andere Filter aktiv sind. Schalte es im App-Detail oder der Übersichtsliste ein.</string>
+
+    <!-- Added with the BlacklistPage.kt / ProfilePage.kt update -->
+    <string name="auth_password_hide">Verbergen</string>
+    <string name="auth_password_show">Anzeigen</string>
+    <string name="error_billing_requires_activity">Checkout konnte nicht gestartet werden. Erneut versuchen</string>
+    <string name="error_billing_not_configured">Abonnement ist noch nicht konfiguriert</string>
+    <string name="error_action_requires_activity">Diese Aktion konnte nicht abgeschlossen werden. Erneut versuchen</string>
+    <string name="error_generic">Fehler: %1$s</string>
+    <string name="error_auth_not_configured">Anmeldung ist derzeit nicht verfügbar</string>
+    <string name="error_no_email_app">Keine E-Mail-App auf dem Gerät gefunden</string>
+
+    <string name="title_help_faq">Hilfe &amp; FAQ</string>
+    <string name="hiw_1_title">1. Blockieren: Standard-Blockierwörter</string>
+    <string name="hiw_1_body">Bei der ersten Installation sind die vordefinierten Wortkategorien (Marketing, Kredit, Spiele, Nachrichten und allgemeiner Spam) deaktiviert. Öffne sie vom Blockieren-Bildschirm. Jede Kategorie kann ein- und ausgeschaltet werden; du kannst eigene Wörter hinzufügen oder entfernen. Wenn eine Benachrichtigung eingeht, prüft NO die Kanal-ID und den Nachrichtentext gegen die aktiven Wortlisten. Bei einer Übereinstimmung wird die Benachrichtigung stummgeschaltet und ins Archiv verschoben.</string>
+    <string name="hiw_2_title">2. Fokusmodus: Totale Stille</string>
+    <string name="hiw_2_body">Der Fokusmodus wird über den Hauptschalter in der Übersicht ein- und ausgeschaltet. Wenn aktiv, werden alle eingehenden Benachrichtigungen unabhängig von App oder Kanal ohne Ton oder Vibration ins Archiv umgeleitet. So bleibst du fokussiert und kannst den Verlauf später in der App überprüfen.</string>
+    <string name="hiw_3_title">3. Benachrichtigungen erlauben: Niemals-Blockieren-Liste</string>
+    <string name="hiw_3_body">Tippe auf eine App im Apps-Bildschirm, um ihr Detail zu öffnen. Aktiviere \"Benachrichtigungen erlauben\" für Apps, deren Benachrichtigungen immer ankommen müssen. Wenn aktiviert, blockiert NO keine Benachrichtigung dieser App — weder durch Standardfilter, noch durch eigene Blockierwörter, noch durch den Fokusmodus. Empfohlen für Banking-, Messaging-, Liefer- und Authentifizierungs-Apps.</string>
+    <string name="hiw_4_title">4. Emoji-Blockade</string>
+    <string name="hiw_4_body">Wenn die Emoji-Blockade aktiv ist, wird jede Benachrichtigung, die nur aus Emojis besteht oder viele Emojis enthält, automatisch blockiert. Wenn du Emoji-Benachrichtigungen von einer bestimmten App möchtest, öffne das App-Detail und aktiviere \"Emojis erlauben\". Diese App umgeht dann den Emoji-Filter.</string>
+    <string name="hiw_5_title">5. Archiv: 7-Tage-Verlauf</string>
+    <string name="hiw_5_body">Blockierte und Fokusmodus-Benachrichtigungen werden 7 Tage lang im Archiv-Tab gespeichert. Du kannst App-Name, genaue Uhrzeit und Filtergrund sehen. Das Archiv wird nach 7 Tagen automatisch bereinigt.</string>
+    <string name="hiw_6_title">6. Erlaubte Wörter: Deine Whitelist</string>
+    <string name="hiw_6_body">Wörter, die du zu \"Erlaubte Wörter\" im Blockieren-Bildschirm hinzufügst, haben höchste Priorität. Wenn eine Benachrichtigung eines dieser Wörter enthält, wird sie nie blockiert, egal wie spam-ähnlich der Rest der Nachricht aussieht. Füge Wörter wie \"Bestellung\", \"Lieferung\" oder \"Bestätigung\" hinzu, damit wichtige Nachrichten immer durchkommen.</string>
+    <string name="hiw_7_title">7. Google-Anmeldung und Cloud-Backup</string>
+    <string name="hiw_7_body">Die Anmeldung mit Google ist komplett optional. Wenn du dich anmeldest, werden dein Benachrichtigungsverlauf und deine Einstellungen Ende-zu-Ende verschlüsselt in der Cloud gesichert. Bei Telefonwechsel, Neuinstallation oder Datenlöschung kannst du dich wieder anmelden und alles wiederherstellen. Die App funktioniert auch lokal ohne Anmeldung.</string>
+    <string name="help_setup_title">Einrichtung: Erste Schritte</string>
+    <string name="help_setup_body">Damit NO richtig funktioniert, gewähre Benachrichtigungszugriff, deaktiviere Akkuoptimierung oder erlaube Hintergrundnutzung, akzeptiere den Dialog für eingeschränkte Einstellungen und deaktiviere herstellerspezifische Autostart- oder Hintergrundbeschränkungen. So startet NO nach einem Telefonneustart automatisch im Hintergrund.</string>
+    <string name="faq_1_title">FAQ: Warum werden meine Benachrichtigungen nicht blockiert?</string>
+    <string name="faq_1_body">Die häufigsten Gründe: Benachrichtigungszugriff nicht gewährt, Akkuoptimierung beendet die App im Hintergrund, die App ist auf der Ausnehmen-Liste, oder die Benachrichtigung enthält ein Wort aus deinen Erlaubten Wörtern. Einige Hersteller-Oberflächen (Xiaomi, Samsung, Oppo etc.) sind aggressiver; prüfe Akku- und Autostart-Einstellungen manuell.</string>
+    <string name="faq_2_title">FAQ: Was ist der Unterschied zwischen Fokusmodus und Archiv?</string>
+    <string name="faq_2_body">Der Fokusmodus schaltet sofort alle eingehenden Benachrichtigungen stumm und sendet sie ins Archiv, um deine Aufmerksamkeit zu schützen. Das Archiv ist der Verlaufsbereich, in dem sowohl blockierte als auch Fokusmodus-Benachrichtigungen 7 Tage lang gespeichert werden. Du kannst das Archiv öffnen und sehen, warum jede Benachrichtigung gefiltert wurde.</string>
+    <string name="faq_3_title">FAQ: Was ist der Unterschied zwischen \"Stumm &amp; speichern\", \"Benachrichtigungen erlauben\" und Erlaubten Wörtern?</string>
+    <string name="faq_3_body">Die App hat zwei App-Level-Schalter: \"Stumm &amp; speichern\" und \"Benachrichtigungen erlauben\". \"Stumm &amp; speichern\" blockiert alle Benachrichtigungen dieser App und archiviert sie, wenn der Fokusmodus AUS ist — also App-basiertes Blockieren. \"Benachrichtigungen erlauben\" lässt die Benachrichtigungen dieser App normal ankommen, wenn der Fokusmodus AN ist — also eine echte Fokusmodus-Ausnahme. \"Erlaubte Wörter\" funktioniert Inhaltsbasiert: jede Benachrichtigung, die eines dieser Wörter enthält, wird erlaubt, unabhängig von der App.</string>
+    <string name="faq_4_title">FAQ: Wie funktionieren App-spezifische Blockier- und Erlaubnis-Wörter?</string>
+    <string name="faq_4_body">Wenn du im Apps-Bildschirm auf eine App tippst, kannst du im Detail \"Blockierwörter\" und \"Erlaubte Wörter\" hinzufügen, die nur für diese App gelten. Wenn du z.B. \"Max\" zu WhatsApps Blockierwörtern hinzufügst, wird jede Nachricht von Max blockiert und archiviert, solange sein Name in der Benachrichtigung erscheint. Es funktioniert nur mit Text, der in der Benachrichtigung sichtbar ist.</string>
+</resources>

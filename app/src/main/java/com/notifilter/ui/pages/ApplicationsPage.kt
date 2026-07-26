@@ -101,7 +101,7 @@ fun ApplicationsPage(
                 .forEach { ai ->
                     val pkg = ai.packageName
                     val name = ai.loadLabel(pm).toString()
-                    val category = AppCategoryUtil.getCategoryLabel(ai)
+                    val category = AppCategoryUtil.getCategoryLabel(context, ai)
                     val isSystem = (ai.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0
                     result[pkg] = InstalledApp(pkg, name, category, isSystem)
                 }
@@ -126,7 +126,7 @@ fun ApplicationsPage(
                     val pkg = ai.packageName
                     if (pkg in result) return@forEach
                     val name = ai.loadLabel(pm).toString()
-                    val category = AppCategoryUtil.getCategoryLabel(ai)
+                    val category = AppCategoryUtil.getCategoryLabel(context, ai)
                     val isSystem = (ai.flags and android.content.pm.ApplicationInfo.FLAG_SYSTEM) != 0
                     result[pkg] = InstalledApp(pkg, name, category, isSystem)
                 }
@@ -307,7 +307,7 @@ private fun AppStatsRow(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Gizle kaydet",
+                    text = stringResource(R.string.dashboard_mute_save_label),
                     style = MaterialTheme.typography.labelSmall
                 )
                 MuteSwitchView(

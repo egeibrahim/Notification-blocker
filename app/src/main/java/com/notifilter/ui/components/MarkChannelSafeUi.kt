@@ -31,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -42,11 +43,13 @@ import com.notifilter.BuildConfig
 import com.notifilter.data.entity.NotificationRecord
 import com.notifilter.preferences.ImportantChannelsPreferences
 import com.notifilter.preferences.FilterRulesPreferences
+import com.notifilter.engine.ArchiveBlockScanner
 import com.notifilter.service.NotifilterListenerService
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.EmojiEmotions
 import androidx.compose.material.icons.filled.Close
+import kotlinx.coroutines.launch
 
 /**
  * Uygulama bildirimlerini listeleyen bottom sheet.
@@ -66,6 +69,7 @@ fun NotificationDetailSheet(
     var refreshTrigger by remember { mutableStateOf(0) }
     var allowDraft by remember { mutableStateOf("") }
     var blockDraft by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -176,6 +180,10 @@ fun NotificationDetailSheet(
                             filterPrefs.addUserAppContentBlockWord(packageName, blockDraft)
                             blockDraft = ""
                             refreshTrigger++
+                            scope.launch {
+                                ArchiveBlockScanner.rescan(context)
+                                refreshTrigger++
+                            }
                         },
                         enabled = blockDraft.trim().isNotBlank()
                     ) {

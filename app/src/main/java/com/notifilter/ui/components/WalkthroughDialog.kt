@@ -87,19 +87,19 @@ fun WalkthroughDialog(
             usePlatformDefaultWidth = false
         )
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 24.dp)
                 .navigationBarsPadding()
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp)
         ) {
             // Slide Content (scrollable so nothing pushes the buttons off-screen)
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 140.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -191,14 +191,20 @@ fun WalkthroughDialog(
                 )
             }
 
-            // Dot Indicators
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Dot Indicators
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                 for (i in 0 until totalSlides) {
                     Box(
                         modifier = Modifier
@@ -215,7 +221,9 @@ fun WalkthroughDialog(
 
             // Back / Next Navigation
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 if (currentSlide > 0) {
@@ -271,6 +279,7 @@ fun WalkthroughDialog(
                     )
                 }
             }
+        }
         }
     }
 }

@@ -91,7 +91,7 @@ fun WalkthroughDialog(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 48.dp)
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 24.dp)
                 .navigationBarsPadding()
         ) {
             // Slide Content (scrollable so nothing pushes the buttons off-screen)
@@ -195,7 +195,7 @@ fun WalkthroughDialog(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 20.dp),
+                    .padding(vertical = 12.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -203,7 +203,7 @@ fun WalkthroughDialog(
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 4.dp)
-                            .size(if (i == currentSlide) 12.dp else 8.dp)
+                            .size(if (i == currentSlide) 10.dp else 7.dp)
                             .clip(CircleShape)
                             .background(
                                 if (i == currentSlide) MaterialTheme.colorScheme.primary
@@ -222,20 +222,15 @@ fun WalkthroughDialog(
                     OutlinedButton(
                         onClick = { currentSlide-- },
                         modifier = Modifier
-                            .weight(0.4f)
-                            .height(56.dp),
-                        shape = RoundedCornerShape(16.dp)
+                            .weight(0.3f)
+                            .height(52.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBackIosNew,
-                            contentDescription = null,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            text = stringResource(R.string.wt_back),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
+                            contentDescription = stringResource(R.string.wt_back),
+                            modifier = Modifier.size(18.dp)
                         )
                     }
                 }
@@ -257,7 +252,7 @@ fun WalkthroughDialog(
                     },
                     modifier = Modifier
                         .weight(1f)
-                        .height(56.dp),
+                        .height(52.dp),
                     shape = RoundedCornerShape(16.dp)
                 ) {
                     Text(
@@ -271,7 +266,8 @@ fun WalkthroughDialog(
                             else -> stringResource(R.string.wt_next)
                         },
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1
                     )
                 }
             }

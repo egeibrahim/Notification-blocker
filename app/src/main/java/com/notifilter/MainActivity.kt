@@ -254,6 +254,8 @@ fun MainScreen(
                     }
                 },
                 onOpenAutostartSettings = {
+                    context.getSharedPreferences("setup_flags", android.content.Context.MODE_PRIVATE)
+                        .edit().putBoolean("visited_autostart", true).apply()
                     val manufacturer = Build.MANUFACTURER.lowercase()
                     val candidates = when {
                         manufacturer.contains("xiaomi") -> listOf("com.miui.securitycenter" to "com.miui.permcenter.autostart.AutoStartManagementActivity")
@@ -281,6 +283,8 @@ fun MainScreen(
                     }
                 },
                 onOpenRestrictedSettings = {
+                    context.getSharedPreferences("setup_flags", android.content.Context.MODE_PRIVATE)
+                        .edit().putBoolean("visited_restricted", true).apply()
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                         data = Uri.parse("package:${context.packageName}")
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

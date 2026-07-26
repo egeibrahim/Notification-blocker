@@ -141,6 +141,8 @@ class FilterRulesPreferences(private val context: Context) {
     fun isLanguagePackEnabled(packId: String): Boolean = packId in enabledLanguagePacks
 
     fun toggleLanguagePack(packId: String) {
+        val nativePack = localeToPack(java.util.Locale.getDefault().language)
+        if (packId == PACK_EN || packId == nativePack) return
         val current = enabledLanguagePacks
         val next = if (packId in current) current - packId else current + packId
         if (next.isNotEmpty()) enabledLanguagePacks = next
@@ -155,8 +157,11 @@ class FilterRulesPreferences(private val context: Context) {
      * EN her zaman dahildir. Sistem diline göre otomatik öneri verilir.
      */
     fun applyLanguagePackSelection(selectedPacks: Set<String>) {
-        val withEn = (selectedPacks + PACK_EN).filter { it in ALL_PACKS }.toSet()
-        enabledLanguagePacks = withEn
+        val nativePack = localeToPack(java.util.Locale.getDefault().language)
+        val locked = mutableSetOf(PACK_EN)
+        if (nativePack != PACK_EN) locked.add(nativePack)
+        val withLocked = (selectedPacks + locked).filter { it in ALL_PACKS }.toSet()
+        enabledLanguagePacks = withLocked
         hasSelectedCountry = true
     }
 
@@ -681,7 +686,9 @@ class FilterRulesPreferences(private val context: Context) {
         "$packageName|${channelId ?: ""}"
 
     private fun getActiveBlockCategories(): List<BlockCategory> {
-        val selected = enabledLanguagePacks.flatMap { getCategoriesForPack(it) }
+        val localePack = localeToPack(java.util.Locale.getDefault().language)
+        val orderedPacks = enabledLanguagePacks.sortedByDescending { it == localePack }
+        val selected = orderedPacks.flatMap { getCategoriesForPack(it) }
             .ifEmpty { EN_BLOCK_CATEGORIES }
         val merged = LinkedHashMap<String, BlockCategory>()
         selected.forEach { cat ->

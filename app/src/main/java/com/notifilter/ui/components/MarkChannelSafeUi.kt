@@ -64,7 +64,8 @@ fun NotificationDetailSheet(
     sheetState: SheetState,
     onDismiss: () -> Unit,
     onChannelMarkedSafe: () -> Unit,
-    onWhitelistAdded: ((String) -> Unit)? = null
+    onWhitelistAdded: ((String) -> Unit)? = null,
+    onBlockWordAdded: (() -> Unit)? = null
 ) {
     var refreshTrigger by remember { mutableStateOf(0) }
     var allowDraft by remember { mutableStateOf("") }
@@ -192,9 +193,10 @@ fun NotificationDetailSheet(
                             filterPrefs.addUserAppContentBlockWord(packageName, blockDraft)
                             blockDraft = ""
                             refreshTrigger++
+                            onBlockWordAdded?.invoke()
                             scope.launch {
-                                ArchiveBlockScanner.rescan(context)
                                 NotifilterListenerService.rescanAndCancelForPackage(packageName)
+                                ArchiveBlockScanner.rescan(context)
                                 refreshTrigger++
                             }
                         },
@@ -280,7 +282,7 @@ fun NotificationDetailSheet(
                 }
             }
 
-            notifications.forEach { notification ->
+            notifications.filter { !it.isBlocked }.forEach { notification ->
                 NotificationRow(notification = notification)
             }
         }

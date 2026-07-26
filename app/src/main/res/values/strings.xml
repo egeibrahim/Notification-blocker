@@ -8,6 +8,7 @@
     <string name="lang_pack_selection_footnote">You can change this anytime from the Settings screen.</string>
     <string name="lang_pack_continue">Continue</string>
     <string name="lang_pack_english_locked">English (always active)</string>
+    <string name="lang_pack_native_locked">Your phone language (always active)</string>
 
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_archive">Archive</string>
@@ -66,9 +67,9 @@
     <string name="no_how_it_works_body">1) Block: Standard blocking words are active by default. You can disable any word or add your own.\n2) Focus Mode: When Focus Mode is on, all notifications are silenced and archived. Exempt apps are not affected by Focus Mode and appear normally.\n3) Exempt: Notifications from the selected app are never blocked, not by filters or by Focus Mode.\n4) Emoji Block: Blocks all notifications that contain emojis. For apps where you do not want emoji notifications blocked, use the Allow emojis option in the app detail.\n5) Archive: Keeps your notification history for the last 7 days.\n6) Allow Words: Notifications containing the words you add here will never be blocked.\n7) Sign in with Google: Used to protect your notification history even if you clear cookies or reinstall the app. Signing in with Google is optional.</string>
     <string name="language_pack">Language pack</string>
 
-    <string name="emoji_block_title">Block notifications containing emojis</string>
+    <string name="emoji_block_title">Notifications with emojis</string>
     <string name="emoji_block_description">When enabled, emojis will not be blocked for apps you allow from the app detail sheet.</string>
-    <string name="emoji_block_toggle">Block emojis</string>
+    <string name="emoji_block_toggle">Emoji</string>
     <string name="global_games_toggle">Block all games</string>
     <string name="block_category_word_count">%1$d words</string>
     <string name="block_categories_title">Block categories</string>
@@ -198,8 +199,8 @@
     <string name="wt_access_button">Open Settings</string>
     <string name="wt_app_words_title">Per-App Rules</string>
     <string name="wt_app_words_desc">Define separate block and allow words for each app. For example, in WhatsApp you can block messages from one contact while letting others through.</string>
-    <string name="wt_battery_title">Disable Battery Optimization</string>
-    <string name="wt_battery_desc">Android may kill NO in the background to save battery. Allow it to run unrestricted so it never misses a notification.</string>
+    <string name="wt_battery_title">Battery Optimization: Unrestricted</string>
+    <string name="wt_battery_desc">Android may kill NO in the background to save battery. Set battery optimization to \"Unrestricted\" so it never misses a notification.</string>
     <string name="wt_battery_button">Allow</string>
     <string name="wt_autostart_title">Background Autostart</string>
     <string name="wt_autostart_desc">Some manufacturers block apps from starting in the background. Enable autostart for NO so it stays active after device restart.</string>

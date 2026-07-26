@@ -165,8 +165,9 @@ fun DashboardPage(
         }
     }
 
+    var sheetRefreshTrigger by remember { mutableStateOf(0) }
     selectedPackage?.let { (pkg, appName) ->
-        LaunchedEffect(pkg) {
+        LaunchedEffect(pkg, sheetRefreshTrigger) {
             dao.getByPackageSince(pkg, since).collect { sheetNotifications = it }
         }
         NotificationDetailSheet(
@@ -177,7 +178,8 @@ fun DashboardPage(
             sheetState = sheetState,
             onDismiss = { selectedPackage = null },
             onChannelMarkedSafe = { whitelistVersion++ },
-            onWhitelistAdded = null
+            onWhitelistAdded = null,
+            onBlockWordAdded = { sheetRefreshTrigger++ }
         )
     }
 

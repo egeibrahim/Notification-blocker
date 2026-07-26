@@ -8,6 +8,7 @@
     <string name="lang_pack_selection_footnote">Bu ayarı istediğin zaman Ayarlar sayfasından değiştirebilirsin.</string>
     <string name="lang_pack_continue">Devam Et</string>
     <string name="lang_pack_english_locked">İngilizce (her zaman aktif)</string>
+    <string name="lang_pack_native_locked">Telefon dilin (her zaman aktif)</string>
 
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_archive">Arşiv</string>
@@ -55,7 +56,7 @@
     <string name="no_how_it_works_body">1) Blok: Standart engelleme kelimeleri aktiftir. İstediğiniz kelimeleri pasif hale getirebilir veya kendi engellemek istediğiniz kelimeleri ekleyebilirsiniz.\n2) Odak Modu: Odak Modu açıkken tüm bildirimler sessize alınır ve arşivlenir. Muaf tuttuğunuz uygulamalar Odak Modundan etkilenmez; normal bildirim çubuğunda görünür.\n3) Muaf Tut: Seçtiğiniz uygulamaya ait bildirimler hem normal filtrelerden hem de Odak Modu engellemesinden dışarıda kalır.\n4) Emoji Blok: Emoji içeren tüm bildirimleri engeller. Emoji bildirimlerinin engellenmesini istemediğiniz uygulamalar için uygulama detayındaki Emojiye izin ver ayarını kullanarak engeli kaldırabilirsiniz.\n5) Arşiv: Son 7 günlük bildirim geçmişinizi kayıt altında tutar.\n6) Özel İzin Kelimeleri: Buraya eklediğiniz kelimeleri içeren bildirimler asla engellenmez.\n7) Google ile Giriş: Telefonunuzdaki çerezleri silseniz veya uygulamayı yeniden yükleseniz bile bildirim geçmişinizi korumak için kullanılır. Google ile giriş yapmak zorunda değilsiniz.</string>
     <string name="language_pack">Dil paketi</string>
 
-    <string name="emoji_block_title">Emoji içeren bildirimleri engelle</string>
+    <string name="emoji_block_title">Emoji içeren bildirimler</string>
     <string name="emoji_block_description">Açıkken, uygulama detayından izin verdiğin uygulamalarda emoji bloklanmaz.</string>
 
     <string name="category_marketing">Pazarlama</string>
@@ -168,7 +169,7 @@
 
     <string name="block_category_word_count">%1$d kelime</string>
     <string name="block_categories_title">Bloke kategorileri</string>
-    <string name="emoji_block_toggle">Emoji engelle</string>
+    <string name="emoji_block_toggle">Emoji</string>
     <string name="global_games_toggle">Tüm oyunları engelle</string>
 
     <!-- Kurulum Sihirbazı -->
@@ -225,8 +226,8 @@
     <string name="wt_access_button">Ayarlara Git</string>
     <string name="wt_app_words_title">Uygulamaya Özel Kurallar</string>
     <string name="wt_app_words_desc">Her uygulama için ayrı blok ve izin kelimeleri tanımla. Örneğin WhatsApp\'ta belirli bir kişiden gelen mesajları engellerken diğer kişilerin mesajlarının gelmesine izin verebilirsin.</string>
-    <string name="wt_battery_title">Pil Optimizasyonunu Kapat</string>
-    <string name="wt_battery_desc">Android, NO\'yu pil tasarrufu için arka planda kapatabilir. Kısıtlamasız çalışmasına izin ver ki hiçbir bildirimi kaçırmasın.</string>
+    <string name="wt_battery_title">Pil Optimizasyonu: Kısıtlama Yok</string>
+    <string name="wt_battery_desc">Android, NO\'yu pil tasarrufu için arka planda kapatabilir. Pil optimizasyonunu \"Kısıtlama Yok\" olarak ayarla ki hiçbir bildirimi kaçırmasın.</string>
     <string name="wt_battery_button">İzin Ver</string>
     <string name="wt_autostart_title">Arka Planda Otomatik Başlatma</string>
     <string name="wt_autostart_desc">Bazı üreticiler uygulamaların arka planda başlamasını engeller. NO\'nun otomatik başlatmayı aç ki cihaz yeniden başlatıldıktan sonra da aktif kalsın.</string>

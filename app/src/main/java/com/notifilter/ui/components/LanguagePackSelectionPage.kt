@@ -42,7 +42,15 @@ fun LanguagePackSelectionPage(
     val defaultPacks = remember { filterPrefs.getDefaultLanguagePacks() }
     var selectedPacks by remember { mutableStateOf(defaultPacks.toMutableSet()) }
 
-    val allPacks = FilterRulesPreferences.ALL_PACKS.filter { it != FilterRulesPreferences.PACK_EN }
+    val nativePack = remember {
+        FilterRulesPreferences.localeToPack(java.util.Locale.getDefault().language)
+    }
+    val lockedPacks = remember {
+        val locked = mutableSetOf(FilterRulesPreferences.PACK_EN)
+        if (nativePack != FilterRulesPreferences.PACK_EN) locked.add(nativePack)
+        locked
+    }
+    val allPacks = FilterRulesPreferences.ALL_PACKS.filter { it !in lockedPacks }
 
     Box(
         modifier = Modifier
@@ -79,34 +87,40 @@ fun LanguagePackSelectionPage(
 
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        Text(
-                            text = "🇬🇧",
-                            style = MaterialTheme.typography.headlineMedium
-                        )
-                        Column(modifier = Modifier.weight(1f)) {
+                    lockedPacks.forEachIndexed { index, packId ->
+                        if (index > 0) androidx.compose.material3.Divider()
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
                             Text(
-                                text = FilterRulesPreferences.packLabel(FilterRulesPreferences.PACK_EN),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold
+                                text = FilterRulesPreferences.packFlagEmoji(packId),
+                                style = MaterialTheme.typography.headlineMedium
                             )
-                            Text(
-                                text = stringResource(R.string.lang_pack_english_locked),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = FilterRulesPreferences.packLabel(packId),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = if (packId == FilterRulesPreferences.PACK_EN)
+                                        stringResource(R.string.lang_pack_english_locked)
+                                    else
+                                        stringResource(R.string.lang_pack_native_locked),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            Icon(
+                                imageVector = Icons.Default.Lock,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         }
-                        Icon(
-                            imageVector = Icons.Default.Lock,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
                     }
 
                     androidx.compose.material3.Divider()

@@ -38,6 +38,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,13 +49,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.notifilter.R
+import com.notifilter.engine.ArchiveBlockScanner
 import com.notifilter.preferences.FilterRulesPreferences
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun BlacklistPage(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val filterPrefs = remember { FilterRulesPreferences(context) }
+    val scope = rememberCoroutineScope()
     var refreshTrigger by remember { mutableStateOf(0) }
     var categoryWordDrafts by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
     var expandedCategoryId by remember { mutableStateOf<String?>(null) }
@@ -225,6 +229,10 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                                                 filterPrefs.addUserCategoryWord(category.id, draft)
                                                 categoryWordDrafts = categoryWordDrafts + (category.id to "")
                                                 refreshTrigger++
+                                                scope.launch {
+                                                    ArchiveBlockScanner.rescan(context)
+                                                    refreshTrigger++
+                                                }
                                             },
                                             enabled = draft.trim().isNotBlank()
                                         ) {
@@ -353,6 +361,8 @@ private fun CustomWordCategoriesSection(
     refreshTrigger: Int,
     onRefresh: () -> Unit
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var newCategoryTitle by remember { mutableStateOf("") }
     var wordDrafts by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
 
@@ -466,6 +476,12 @@ private fun CustomWordCategoriesSection(
                                     }
                                     wordDrafts = wordDrafts + (category.id to "")
                                     onRefresh()
+                                    scope.launch {
+                                        if (!isAllow) {
+                                            ArchiveBlockScanner.rescan(context)
+                                        }
+                                        onRefresh()
+                                    }
                                 },
                                 enabled = draft.trim().isNotBlank()
                             ) {

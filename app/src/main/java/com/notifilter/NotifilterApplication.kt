@@ -76,6 +76,10 @@ class NotifilterApplication : Application() {
         appScope.launch {
             database.notificationRecordDao().deleteDuplicateRecords()
         }
+
+        runWithListenerRetry {
+            NotifilterListenerService.rescanAndCancelAllActive()
+        }
     }
 
     override fun onTerminate() {

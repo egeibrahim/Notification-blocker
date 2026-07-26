@@ -39,6 +39,10 @@ class NotifilterListenerService : NotificationListenerService() {
     override fun onListenerConnected() {
         super.onListenerConnected()
         instance = this
+        serviceScope.launch {
+            kotlinx.coroutines.delay(500L)
+            performRescanAndCancelAllActive()
+        }
     }
 
     private fun isGamePackage(packageName: String): Boolean {
@@ -80,6 +84,13 @@ class NotifilterListenerService : NotificationListenerService() {
             val svc = instance ?: return
             if (!EntitlementStore.isEntitled(svc)) return
             svc.performRescanAndCancelForPackage(packageName)
+        }
+
+        /** Tüm aktif bildirimleri mevcut blok kurallarına göre yeniden değerlendirir, eşleşenleri gizler. */
+        fun rescanAndCancelAllActive() {
+            val svc = instance ?: return
+            if (!EntitlementStore.isEntitled(svc)) return
+            svc.performRescanAndCancelAllActive()
         }
 
         /** Tüm aktif bildirimleri kaydedip çekmeceden temizler. */
@@ -342,6 +353,63 @@ class NotifilterListenerService : NotificationListenerService() {
                         saveAndCancel(sbn, "Gizle kaydet")
                     }
                 }
+        } catch (e: SecurityException) { /* izin yok */ }
+    }
+
+    private fun performRescanAndCancelAllActive() {
+        try {
+            val active = getActiveNotifications() ?: return
+            if (active.isEmpty()) return
+
+            val whitelistedPackages = importantChannelsPrefs.whitelistedPackages
+            val baseConfig = filterRulesPrefs.toFilterRulesConfig()
+
+            active.forEach { sbn ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH &&
+                    (sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY) != 0
+                ) return@forEach
+
+                val pkg = sbn.packageName
+                if (pkg in whitelistedPackages) return@forEach
+
+                val appAllow = filterRulesPrefs.getUserAppContentAllowWords(pkg)
+                val appBlock = filterRulesPrefs.getUserAppContentBlockWords(pkg)
+                val emojiBlockEnabled = filterRulesPrefs.isGlobalEmojiBlockEnabled &&
+                    !filterRulesPrefs.isUserAppEmojiAllowed(pkg)
+                val config = baseConfig.copy(
+                    contentAllow = (baseConfig.contentAllow + appAllow).distinct(),
+                    contentBlock = (baseConfig.contentBlock + appBlock).distinct(),
+                    blockIfHasEmoji = emojiBlockEnabled
+                )
+
+                val content = extractContent(sbn)
+                val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    sbn.notification.channelId
+                } else null
+
+                val record = NotificationRecord(
+                    packageName = pkg,
+                    appName = getAppName(pkg),
+                    content = content,
+                    channelId = channelId,
+                    timestamp = sbn.postTime,
+                    isBlocked = false,
+                    blockReason = null
+                )
+
+                val result = spamEngine.analyze(record, whitelistedPackages, config)
+                if (result is SpamResult.Block) {
+                    Log.d(TAG, "STARTUP RESCAN BLOCK pkg=$pkg key=${sbn.key} reason=${result.reason}")
+                    serviceScope.launch {
+                        try {
+                            database.notificationRecordDao().insert(record.copy(isBlocked = true, blockReason = result.reason))
+                        } catch (e: Exception) {
+                            Log.e(TAG, "DB insert failed during startup rescan", e)
+                        }
+                    }
+                    cancelSbn(sbn, result.reason)
+                }
+            }
         } catch (e: SecurityException) { /* izin yok */ }
     }
 

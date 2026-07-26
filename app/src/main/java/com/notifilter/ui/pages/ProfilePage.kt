@@ -439,12 +439,53 @@ fun ProfilePage(
                 is BillingManager.EntitlementState.Error -> (entitlement as BillingManager.EntitlementState.Error).message
                 else -> stringResource(R.string.subscription_status_unknown)
             }
+            var showSignOutConfirm by remember { mutableStateOf(false) }
+
+            if (showSignOutConfirm) {
+                AlertDialog(
+                    onDismissRequest = { showSignOutConfirm = false },
+                    title = { Text(stringResource(R.string.logout)) },
+                    text = { Text(stringResource(R.string.sign_out_confirm_message)) },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            showSignOutConfirm = false
+                            scope.launch {
+                                runCatching { CloudSyncManager.backupNow(context) }
+                                SupabaseAuthManager.signOut(context)
+                            }
+                        }) {
+                            Text(stringResource(R.string.logout))
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showSignOutConfirm = false }) {
+                            Text(stringResource(R.string.feedback_dialog_cancel))
+                        }
+                    }
+                )
+            }
+
             AppCard(modifier = Modifier.fillMaxWidth()) {
                 Column {
                     ListItem(
                         headlineContent = { Text(stringResource(R.string.account)) },
+                        supportingContent = {
+                            if (!userEmail.isNullOrBlank()) {
+                                Text(userEmail ?: "")
+                            }
+                        },
                         leadingContent = { Icon(Icons.Default.Person, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        trailingContent = {
+                            if (userEmail.isNullOrBlank()) {
+                                Icon(Icons.Default.ChevronRight, contentDescription = null)
+                            } else {
+                                Text(
+                                    text = stringResource(R.string.logout),
+                                    color = MaterialTheme.colorScheme.error,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        },
                         modifier = Modifier.clickable {
                             if (userEmail.isNullOrBlank()) {
                                 if (BuildConfig.SUPABASE_URL.isBlank() || BuildConfig.SUPABASE_ANON_KEY.isBlank()) {
@@ -453,7 +494,7 @@ fun ProfilePage(
                                     SupabaseAuthManager.signInWithGoogle(context)
                                 }
                             } else {
-                                SupabaseAuthManager.signOut(context)
+                                showSignOutConfirm = true
                             }
                         }
                     )

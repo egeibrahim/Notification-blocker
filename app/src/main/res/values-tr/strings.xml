@@ -121,6 +121,7 @@
     <string name="auth_google_explanation">Bildirim geçmişinizi ve ayarlarınızı yedeklemek için Google ile giriş yapın.</string>
     <string name="signed_in_as">Giriş yapıldı</string>
     <string name="logout">Çıkış yap</string>
+    <string name="sign_out_confirm_message">Hesabından çıkış yapmak istediğine emin misin? Ayarların ve arşivin bu hesaba kaydedilmiş olarak kalacak, tekrar giriş yaptığında geri yüklenecek.</string>
 
     <string name="subscription_required_title">Abonelik gerekli</string>
     <string name="subscription_required_body">Uygulamayı kullanmaya devam etmek için ücretsiz denemeyi başlat.</string>

@@ -57,7 +57,11 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.notifilter.auth.SupabaseAuthManager
+import com.notifilter.sync.CloudSyncManager
 import com.notifilter.util.NotificationAccessHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import com.notifilter.billing.BillingManager
 import com.notifilter.billing.EntitlementStore
 import com.notifilter.preferences.FocusModePreferences
@@ -132,6 +136,19 @@ fun MainScreen(
 
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showWalkthrough by remember { mutableStateOf(sharedPrefs.getBoolean("show_walkthrough_v1", true)) }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP && SupabaseAuthManager.getAccessToken(context) != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    runCatching { CloudSyncManager.backupNow(context) }
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
 
     val billingManager = remember {
         (context.applicationContext as NotifilterApplication).billingManager

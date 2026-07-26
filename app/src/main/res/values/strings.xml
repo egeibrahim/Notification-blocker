@@ -135,6 +135,7 @@
     <string name="auth_google_explanation">Sign in with Google to back up your notifications and settings.</string>
     <string name="signed_in_as">Signed in as</string>
     <string name="logout">Logout</string>
+    <string name="sign_out_confirm_message">Are you sure you want to sign out? Your settings and archive will remain saved to this account and will be restored the next time you sign in.</string>
     <string name="backup_now">Backup now</string>
     <string name="restore_now">Restore now</string>
 

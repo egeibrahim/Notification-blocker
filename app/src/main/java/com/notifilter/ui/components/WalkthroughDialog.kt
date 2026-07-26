@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
@@ -81,7 +82,8 @@ fun WalkthroughDialog(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
-                .padding(24.dp)
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 48.dp)
+                .navigationBarsPadding()
         ) {
             // Slide Content (scrollable so nothing pushes the buttons off-screen)
             Column(

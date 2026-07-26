@@ -125,32 +125,13 @@ fun MainScreen(
     onOpenNotificationAccess: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val focusPrefs = remember { FocusModePreferences(context) }
     val importantPrefs = remember { ImportantChannelsPreferences(context) }
     var currentPage by remember { mutableIntStateOf(0) }
     var currentSubPage by remember { mutableStateOf<ProfileSubPage?>(null) }
-    var showPermissionDialog by remember { mutableStateOf(false) }
 
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showWalkthrough by remember { mutableStateOf(sharedPrefs.getBoolean("show_walkthrough_v1", true)) }
-
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                if (showWalkthrough) {
-                    // Keep permission dialog hidden so onboarding stays visible
-                    showPermissionDialog = false
-                } else if (!NotificationAccessHelper.isNotificationAccessEnabled(context)) {
-                    showPermissionDialog = true
-                } else {
-                    showPermissionDialog = false
-                }
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
 
     val billingManager = remember {
         (context.applicationContext as NotifilterApplication).billingManager
@@ -229,27 +210,6 @@ fun MainScreen(
             }
         }
 
-        if (showPermissionDialog) {
-            SetupGuideDialog(
-                onDismiss = { showPermissionDialog = false },
-                onOpenNotificationSettings = {
-                    val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    }
-                    context.startActivity(intent)
-                },
-                onOpenBattery = {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
-                            data = Uri.parse("package:${context.packageName}")
-                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        }
-                        context.startActivity(intent)
-                    }
-                }
-            )
-        }
-
         if (showWalkthrough) {
             com.notifilter.ui.components.WalkthroughDialog(
                 onRequestNotificationPermission = onRequestNotificationPermission,
@@ -257,60 +217,8 @@ fun MainScreen(
                 onDismiss = {
                     sharedPrefs.edit().putBoolean("show_walkthrough_v1", false).apply()
                     showWalkthrough = false
-                    if (!NotificationAccessHelper.isNotificationAccessEnabled(context)) {
-                        showPermissionDialog = true
-                    }
                 }
             )
-        }
-    }
-}
-
-@Composable
-private fun SetupGuideDialog(
-    onDismiss: () -> Unit,
-    onOpenNotificationSettings: () -> Unit,
-    onOpenBattery: () -> Unit
-) {
-    Dialog(
-        onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            dismissOnBackPress = false,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            shape = MaterialTheme.shapes.extraLarge
-        ) {
-            Column(
-                modifier = Modifier.padding(24.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.setup_guide_title),
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Text(
-                    text = stringResource(R.string.setup_guide_message),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                OutlinedButton(onClick = onOpenNotificationSettings, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.setup_guide_notifications))
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    OutlinedButton(onClick = onOpenBattery, modifier = Modifier.fillMaxWidth()) {
-                        Text(stringResource(R.string.setup_guide_battery))
-                    }
-                }
-                Button(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
-                    Text(stringResource(R.string.setup_guide_done))
-                }
-            }
         }
     }
 }

@@ -86,17 +86,17 @@
 
     <string name="dashboard_total_fmt">Total: %1$d</string>
     <string name="dashboard_blocked_fmt">Blocked: %1$d</string>
-    <string name="dashboard_mute_save_label">Exempt</string>
+    <string name="dashboard_mute_save_label">Mute &amp; save</string>
 
     <string name="applications_installed_title">Installed Apps</string>
-    <string name="applications_installed_desc">Tap an app to view its notification history. Toggle the switch to exempt an app from filters and Focus Mode so its notifications are not blocked.</string>
+    <string name="applications_installed_desc">Tap an app to view notification history. When muted, notifications from that app are excluded from filtering.</string>
 
     <string name="archive_last_7_days_title">Last 7 days - all notifications</string>
     <string name="archive_empty_title">No notifications yet</string>
     <string name="archive_empty_desc">Nothing has been recorded in the last 7 days.</string>
 
-    <string name="detail_exempt_app_title">Exempt</string>
-    <string name="detail_exempt_app_desc">When enabled, this app is exempt from normal filters and Focus Mode; its notifications arrive normally.</string>
+    <string name="detail_exempt_app_title">Allow notifications</string>
+    <string name="detail_exempt_app_desc">Enable notifications from this app to arrive even when Focus Mode is active.</string>
     <string name="detail_notification_history">Notification history</string>
     <string name="detail_allow_words_for_app">Allow Words</string>
     <string name="detail_block_words_for_app">Block Words</string>
@@ -111,7 +111,7 @@
     <string name="reason_contains_emoji">Contains emoji</string>
     <string name="reason_focus_mode_active">Focus Mode is active</string>
     <string name="reason_games_pack_active">Games pack is active</string>
-    <string name="reason_mute_and_save">Exempt</string>
+    <string name="reason_mute_and_save">Mute &amp; save</string>
     <string name="reason_manual_blocked_channel">Manually blocked channel</string>
     <string name="reason_channel_id">Blocked by channel rule</string>
     <string name="reason_content">Content: %1$s</string>

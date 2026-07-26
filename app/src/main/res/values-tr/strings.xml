@@ -72,17 +72,17 @@
 
     <string name="dashboard_total_fmt">Toplam: %1$d</string>
     <string name="dashboard_blocked_fmt">Blok: %1$d</string>
-    <string name="dashboard_mute_save_label">Muaf tut</string>
+    <string name="dashboard_mute_save_label">Gizle kaydet</string>
 
     <string name="applications_installed_title">Yüklü Uygulamalar</string>
-    <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilirsin. Anahtarı açarak o uygulamayı hem filtrelerden hem de Odak Modundan muaf tut; bildirimleri engellenmeden normal şekilde görünür.</string>
+    <string name="applications_installed_desc">Uygulamaya tıklayarak bildirim geçmişini görebilir. Gizle kaydet ile o uygulamanın bildirimleri filtreden muaf tutulur.</string>
 
     <string name="archive_last_7_days_title">Son 7 Gün - Tüm Bildirimler</string>
     <string name="archive_empty_title">Henüz bildirim yok</string>
     <string name="archive_empty_desc">Son 7 gün içinde kaydedilmiş bir bildirim bulunmuyor.</string>
 
-    <string name="detail_exempt_app_title">Muaf tut</string>
-    <string name="detail_exempt_app_desc">Açık olduğunda bu uygulama normal filtrelerden ve Odak Modu engellemesinden muaf kalır; bildirimleri normal gelir.</string>
+    <string name="detail_exempt_app_title">Bildirimlere izin ver</string>
+    <string name="detail_exempt_app_desc">odak modundan etkilenen bildirimler gelmesini aktif et.</string>
     <string name="detail_notification_history">Bildirim geçmişi</string>
     <string name="detail_allow_words_for_app">İzin kelimeleri</string>
     <string name="detail_block_words_for_app">Engel kelimeleri</string>
@@ -97,7 +97,7 @@
     <string name="reason_contains_emoji">Emoji içeriyor</string>
     <string name="reason_focus_mode_active">Odak Modu açık</string>
     <string name="reason_games_pack_active">Oyun paketi aktif</string>
-    <string name="reason_mute_and_save">Muaf tutuldu</string>
+    <string name="reason_mute_and_save">Gizle kaydet</string>
     <string name="reason_manual_blocked_channel">Manuel engellenen kanal</string>
     <string name="reason_channel_id">Kanal kuralı ile engellendi</string>
     <string name="reason_content">İçerik: %1$s</string>

@@ -777,8 +777,8 @@ class FilterRulesPreferences(private val context: Context) {
     fun toFilterRulesConfig(): FilterRulesConfig = FilterRulesConfig(
         channelBlock = getEnabledRecommendedChannelWords().toList(),
         channelAllow = channelAllowKeywords.toList(),
-        contentAllow = getAllUserContentAllowWords().toList(),
-        contentBlock = (getEnabledRecommendedContentWords() + getAllUserContentBlockWords() + getUserCategoryWordsForActiveCategories()).toList(),
+        contentAllow = (userContentAllowWords + getAllUserContentAllowWords()).toList(),
+        contentBlock = (getEnabledRecommendedContentWords() + userContentBlockWords + getAllUserContentBlockWords() + getUserCategoryWordsForActiveCategories()).toList(),
         channelIdsBlocked = userBlockedChannelKeys.toList()
     )
 

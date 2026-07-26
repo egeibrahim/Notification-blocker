@@ -68,10 +68,10 @@
     <string name="block_group_marketing">Pazarlama ve Teklifler</string>
     <string name="block_group_other">Diğer</string>
     <string name="block_category_words">Kelimeler</string>
-    <string name="block_section_allow_words_title">Asla Engelleme</string>
-    <string name="block_section_allow_words_desc">Asla engellenmeyecek kelimeler</string>
-    <string name="block_section_block_words_title">Özel Engeller</string>
-    <string name="block_section_block_words_desc">Ekstra engellenecek kelimeler</string>
+    <string name="block_section_allow_words_title">Asla Engellenmeyecek Kelimeler</string>
+    <string name="block_section_allow_words_desc">Bu kelimeleri içeren bildirimler asla engellenmez</string>
+    <string name="block_section_block_words_title">Engellenecek Kelimeler</string>
+    <string name="block_section_block_words_desc">Bu kelimeleri içeren bildirimler engellenir</string>
     <string name="block_add_category">Ekle</string>
     <string name="block_category_title_hint">Yeni kategori adı</string>
     <string name="block_category_empty_words">Henüz kelime yok</string>

@@ -321,20 +321,20 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
             }
         }
 
-        CustomWordCategoriesSection(
-            title = stringResource(R.string.block_section_allow_words_title),
-            desc = stringResource(R.string.block_section_allow_words_desc),
-            filterPrefs = filterPrefs,
-            isAllow = true,
-            refreshTrigger = refreshTrigger,
-            onRefresh = { refreshTrigger++ }
-        )
-
-        CustomWordCategoriesSection(
+        FlatWordListSection(
             title = stringResource(R.string.block_section_block_words_title),
             desc = stringResource(R.string.block_section_block_words_desc),
             filterPrefs = filterPrefs,
             isAllow = false,
+            refreshTrigger = refreshTrigger,
+            onRefresh = { refreshTrigger++ }
+        )
+
+        FlatWordListSection(
+            title = stringResource(R.string.block_section_allow_words_title),
+            desc = stringResource(R.string.block_section_allow_words_desc),
+            filterPrefs = filterPrefs,
+            isAllow = true,
             refreshTrigger = refreshTrigger,
             onRefresh = { refreshTrigger++ }
         )
@@ -343,7 +343,7 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-private fun CustomWordCategoriesSection(
+private fun FlatWordListSection(
     title: String,
     desc: String,
     filterPrefs: FilterRulesPreferences,
@@ -353,9 +353,7 @@ private fun CustomWordCategoriesSection(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    var newCategoryTitle by remember { mutableStateOf("") }
-    var wordDrafts by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
-    var selectedCategoryId by remember { mutableStateOf<String?>(null) }
+    var draft by remember { mutableStateOf("") }
 
     AppCard(modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
@@ -374,61 +372,62 @@ private fun CustomWordCategoriesSection(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = newCategoryTitle,
-                onValueChange = { newCategoryTitle = it },
-                label = { Text(stringResource(R.string.block_category_title_hint)) },
+                value = draft,
+                onValueChange = { draft = it },
+                label = { Text(stringResource(R.string.add_word)) },
                 singleLine = true,
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            val id = if (isAllow) {
-                                filterPrefs.addUserContentAllowCategory(newCategoryTitle)
+                            if (isAllow) {
+                                filterPrefs.addUserContentAllowWord(draft)
                             } else {
-                                filterPrefs.addUserContentBlockCategory(newCategoryTitle)
+                                filterPrefs.addUserContentBlockWord(draft)
                             }
-                            if (id.isNotBlank()) {
-                                newCategoryTitle = ""
-                                selectedCategoryId = id
-                                onRefresh()
+                            draft = ""
+                            onRefresh()
+                            if (!isAllow) {
+                                scope.launch {
+                                    ArchiveBlockScanner.rescan(context)
+                                    onRefresh()
+                                }
                             }
                         },
-                        enabled = newCategoryTitle.trim().isNotBlank()
+                        enabled = draft.trim().isNotBlank()
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.block_add_category)
+                            contentDescription = stringResource(R.string.add)
                         )
                     }
                 }
             )
 
-            val categories = if (isAllow) {
-                filterPrefs.getUserContentAllowCategories()
+            val words = if (isAllow) {
+                filterPrefs.userContentAllowWords
             } else {
-                filterPrefs.getUserContentBlockCategories()
+                filterPrefs.userContentBlockWords
             }
 
-            if (categories.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.block_no_categories_yet),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 16.dp)
-                )
-            } else {
-                // Category chips — tap to select, long-press to delete
+            if (words.isNotEmpty()) {
                 FlowRow(
-                    modifier = Modifier.padding(top = 14.dp),
+                    modifier = Modifier.padding(top = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    categories.forEach { category ->
-                        val isSelected = selectedCategoryId == category.id
+                    words.sorted().forEach { word ->
                         Surface(
-                            onClick = { selectedCategoryId = category.id },
+                            onClick = {
+                                if (isAllow) {
+                                    filterPrefs.removeUserContentAllowWord(word)
+                                } else {
+                                    filterPrefs.removeUserContentBlockWord(word)
+                                }
+                                onRefresh()
+                            },
                             shape = RoundedCornerShape(8.dp),
-                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.height(32.dp)
                         ) {
                             Row(
@@ -442,117 +441,10 @@ private fun CustomWordCategoriesSection(
                                     modifier = Modifier.size(18.dp)
                                 )
                                 Text(
-                                    text = category.title,
+                                    text = word,
                                     style = MaterialTheme.typography.labelLarge
                                 )
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = stringResource(R.string.delete),
-                                    modifier = Modifier
-                                        .size(16.dp)
-                                        .clickable {
-                                            if (isAllow) {
-                                                filterPrefs.removeUserContentAllowCategory(category.id)
-                                            } else {
-                                                filterPrefs.removeUserContentBlockCategory(category.id)
-                                            }
-                                            if (selectedCategoryId == category.id) selectedCategoryId = null
-                                            onRefresh()
-                                        }
-                                )
                             }
-                        }
-                    }
-                }
-
-                // Word management for selected category
-                val activeCategory = categories.find { it.id == selectedCategoryId }
-                if (activeCategory != null) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                    ) {
-                        val draft = wordDrafts[activeCategory.id].orEmpty()
-                        OutlinedTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            value = draft,
-                            onValueChange = { wordDrafts = wordDrafts + (activeCategory.id to it) },
-                            label = { Text(stringResource(R.string.add_word)) },
-                            singleLine = true,
-                            trailingIcon = {
-                                IconButton(
-                                    onClick = {
-                                        if (isAllow) {
-                                            filterPrefs.addUserContentAllowCategoryWord(activeCategory.id, draft)
-                                        } else {
-                                            filterPrefs.addUserContentBlockCategoryWord(activeCategory.id, draft)
-                                        }
-                                        wordDrafts = wordDrafts + (activeCategory.id to "")
-                                        onRefresh()
-                                        scope.launch {
-                                            if (!isAllow) {
-                                                ArchiveBlockScanner.rescan(context)
-                                            }
-                                            onRefresh()
-                                        }
-                                    },
-                                    enabled = draft.trim().isNotBlank()
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Add,
-                                        contentDescription = stringResource(R.string.add)
-                                    )
-                                }
-                            }
-                        )
-
-                        if (activeCategory.words.isNotEmpty()) {
-                            FlowRow(
-                                modifier = Modifier.padding(top = 10.dp),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                verticalArrangement = Arrangement.spacedBy(8.dp)
-                            ) {
-                                activeCategory.words.sorted().forEach { word ->
-                                    Surface(
-                                        onClick = {
-                                            if (isAllow) {
-                                                filterPrefs.removeUserContentAllowCategoryWord(activeCategory.id, word)
-                                            } else {
-                                                filterPrefs.removeUserContentBlockCategoryWord(activeCategory.id, word)
-                                            }
-                                            onRefresh()
-                                        },
-                                        shape = RoundedCornerShape(8.dp),
-                                        color = MaterialTheme.colorScheme.primary,
-                                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                                        modifier = Modifier.height(32.dp)
-                                    ) {
-                                        Row(
-                                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(6.dp)
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.CheckCircle,
-                                                contentDescription = null,
-                                                modifier = Modifier.size(18.dp)
-                                            )
-                                            Text(
-                                                text = word,
-                                                style = MaterialTheme.typography.labelLarge
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        } else {
-                            Text(
-                                text = stringResource(R.string.block_category_empty_words),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 10.dp)
-                            )
                         }
                     }
                 }

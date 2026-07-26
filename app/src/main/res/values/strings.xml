@@ -83,10 +83,10 @@
     <string name="block_group_marketing">Marketing &amp; Offers</string>
     <string name="block_group_other">Other</string>
     <string name="block_category_words">Words</string>
-    <string name="block_section_allow_words_title">Never Block</string>
-    <string name="block_section_allow_words_desc">Words that should never be blocked</string>
-    <string name="block_section_block_words_title">Custom Blocks</string>
-    <string name="block_section_block_words_desc">Extra words to block</string>
+    <string name="block_section_allow_words_title">Never Block These Words</string>
+    <string name="block_section_allow_words_desc">Notifications containing these words will never be blocked</string>
+    <string name="block_section_block_words_title">Block These Words</string>
+    <string name="block_section_block_words_desc">Notifications containing these words will be blocked</string>
     <string name="block_add_category">Add</string>
     <string name="block_category_title_hint">New category name</string>
     <string name="block_category_empty_words">No words yet</string>

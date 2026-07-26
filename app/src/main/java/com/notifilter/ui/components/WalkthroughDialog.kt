@@ -28,7 +28,7 @@ fun WalkthroughDialog(
     onOpenNotificationAccess: () -> Unit
 ) {
     var currentSlide by remember { mutableIntStateOf(0) }
-    val totalSlides = 5
+    val totalSlides = 6
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -79,8 +79,9 @@ fun WalkthroughDialog(
                             0 -> "👋"
                             1 -> "�"
                             2 -> "👁"
-                            3 -> "�🛡️"
-                            else -> "🧘"
+                            3 -> "�️"
+                            4 -> "🧘"
+                            else -> "✉️🚫"
                         },
                         style = MaterialTheme.typography.displayLarge
                     )
@@ -93,7 +94,8 @@ fun WalkthroughDialog(
                         1 -> stringResource(R.string.wt_permission_title)
                         2 -> stringResource(R.string.wt_access_title)
                         3 -> stringResource(R.string.wt_filter_title)
-                        else -> stringResource(R.string.wt_focus_title)
+                        4 -> stringResource(R.string.wt_focus_title)
+                        else -> stringResource(R.string.wt_app_words_title)
                     },
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
@@ -108,7 +110,8 @@ fun WalkthroughDialog(
                         1 -> stringResource(R.string.wt_permission_desc)
                         2 -> stringResource(R.string.wt_access_desc)
                         3 -> stringResource(R.string.wt_filter_desc)
-                        else -> stringResource(R.string.wt_focus_desc)
+                        4 -> stringResource(R.string.wt_focus_desc)
+                        else -> stringResource(R.string.wt_app_words_desc)
                     },
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),

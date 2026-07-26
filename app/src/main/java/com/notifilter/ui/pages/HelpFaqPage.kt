@@ -52,7 +52,8 @@ fun HelpFaqPage(onBackClick: () -> Unit) {
         Pair(R.string.help_setup_title, R.string.help_setup_body),
         Pair(R.string.faq_1_title, R.string.faq_1_body),
         Pair(R.string.faq_2_title, R.string.faq_2_body),
-        Pair(R.string.faq_3_title, R.string.faq_3_body)
+        Pair(R.string.faq_3_title, R.string.faq_3_body),
+        Pair(R.string.faq_4_title, R.string.faq_4_body)
     )
 
     Scaffold(

@@ -179,6 +179,8 @@
     <string name="wt_access_desc">To filter notifications from other apps, you must enable NO in the system Notification Access settings. You may see a warning like "This app can read all your notifications"; this is a standard Android security warning shown to every user and is not dangerous.</string>
     <string name="wt_permission_button">Allow</string>
     <string name="wt_access_button">Open Settings</string>
+    <string name="wt_app_words_title">Per-App Word Rules</string>
+    <string name="wt_app_words_desc">Set block or allow words for a single app. For example, in a messaging app you can block messages from one contact while still allowing others.</string>
 
     <!-- Rate App & Feedback -->
     <string name="rate_app_title">Rate App</string>
@@ -216,8 +218,8 @@
     <string name="hiw_1_body">When you first install the app, the built-in keyword categories (Marketing, Credit, Games, News and General spam) are turned off. Open them from the Block screen. Each category can be toggled on or off, and you can add or remove your own words. When a notification arrives, NO checks the notification channel ID and the full message text against the active keyword lists. If it finds a match, the notification is silenced and moved to the Archive instead of showing on top of the screen.</string>
     <string name="hiw_2_title">2. Focus Mode: Total Silence</string>
     <string name="hiw_2_body">Focus Mode is turned on and off from the main Dashboard switch. While it is active, every incoming notification is redirected to the Archive without making a sound or vibration, no matter which app or channel it comes from. This keeps you focused and you can still review the full history later inside the app.</string>
-    <string name="hiw_3_title">3. Exempt: Never-Block List</string>
-    <string name="hiw_3_body">Tap any app in the Apps screen to open its detail sheet. Turn on "Exempt" for apps whose notifications must always reach you. When an app is exempt, NO will not block any notification from that app, not by standard filters, not by custom block words, and not even by Focus Mode. This is recommended for banking, messaging, delivery and authentication apps.</string>
+    <string name="hiw_3_title">3. Allow Notifications: Never-Block List</string>
+    <string name="hiw_3_body">Tap any app in the Apps screen to open its detail sheet. Turn on "Allow notifications" for apps whose notifications must always reach you. When enabled, NO will not block any notification from that app, not by standard filters, not by custom block words, and not even by Focus Mode. This is recommended for banking, messaging, delivery and authentication apps.</string>
     <string name="hiw_4_title">4. Emoji Block</string>
     <string name="hiw_4_body">When Emoji Block is enabled, any notification that is only emojis or contains a heavy amount of emojis will be blocked automatically. If you want emoji notifications from a specific app, open the app detail and turn on "Allow emojis". That app will then bypass the emoji filter.</string>
     <string name="hiw_5_title">5. Archive: 7-Day History</string>
@@ -232,6 +234,9 @@
     <string name="faq_1_body">The most common reasons are: notification access is not granted, battery optimization is killing the app in the background, the app is on the Exempt list, or the notification contains a word in your Allow Words list. Some manufacturer interfaces (Xiaomi, Samsung, Oppo, etc.) are extra aggressive; check battery and auto-start settings manually.</string>
     <string name="faq_2_title">FAQ: What is the difference between Focus Mode and Archive?</string>
     <string name="faq_2_body">Focus Mode immediately silences all incoming notifications and sends them to the Archive to protect your attention. The Archive is the history area where both blocked and Focus Mode notifications are stored for 7 days. You can open the Archive and see why each notification was filtered.</string>
-    <string name="faq_3_title">FAQ: What is the difference between the two app-level exemptions and Allow Words?</string>
-    <string name="faq_3_body">There are two app-level switches, both labelled "Exempt" in the app, but they behave differently. The first one, previously called "Hide and save", blocks every notification from that app and archives it when Focus Mode is OFF, so it is app-based blocking. The second one, previously called "Allow notifications", lets that app\'s notifications reach you normally when Focus Mode is ON, so it is a true Focus Mode exemption. "Allow Words" is content-based: any notification containing one of those words is allowed, regardless of the app. They can be used together and should only be used for truly important apps or words.</string>
+    <string name="faq_3_title">FAQ: What is the difference between "Hide and save", "Allow notifications" and Allow Words?</string>
+    <string name="faq_3_body">The app has two app-level switches: "Hide and save" and "Allow notifications". "Hide and save" blocks every notification from that app and archives it when Focus Mode is OFF, so it is app-based blocking. "Allow notifications" lets that app\'s notifications reach you normally when Focus Mode is ON, so it is a true Focus Mode exemption. "Allow Words" is content-based: any notification containing one of those words is allowed, regardless of the app. They can be used together and should only be used for truly important apps or words.</string>
+
+    <string name="faq_4_title">FAQ: How do per-app Block and Allow words work?</string>
+    <string name="faq_4_body">When you tap an app in the Apps screen, the detail sheet lets you add "Block words" and "Allow words" that apply only to that app. They are not checked for any other app. For example, if you add "Ahmet" to WhatsApp\'s Block words, every message from Ahmet will be blocked and archived as long as the sender\'s name appears in the notification. If you add the same name to Allow words, those messages bypass every filter. It only works on text visible in the notification title or body, so if the sender\'s name is not shown in the notification it cannot be matched.</string>
 </resources>

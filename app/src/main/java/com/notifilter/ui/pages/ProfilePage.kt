@@ -1,10 +1,15 @@
 package com.notifilter.ui.pages
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -87,6 +92,10 @@ fun ProfilePage(
     var feedbackText by remember { mutableStateOf("") }
 
     val hasNotificationAccess = NotificationAccessHelper.isNotificationAccessEnabled(context)
+    var postNotificationsGranted by remember { mutableStateOf(NotificationManagerCompat.from(context).areNotificationsEnabled()) }
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        postNotificationsGranted = isGranted
+    }
 
     fun formatIsoPeriod(isoPeriod: String?): String? {
         if (isoPeriod.isNullOrBlank()) return null
@@ -229,6 +238,89 @@ fun ProfilePage(
         }
 
         item {
+            AppCard(modifier = Modifier.fillMaxWidth()) {
+                Column {
+                    Text(
+                        text = stringResource(R.string.settings_setup_header),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                    Text(
+                        text = stringResource(R.string.settings_setup_body),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.wt_permission_title)) },
+                        supportingContent = {
+                            Text(
+                                text = if (postNotificationsGranted) stringResource(R.string.notification_access_on) else stringResource(R.string.notification_access_off),
+                                color = if (postNotificationsGranted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                            )
+                        },
+                        leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable {
+                            if (Build.VERSION.SDK_INT >= 33 && !postNotificationsGranted) {
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            } else {
+                                openAppDetails()
+                            }
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.notification_access_manage)) },
+                        supportingContent = {
+                            Text(
+                                text = if (hasNotificationAccess) stringResource(R.string.notification_access_on) else stringResource(R.string.notification_access_off),
+                                color = if (hasNotificationAccess) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                            )
+                        },
+                        leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable {
+                            startActivityOrAppDetails(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.quick_access_disable_battery_optimization)) },
+                        leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                                    data = Uri.parse("package:${context.packageName}")
+                                }
+                                startActivityOrAppDetails(intent)
+                            } else {
+                                openAppDetails()
+                            }
+                        }
+                    )
+                    Divider()
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.quick_access_autostart)) },
+                        leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { openAppDetails() }
+                    )
+                    Divider()
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.quick_access_app_info)) },
+                        supportingContent = { Text(stringResource(R.string.setup_guide_open)) },
+                        leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
+                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
+                        modifier = Modifier.clickable { openAppDetails() }
+                    )
+                }
+            }
+        }
+
+        item {
             val statusText = when (entitlement) {
                 is BillingManager.EntitlementState.Active -> stringResource(R.string.subscription_status_active)
                 is BillingManager.EntitlementState.Inactive -> stringResource(R.string.subscription_status_inactive)
@@ -251,21 +343,6 @@ fun ProfilePage(
                             } else {
                                 SupabaseAuthManager.signOut(context)
                             }
-                        }
-                    )
-                    Divider()
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.notification_access_manage)) },
-                        supportingContent = {
-                            Text(
-                                text = if (hasNotificationAccess) stringResource(R.string.notification_access_action) else stringResource(R.string.notification_access_off),
-                                color = if (hasNotificationAccess) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                            )
-                        },
-                        leadingContent = { Icon(Icons.Default.Notifications, contentDescription = null) },
-                        trailingContent = { Icon(Icons.Default.ChevronRight, contentDescription = null) },
-                        modifier = Modifier.clickable {
-                            startActivityOrAppDetails(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
                         }
                     )
                     Divider()

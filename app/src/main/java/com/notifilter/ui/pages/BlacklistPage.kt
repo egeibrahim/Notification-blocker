@@ -239,16 +239,35 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                                     )
 
                                     if (category.id == "pazarlama") {
-                                        FilterChip(
-                                            selected = globalEmojiBlock,
+                                        Surface(
                                             onClick = {
                                                 globalEmojiBlock = !globalEmojiBlock
                                                 filterPrefs.isGlobalEmojiBlockEnabled = globalEmojiBlock
                                                 refreshTrigger++
                                             },
-                                            label = { Text(stringResource(R.string.emoji_block_toggle)) },
-                                            modifier = Modifier.padding(bottom = 8.dp)
-                                        )
+                                            shape = RoundedCornerShape(8.dp),
+                                            color = if (globalEmojiBlock) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                                            contentColor = if (globalEmojiBlock) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier
+                                                .padding(bottom = 8.dp)
+                                                .height(32.dp)
+                                        ) {
+                                            Row(
+                                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                                            ) {
+                                                Icon(
+                                                    imageVector = if (globalEmojiBlock) Icons.Default.CheckCircle else Icons.Default.RadioButtonUnchecked,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(18.dp)
+                                                )
+                                                Text(
+                                                    text = stringResource(R.string.emoji_block_toggle),
+                                                    style = MaterialTheme.typography.labelLarge
+                                                )
+                                            }
+                                        }
                                     }
                                     FlowRow(
                                         horizontalArrangement = Arrangement.spacedBy(8.dp),

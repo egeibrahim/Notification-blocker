@@ -197,7 +197,7 @@ class FilterRulesPreferences(private val context: Context) {
     }
 
     var isGlobalEmojiBlockEnabled: Boolean
-        get() = prefs.getBoolean(KEY_GLOBAL_EMOJI_BLOCK_ENABLED, false)
+        get() = prefs.getBoolean(KEY_GLOBAL_EMOJI_BLOCK_ENABLED, true)
         set(value) = prefs.edit(commit = true) {
             putBoolean(KEY_GLOBAL_EMOJI_BLOCK_ENABLED, value)
         }

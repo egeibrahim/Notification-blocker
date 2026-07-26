@@ -61,7 +61,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     var refreshTrigger by remember { mutableStateOf(0) }
     var categoryWordDrafts by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
-    var expandedCategoryId by remember { mutableStateOf<String?>(null) }
 
     val sharedPrefs = remember { context.getSharedPreferences("notifilter_walkthrough", android.content.Context.MODE_PRIVATE) }
     var showRulesTooltip by remember { mutableStateOf(sharedPrefs.getBoolean("show_tooltip_rules", true)) }
@@ -104,27 +103,7 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
 
             var globalEmojiBlock by remember { mutableStateOf(filterPrefs.isGlobalEmojiBlockEnabled) }
 
-            val marketingCategoryIds = setOf(
-                "pazarlama"
-            )
-
-            val categoryGroups: List<Pair<String, List<FilterRulesPreferences.BlockCategory>>> = listOf(
-                stringResource(R.string.block_group_marketing) to categories.filter { it.id in marketingCategoryIds },
-                stringResource(R.string.block_group_other) to categories.filter { it.id !in marketingCategoryIds }
-            ).filter { it.second.isNotEmpty() }
-
-            @Composable
-            fun shortLabel(category: FilterRulesPreferences.BlockCategory): String {
-                return when (category.id) {
-                    "pazarlama" -> stringResource(R.string.category_marketing)
-                    "kredi" -> stringResource(R.string.category_credit)
-                    "oneriler" -> stringResource(R.string.category_recommendations)
-                    "oyun" -> stringResource(R.string.category_games)
-                    "haber" -> stringResource(R.string.category_news)
-                    "genel" -> stringResource(R.string.category_general)
-                    else -> category.label
-                }
-            }
+            var expandedCategoryIds by remember(categories) { mutableStateOf(categories.map { it.id }.toSet()) }
 
             val wordOwnerCategoryId = LinkedHashMap<String, String>()
             val wordInAnyContent = HashSet<String>()
@@ -155,18 +134,8 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                 category.id to uniqueForThisCategory
             }
 
-            categoryGroups.forEach { (groupTitle, groupCategories) ->
-                if (groupTitle != stringResource(R.string.block_group_marketing)) {
-                    Text(
-                        text = groupTitle,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 10.dp, bottom = 8.dp)
-                    )
-                }
-
-                groupCategories.forEach { category ->
-                    val isExpanded = expandedCategoryId == category.id
+            categories.forEach { category ->
+                val isExpanded = category.id in expandedCategoryIds
                     val wordCount = uniqueWordsByCategoryId[category.id].orEmpty().size
 
                     AppCard(
@@ -178,7 +147,7 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        expandedCategoryId = if (isExpanded) null else category.id
+                                        expandedCategoryIds = if (isExpanded) expandedCategoryIds - category.id else expandedCategoryIds + category.id
                                     },
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
@@ -194,7 +163,7 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                                     )
                                     Column {
                                         Text(
-                                            text = shortLabel(category),
+                                            text = category.label,
                                             style = MaterialTheme.typography.titleMedium
                                         )
                                         Text(
@@ -329,7 +298,6 @@ fun BlacklistPage(modifier: Modifier = Modifier) {
                     }
                 }
             }
-        }
 
         CustomWordCategoriesSection(
             title = stringResource(R.string.block_section_allow_words_title),
